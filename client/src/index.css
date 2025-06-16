@@ -1,1 +1,26 @@
 @import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@theme{
+    --color-color1: oklch(78.9% 0.154 211.53);
+    --color-color2: oklch(86.5% 0.127 207.078);
+    --color-color3: oklch(71.5% 0.143 215.221);
+    --color-bgcolor: #FAFAFA;
+    --color-bgcolorless: #FAFAFA;
+    --color-textcolor: black;
+    --color-textcolorless: oklch(37% 0.013 285.805);
+    --color-lightgray: oklch(96.7% 0.001 286.375);
+    --color-darkgray: oklch(37% 0.013 285.805);
+    --color-bordercolor: oklch(92.8% 0.006 264.531);
+}
+.dark{
+    --color-color1: oklch(78.9% 0.154 211.53);
+    --color-color2: oklch(86.5% 0.127 207.078);
+    --color-color3: oklch(71.5% 0.143 215.221);
+    --color-bgcolor: #212121;
+    --color-bgcolorless: #212121;
+    --color-textcolor: white;
+    --color-textcolorless: oklch(96.7% 0.001 286.375);
+    --color-lightgray: oklch(37% 0.013 285.805);
+    --color-darkgray: oklch(96.7% 0.003 264.542);
+    --color-bordercolor: oklch(37% 0.013 285.805);
+}
