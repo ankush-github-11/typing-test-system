@@ -10,6 +10,15 @@ const rows: string[][] = [
   ['Ctrl', 'Win', 'Alt', 'Space', 'AltGr', 'Fn', 'Ctrl', '←', '↑', '↓', '→', 'PgUp', 'PgDn']
 ];
 
+const excludedLabels = new Set([
+  'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11',
+  '4', '5', '6', '7', '8', '9', '0',
+  'T', 'Y', 'U',
+  'G', 'H', 'J',
+  'B', 'N',
+  'Space', 'AltGr', 'Fn'
+]);
+
 function pickUniqueRandoms(max: number, n: number): number[] {
   const indices: number[] = [];
   while (indices.length < n) {
@@ -23,22 +32,29 @@ export const Keyboard: React.FC = () => {
   const { isDark } = useTheme();
   const [current, setCurrent] = useState<Set<string>>(new Set());
 
-useEffect(() => {
-  const cycle = () => {
-    const chosenRows = pickUniqueRandoms(rows.length, 3);
-    const chosen = new Set<string>();
-    chosenRows.forEach(r => {
-      const k = Math.floor(Math.random() * rows[r].length);
-      chosen.add(`${r}-${k}`);
-    });
-    setCurrent(chosen);
-  };
+  useEffect(() => {
+    const cycle = () => {
+      const chosenRows = pickUniqueRandoms(rows.length, 3);
+      const chosen = new Set<string>();
 
-  cycle();
-  const iv = setInterval(cycle, 5000);
-  return () => clearInterval(iv);
-}, []);
+      chosenRows.forEach(r => {
+        const validIndices = rows[r]
+          .map((label, index) => ({ label, index }))
+          .filter(({ label }) => !excludedLabels.has(label));
 
+        if (validIndices.length === 0) return;
+
+        const { index } = validIndices[Math.floor(Math.random() * validIndices.length)];
+        chosen.add(`${r}-${index}`);
+      });
+
+      setCurrent(chosen);
+    };
+
+    cycle();
+    const iv = setInterval(cycle, 5000);
+    return () => clearInterval(iv);
+  }, []);
 
   return (
     <div
@@ -62,7 +78,7 @@ useEffect(() => {
                 ? 'flex-[1.25]'
                 : 'flex-1';
 
-            const highlightClass = 'bg-yellow-500 dark:bg-yellow-400 text-white font-normal animate-glow';
+            const highlightClass = 'bg-gray-400 dark:bg-gray-400 !border-0 text-white font-normal animate-glow';
             const defaultClass = 'bg-bgcolor';
 
             return (
