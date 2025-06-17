@@ -1,0 +1,35 @@
+import { useTheme } from '../../context/useTheme';
+import { Keyboard } from './Keyboard';
+const HomePageAnimation = () => {
+  const { isDark } = useTheme();
+  return (
+      <div data-theme={isDark ? 'dark' : ''} className=' font-poppins h-fit text-textcolor bg-bgcolor flex items-center flex-col space-y-5 pt-40'>
+        <h1 className="z-2 h-fit text-4xl font-bold text-transparent bg-clip-text bg-[linear-gradient(90deg,_var(--color-textcolor),_var(--color-gray))]">
+            Own The Keys and Beat Your Best
+        </h1>
+        <a draggable="false" className="z-2 rounded-md p-1.5 pb-2 px-7 bg-color3 hover:bg-color1 text-white font-bold tracking-wider" href="#">
+            Typing Test
+        </a>
+        <div className="select-none bg-[#fafafa9f] dark:bg-[#212121b0] px-4 flex relative top-[-150px] left-0 z-1 space-x-8 h-[430px] w-fit">
+            <div className="relative overflow-hidden bg-gradient-to-b from-bgcolor to-gray h-[94%] w-[2.5px] bg-gray flex">
+                <div className="sliding-animation bg-gradient-to-b from-gray dark:to-white relative top-[25px] left-0 bg-black dark:bg-white h-[60px] w-[2.5px] rounded-full"></div>
+            </div>
+
+            <div className="bg-gradient-to-b from-bgcolor to-gray h-[97%] w-[2.5px] bg-gray"></div>
+
+            <div className="overflow-hidden bg-gradient-to-b from-bgcolor to-gray h-full w-[2.5px] bg-gray flex">
+                <div className="sliding-animation bg-gradient-to-b from-gray dark:to-white relative top-[50px] left-0 bg-black dark:bg-white h-[60px] w-[2.5px] rounded-full"></div>
+            </div>
+
+            <div className="bg-gradient-to-b from-bgcolor to-gray h-[97%] w-[2.5px] bg-gray"></div>
+
+            <div className="overflow-hidden bg-gradient-to-b from-bgcolor to-gray h-[94%] w-[2.5px] bg-gray flex">
+                <div className="sliding-animation bg-gradient-to-b from-gray dark:to-white relative top-[75px] left-0 bg-black dark:bg-white h-[60px] w-[2.5px] rounded-full"></div>
+            </div>
+
+        </div>
+        <Keyboard />
+      </div>
+  )
+}
+export default HomePageAnimation

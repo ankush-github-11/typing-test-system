@@ -6,7 +6,7 @@ const Navbar = () => {
   const { isDark, toggleTheme } = useTheme();
 
   return (
-    <nav className="bg-bgcolor flex items-center px-6 py-4 font-bold text-color1 justify-between" data-theme={isDark ? 'dark' : ''}>
+    <nav className="font-poppins bg-bgcolor flex items-center px-6 py-4 font-medium text-color1 justify-between" data-theme={isDark ? 'dark' : ''}>
       <a href="#" className="flex space-x-2">
         <img src={EtherTypeLogo} draggable="false" className="h-[30px] mt-1 select-none" alt="EtherType Logo" />
         <div className="font-bold text-2xl select-none">EtherType</div>
@@ -27,7 +27,7 @@ const Navbar = () => {
         ))}
       </div>
 
-      <a href="#" className="flex items-center space-x-2 p-2 pr-3 bg-cyan-500 rounded-full">
+      <a href="#" className="flex items-center space-x-2 p-2 pr-3 bg-color1 dark:bg-color3 rounded-full hover:bg-color3 dark:hover:bg-color1">
         <UserRound className="text-white h-5" />
         <div className="text-white">Create Account</div>
       </a>

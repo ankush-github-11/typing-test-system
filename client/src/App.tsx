@@ -1,10 +1,10 @@
-import Body from './components/layout/Body'
 import Navbar from './components/layout/Navbar'
+import HomePageAnimation from './components/layout/HomePageAnimation'
 function App() {
   return (
     <>
       <Navbar />
-      <Body />
+      <HomePageAnimation />
     </>
   )
 }
