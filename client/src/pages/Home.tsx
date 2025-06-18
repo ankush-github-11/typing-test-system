@@ -1,12 +1,12 @@
 import HomePageAnimation from "../components/layout/HomePageAnimation"
 import Navbar from "../components/layout/Navbar"
-
 const Home = () => {
   return (
-    <>
-        <Navbar />
-        <HomePageAnimation />
-    </>
+    <div>
+      <title>EtherType</title>
+      <Navbar />
+      <HomePageAnimation />
+    </div>
   )
 }
 
