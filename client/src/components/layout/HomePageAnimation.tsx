@@ -5,7 +5,7 @@ const HomePageAnimation = () => {
   return (
       <div data-theme={isDark ? 'dark' : ''} className=' font-poppins min-h-screen h-fit text-textcolor bg-bgcolor flex items-center flex-col space-y-3 pt-35'>
         <div className='z-2 p-2 bg-[#fafafa9f] dark:bg-[#212121b0]'>
-            <h1 className=" h-fit text-4xl font-bold text-transparent bg-clip-text bg-[linear-gradient(135deg,_var(--color-textcolor),_var(--color-gray))]">
+            <h1 className=" h-fit text-center text-4xl font-bold text-transparent bg-clip-text bg-[linear-gradient(135deg,_var(--color-textcolor),_var(--color-gray))]">
                 Own The Keys and Beat Your Best
             </h1>
         </div>

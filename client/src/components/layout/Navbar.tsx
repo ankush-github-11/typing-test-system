@@ -13,7 +13,7 @@ const Navbar = () => {
         <div className="font-bold text-2xl select-none">EtherType</div>
       </Link>
 
-      <div className="px-20 py-1.5 flex items-center space-x-4 mt-1 rounded-full border-2 border-cyan-100 dark:border-cyan-950">
+      <div className="hidden lg:flex px-20 py-1.5 items-center space-x-4 mt-1 rounded-full border-2 border-cyan-100 dark:border-cyan-950">
         {isDark ? (
           <Moon onClick={toggleTheme} className="text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-lightgray p-[8.5px] cursor-pointer h-8.5 w-8.5 rounded-md" />
         ) 
@@ -34,9 +34,9 @@ const Navbar = () => {
           </Link>
       </div>
 
-      <a href="#" className="flex items-center space-x-2 p-2 pr-3 bg-color1 dark:bg-color3 rounded-full hover:bg-color3 dark:hover:bg-color1">
+      <a href="#" className="flex items-center space-x-2 p-2 lg:pr-3 bg-color1 dark:bg-color3 rounded-full hover:bg-color3 dark:hover:bg-color1">
         <UserRound className="text-white h-5" />
-        <div className="text-white">Create Account</div>
+        <div className="hidden lg:flex text-white">Create Account</div>
       </a>
     </nav>
   );

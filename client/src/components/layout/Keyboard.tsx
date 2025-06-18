@@ -59,7 +59,7 @@ export const Keyboard: React.FC = () => {
   return (
     <div
       data-theme={isDark ? 'dark' : ''}
-      className="z-0 relative top-[-600px] h-fit w-[90vw] mx-auto bg-bgcolor rounded-lg"
+      className="hidden lg:block z-0 relative top-[-600px] h-fit w-[90vw] mx-auto bg-bgcolor rounded-lg"
     >
       {rows.map((row, ri) => (
         <div key={ri} className="flex w-full space-x-2 mb-2">
