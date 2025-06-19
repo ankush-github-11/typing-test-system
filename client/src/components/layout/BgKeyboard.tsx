@@ -28,7 +28,7 @@ function pickUniqueRandoms(max: number, n: number): number[] {
   return indices;
 }
 
-export const Keyboard: React.FC = () => {
+export const BgKeyboard: React.FC = () => {
   const { isDark } = useTheme();
   const [current, setCurrent] = useState<Set<string>>(new Set());
 

@@ -20,16 +20,16 @@ const Navbar = () => {
         : (
           <Sun onClick={toggleTheme} className="text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-lightgray p-[8.5px] cursor-pointer h-8.5 w-8.5 rounded-md" />
         )}
-          <Link to={"/leaderboard"} className="nav-style">
+          <Link to={"/leaderboard"} className="nav-items-style">
             Leaderboard
           </Link>
-          <Link to={"/about"} className="nav-style">
+          <Link to={"/about"} className="nav-items-style">
             About
           </Link>
-          <Link to={"/features"} className="nav-style">
+          <Link to={"/features"} className="nav-items-style">
             Features
           </Link>
-          <Link to={"/settings"} className="nav-style">
+          <Link to={"/settings"} className="nav-items-style">
             Settings
           </Link>
       </div>

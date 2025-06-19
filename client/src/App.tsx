@@ -4,6 +4,7 @@ import Leaderboard from "./pages/Leaderboard"
 import About from "./pages/About"
 import Features from "./pages/Features"
 import Settings from "./pages/Settings"
+import TypingTest from "./pages/TypingTest"
 function App() {
   return (
     <>
@@ -13,6 +14,7 @@ function App() {
         <Route path="/about" element={<About />}/>
         <Route path="/features" element={<Features />}/>
         <Route path="/settings" element={<Settings />}/>
+        <Route path="/typingtest" element={<TypingTest />}/>
       </Routes>
     </>
   )
