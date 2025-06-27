@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "../index.css";
+.activeTypingSetting{
+  color: rgb(0, 212, 146);
+  opacity: 1;
+  font-weight: 500;
+}
+@layer components{
+    .typing-settings-nav-element{
+        @apply flex h-[85%] items-center gap-1 opacity-75 rounded-lg cursor-pointer hover:bg-bgcolorless pr-2
+    }
+}

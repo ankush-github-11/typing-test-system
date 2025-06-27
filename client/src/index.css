@@ -1,27 +1,32 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 @theme{
-    --font-poppins: "poppins", sans-serif; 
-
-
+    --font-poppins: "Poppins", sans-serif; 
+    --font-mono: "JetBrains Mono", monospace; 
+    
+    
     --color-color1: oklch(78.9% 0.154 211.53);
     --color-color2: oklch(86.5% 0.127 207.078);
     --color-color3: oklch(71.5% 0.143 215.221);
-
+    
     --color-bgcolor: #FAFAFA;
     --color-bgcolorless: #F0F0F0;
     --color-textcolor: black;
-    --color-textcolorless: oklch(37% 0.013 285.805);
-
+    --color-textcolorless: oklch(45% 0.013 285.805);
+    
     --color-lightgray: oklch(96.7% 0.001 286.375);
     --color-darkgray: oklch(37% 0.013 285.805);
     
     --color-bordercolor: oklch(92.8% 0.006 264.531);
-
+    
     --color-gray: #a8a8a8;
-}
-.dark{
+  }
+  .dark{
+    --font-poppins: "Poppins", sans-serif;
+    --font-mono: "JetBrains Mono", monospace; 
+
+
     --color-color1: oklch(78.9% 0.154 211.53);
     --color-color2: oklch(86.5% 0.127 207.078);
     --color-color3: oklch(71.5% 0.143 215.221);
@@ -29,9 +34,9 @@
     --color-bgcolor: #212121;
     --color-bgcolorless: #2C2C2C;
     --color-textcolor: white;
-    --color-textcolorless: oklch(96.7% 0.001 286.375);
+    --color-textcolorless: oklch(90% 0.001 286.375);
 
-    --color-lightgray: oklch(37% 0.013 285.805);
+    --color-lightgray: oklch(37.032% 0.01192 285.76);
     --color-darkgray: oklch(96.7% 0.001 286.375);
 
     --color-bordercolor: oklch(37% 0.013 285.805);

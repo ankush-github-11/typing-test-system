@@ -5,7 +5,7 @@ const Leaderboard = () => {
   const { isDark } = useTheme();
   useTitle("Leaderboard");
   return (
-    <div data-theme={isDark ? 'dark' : ''}>
+    <div data-theme={isDark ? 'dark' : ''} className="font-poppins">
       <Navbar />
       <div className="bg-bgcolor text-textcolor min-h-screen h-fit flex justify-center items-center">Leaderboard</div>
     </div>

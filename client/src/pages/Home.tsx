@@ -6,7 +6,7 @@ const Home = () => {
   const { isDark } = useTheme();
   useTitle("EtherType");
   return (
-      <div data-theme={isDark ? 'dark' : ''}>
+      <div data-theme={isDark ? 'dark' : ''} className="font-poppins">
         <Navbar />
         <HomePageAnimation />
       </div>
