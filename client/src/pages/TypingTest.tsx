@@ -11,9 +11,9 @@ const TypingTest = () => {
       <Navbar />
 
       {/* Body Div */}
-      <div className="flex justify-center mt-4">
+      <div className="flex items-center flex-col mt-4">
         
-        <div className="hidden md:flex items-center h-[40px] gap-4 lg:min-w-[900px] lg:w-fit md:w-[750px] px-2 rounded-md border border-bordercolor text-textcolorless">
+        <div className="hidden md:flex items-center h-[40px] gap-4 lg:min-w-[900px] lg:w-fit md:w-[750px] px-2 rounded-md border border-bordercolor text-textcolorless select-none">
           
           <div className="typing-settings-nav-element">
             <div className='h-full text-[17px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless font-medium'>#</div>
@@ -36,7 +36,6 @@ const TypingTest = () => {
             <div className='h-full text-[17px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless font-medium'>A</div>
             <div className='h-full text-sm flex justify-center items-center'>Word</div>
           </div>
-
           <div className="typing-settings-nav-element">
               <WandSparkles className='h-full p-[6.5px] text-[20px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless' />
             <div className='h-full text-sm flex justify-center items-center'>Freestyle</div>
@@ -50,14 +49,17 @@ const TypingTest = () => {
           <div className='h-full w-[1px] bg-bordercolor'></div>
 
           <div className='flex h-full items-center justify-center'>
-            <div className='activeTypingSetting cursor-pointer h-[85%] text-[13px] w-[30px] rounded-lg flex justify-center items-center hover:bg-bgcolorless'>15</div>
-            <div className='cursor-pointer h-[85%] text-[13px] w-[30px] rounded-lg flex justify-center items-center hover:bg-bgcolorless'>30</div>
-            <div className='cursor-pointer h-[85%] text-[13px] w-[30px] rounded-lg flex justify-center items-center hover:bg-bgcolorless'>60</div>
-            <div className='cursor-pointer h-[85%] text-[13px] w-[30px] rounded-lg flex justify-center items-center hover:bg-bgcolorless'>120</div>
+            <div className='activeTypingSetting time-side-div'>15</div>
+            <div className='time-side-div'>30</div>
+            <div className='time-side-div'>60</div>
+            <div className='time-side-div'>120</div>
             <Wrench className='cursor-pointer ml-2.5 h-[85%] p-[6.5px] text-[20px] w-[30px] rounded-lg flex justify-center items-center hover:bg-bgcolorless' />
             
           </div>
         </div>
+
+        {/*  Typing Area  */}
+        <div className='select-none mt-25 text-4xl min-h-[35vh] h-fit w-[85%] font-mono text-textcolorless'>In software development developers build and maintain applications solve problems write efficient code manage deployments and ensure everything works smoothly for users</div>
       </div>
     </div>
   );

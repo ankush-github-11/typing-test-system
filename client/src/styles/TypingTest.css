@@ -7,6 +7,9 @@
 }
 @layer components{
     .typing-settings-nav-element{
-        @apply flex h-[85%] items-center gap-1 opacity-75 rounded-lg cursor-pointer hover:bg-bgcolorless pr-2
+        @apply flex h-[85%] items-center gap-1 opacity-75 rounded-lg cursor-pointer hover:bg-bgcolorless pr-2;
+    }
+    .time-side-div{
+        @apply cursor-pointer h-[85%] text-[13px] w-[30px] rounded-lg flex justify-center items-center hover:bg-bgcolorless;
     }
 }
