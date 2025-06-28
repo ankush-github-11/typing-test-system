@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../../context/useTheme';
 
 const rows: string[][] = [
   ['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'Home', 'End', 'Del'],
@@ -29,7 +28,6 @@ function pickUniqueRandoms(max: number, n: number): number[] {
 }
 
 export const BgKeyboard: React.FC = () => {
-  const { isDark } = useTheme();
   const [current, setCurrent] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -58,7 +56,6 @@ export const BgKeyboard: React.FC = () => {
 
   return (
     <div
-      data-theme={isDark ? 'dark' : ''}
       className="hidden lg:block z-0 relative top-[-600px] h-fit w-[90vw] mx-auto bg-bgcolor rounded-lg"
     >
       {rows.map((row, ri) => (

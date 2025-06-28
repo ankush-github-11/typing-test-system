@@ -3,6 +3,7 @@ import { useTitle } from '../hooks/useTitle';
 import { Timer, WandSparkles, SlidersHorizontal, Wrench } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
 import "../styles/TypingTest.css"
+import TypingArea from '../components/layout/TypingArea';
 const TypingTest = () => {
   useTitle("Ether Typing Test")
   const { isDark } = useTheme();
@@ -12,9 +13,9 @@ const TypingTest = () => {
 
       {/* Body Div */}
       <div className="flex items-center flex-col mt-4">
-        
+
         <div className="hidden md:flex items-center h-[40px] gap-4 lg:min-w-[900px] lg:w-fit md:w-[750px] px-2 rounded-md border border-bordercolor text-textcolorless select-none">
-          
+
           <div className="typing-settings-nav-element">
             <div className='h-full text-[17px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless font-medium'>#</div>
             <div className='h-full text-sm flex justify-center items-center'>Punctuation</div>
@@ -28,7 +29,7 @@ const TypingTest = () => {
           <div className='h-full w-[1px] bg-bordercolor'></div>
 
           <div className="activeTypingSetting typing-settings-nav-element">
-              <Timer className='font-2xl h-full p-[4.5px] pb-[7px] pt-[4px] text-[20px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless' />
+            <Timer className='font-2xl h-full p-[4.5px] pb-[7px] pt-[4px] text-[20px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless' />
             <div className='h-full text-sm flex justify-center items-center'>Time</div>
           </div>
 
@@ -37,12 +38,12 @@ const TypingTest = () => {
             <div className='h-full text-sm flex justify-center items-center'>Word</div>
           </div>
           <div className="typing-settings-nav-element">
-              <WandSparkles className='h-full p-[6.5px] text-[20px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless' />
+            <WandSparkles className='h-full p-[6.5px] text-[20px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless' />
             <div className='h-full text-sm flex justify-center items-center'>Freestyle</div>
           </div>
 
           <div className="typing-settings-nav-element">
-              <SlidersHorizontal className='h-full p-[6.5px] text-[20px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless' />
+            <SlidersHorizontal className='h-full p-[6.5px] text-[20px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless' />
             <div className='h-full text-sm flex justify-center items-center'>Custom</div>
           </div>
 
@@ -54,12 +55,12 @@ const TypingTest = () => {
             <div className='time-side-div'>60</div>
             <div className='time-side-div'>120</div>
             <Wrench className='cursor-pointer ml-2.5 h-[85%] p-[6.5px] text-[20px] w-[30px] rounded-lg flex justify-center items-center hover:bg-bgcolorless' />
-            
+
           </div>
         </div>
 
         {/*  Typing Area  */}
-        <div className='select-none mt-25 text-4xl min-h-[35vh] h-fit w-[85%] font-mono text-textcolorless'>In software development developers build and maintain applications solve problems write efficient code manage deployments and ensure everything works smoothly for users</div>
+        <TypingArea />
       </div>
     </div>
   );
