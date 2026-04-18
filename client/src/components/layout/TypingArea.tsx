@@ -24,20 +24,19 @@ const TypingArea = () => {
     return { wpm, accuracy, typedText };
   };
   useEffect(() => {
-    if (!started || timeLeft === 0) return;
+    if (!started) return;
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev === 1) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prev - 1;
-      });
+      setTimeLeft((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [started, timeLeft]);
+  }, [started]);
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      setTimeLeft(0);
+    }
+  }, [timeLeft]);
   useAutoRedirect({
     path: "/results",
     delay: 0,
