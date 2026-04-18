@@ -1,34 +1,28 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+type TypingResult = {
+  wpm: number;
+  accuracy: number;
+  typedText: string;
+};
 interface useAutoRedirectProps {
   path: string;
   delay: number;
-  trigger: string;
+  trigger: boolean;
+  data: TypingResult;
 }
 
-export function useAutoRedirect({ path, delay, trigger }: useAutoRedirectProps) {
+export function useAutoRedirect({ path, delay, trigger, data }: useAutoRedirectProps) {
   const navigate = useNavigate();
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const startedRef = useRef(false);
 
   useEffect(() => {
-    // Start timer only once when user starts typing
-    if (!startedRef.current && trigger.length > 0) {
-      startedRef.current = true;
+    if (!trigger) return;
 
-      timerRef.current = setTimeout(() => {
-        navigate(path);
-      }, delay);
-    }
-  }, [trigger, path, delay, navigate]);
+    const timer = setTimeout(() => {
+      navigate(path, { state: data });
+    }, delay);
 
-  // Cleanup only on unmount
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, []);
+    return () => clearTimeout(timer);
+  }, [trigger, path, delay, data, navigate]);
 }
