@@ -1,8 +1,11 @@
 import { useState } from "react"
+import { useAutoRedirect } from "../../hooks/useAutoRedirect";
 // import Cursor from "../ui/Cursor"
+
 const TypingArea = () => {
     const [targetText] = useState("A developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative solutions");
     const [typedText, setTypedText] = useState("");
+    useAutoRedirect({ path: "/", delay: 5000, trigger: typedText }); // Redirect to results page after 60 seconds
     return (
         <div className='select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray'>
             <label htmlFor="typing-input" className="hidden">Typing Input</label>

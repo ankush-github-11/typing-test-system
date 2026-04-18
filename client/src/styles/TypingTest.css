@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import "../index.css";
+
 .activeTypingSetting{
   color: rgb(0, 212, 146);
   opacity: 1;
