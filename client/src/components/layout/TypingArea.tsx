@@ -37,8 +37,7 @@ const TypingArea = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [started]);
-
+  }, [started, timeLeft]);
   useAutoRedirect({
     path: "/results",
     delay: 0,
