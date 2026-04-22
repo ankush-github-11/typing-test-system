@@ -3,25 +3,25 @@ import { useAutoRedirect } from "../../hooks/useAutoRedirect";
 // import Cursor from "../ui/Cursor"
 
 const TypingArea = () => {
-  const isCurrCharSpaceAndPrevWordWasCorrect = () => {
-      const prevCharIsSpace = targetText[index - 1] === " ";
+  // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
+  //     const prevCharIsSpace = targetText[index - 1] === " ";
 
-      // Get last word boundaries
-      const lastSpaceIndex = targetText.lastIndexOf(" ", index - 2);
-      const wordStart = lastSpaceIndex + 1;
-      const wordEnd = index - 1;
+  //     // Get last word boundaries
+  //     const lastSpaceIndex = targetText.lastIndexOf(" ", index - 2);
+  //     const wordStart = lastSpaceIndex + 1;
+  //     const wordEnd = index - 1;
 
-      const typedWord = typedText.slice(wordStart, wordEnd);
-      const targetWord = targetText.slice(wordStart, wordEnd);
+  //     const typedWord = typedText.slice(wordStart, wordEnd);
+  //     const targetWord = targetText.slice(wordStart, wordEnd);
 
-      const isWordCorrect = typedWord === targetWord;
+  //     const isWordCorrect = typedWord === targetWord;
 
-      // LOCK: don't allow going back into correct word
-      if (prevCharIsSpace && isWordCorrect) {
-        return true;
-      }
-      return false;
-  }
+  //     // LOCK: don't allow going back into correct word
+  //     if (prevCharIsSpace && isWordCorrect) {
+  //       return true;
+  //     }
+  //     return false;
+  // }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!started) setStarted(true);
     // BACKSPACE

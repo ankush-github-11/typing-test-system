@@ -2,8 +2,7 @@ import Navbar from "../components/layout/Navbar";
 import { useTheme } from "../context/useTheme";
 import useButtonNavigator from "../hooks/useButtonNavigator";
 import { useTitle } from "../hooks/useTitle";
-import { useLocation } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
 type TypingResult = {
   wpm: number;
   accuracy: number;
@@ -11,7 +10,7 @@ type TypingResult = {
 };
 
 const Results = () => {
-
+  const navigate = useNavigate();
   // Navigate back to typing test on esc
   useButtonNavigator({ targetKey: "Escape", targetPath: "/typingtest" });
 
