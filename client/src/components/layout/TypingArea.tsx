@@ -28,7 +28,7 @@ const TypingArea = () => {
     if (e.key === "Backspace") {
       e.preventDefault();
       if (index === 0) return;
-      if(isCurrCharSpaceAndPrevWordWasCorrect()) return;
+      // if(isCurrCharSpaceAndPrevWordWasCorrect()) return;
       if (index > 0) {
         setTypedText((prev) => prev.slice(0, index - 1));
         setIndex((prev) => prev - 1);
@@ -95,7 +95,7 @@ const TypingArea = () => {
   });
   return (
     <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray">
-      <div className="text-2xl mb-4">Time Left: {timeLeft}s</div>
+      <div className="text-2xl mb-4 flex justify-center">{timeLeft}s</div>
       <label htmlFor="typing-input" className="hidden">
         Typing Input
       </label>
@@ -112,7 +112,7 @@ const TypingArea = () => {
       {targetText.split("").map((char, i) => {
         const typedChar = typedText[i];
         let className = "text-gray-400";
-        if (typedChar === undefined) className = "text-gray-400";
+        if (typedChar === undefined) className = "text-gray";
         else if (typedChar === char) className = "text-textcolorless";
         else className = "text-red-500";
         return (
