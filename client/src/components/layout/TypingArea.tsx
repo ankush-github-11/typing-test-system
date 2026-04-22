@@ -3,12 +3,62 @@ import { useAutoRedirect } from "../../hooks/useAutoRedirect";
 // import Cursor from "../ui/Cursor"
 
 const TypingArea = () => {
+  const isCurrCharSpaceAndPrevWordWasCorrect = () => {
+      const prevCharIsSpace = targetText[index - 1] === " ";
+
+      // Get last word boundaries
+      const lastSpaceIndex = targetText.lastIndexOf(" ", index - 2);
+      const wordStart = lastSpaceIndex + 1;
+      const wordEnd = index - 1;
+
+      const typedWord = typedText.slice(wordStart, wordEnd);
+      const targetWord = targetText.slice(wordStart, wordEnd);
+
+      const isWordCorrect = typedWord === targetWord;
+
+      // LOCK: don't allow going back into correct word
+      if (prevCharIsSpace && isWordCorrect) {
+        return true;
+      }
+      return false;
+  }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!started) setStarted(true);
+    // BACKSPACE
+    if (e.key === "Backspace") {
+      e.preventDefault();
+      if (index === 0) return;
+      if(isCurrCharSpaceAndPrevWordWasCorrect()) return;
+      if (index > 0) {
+        setTypedText((prev) => prev.slice(0, index - 1));
+        setIndex((prev) => prev - 1);
+      }
+      return;
+    }
+
+    // IGNORE NON-CHAR KEYS
+    if (e.key.length > 1) return;
+
+    // STOP IF LIMIT REACHED
+    // if (index >= targetText.length) return;
+
+    e.preventDefault();
+
+    // INSERT CHARACTER AT INDEX
+    setTypedText((prev) => {
+      const newText = prev.slice(0, index) + e.key + prev.slice(index);
+      return newText;
+    });
+
+    setIndex((prev) => prev + 1);
+  };
   const [targetText] = useState(
-    "A developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative solutions",
+    "a developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative solutions",
   );
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(10);
   const [started, setStarted] = useState(false);
+  const [index, setIndex] = useState(0);
 
   const calculateResults = () => {
     const wordsTyped = typedText.trim().split(/\s+/).filter(Boolean).length;
@@ -56,11 +106,8 @@ const TypingArea = () => {
         className="min-h-[35vh] w-[85%] absolute opacity-0 cursor-default"
         type="text"
         value={typedText}
-        onChange={(e) => {
-          if (!started) setStarted(true);
-          setTypedText(e.target.value);
-        }}
         autoFocus
+        onKeyDown={handleKeyDown}
       />
       {targetText.split("").map((char, i) => {
         const typedChar = typedText[i];
