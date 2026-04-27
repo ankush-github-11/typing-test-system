@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAutoRedirect } from "../../hooks/useAutoRedirect";
-// import Cursor from "../ui/Cursor"
+import Cursor from "./Cursor"
 
 const TypingArea = () => {
   // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
@@ -53,7 +53,7 @@ const TypingArea = () => {
     setIndex((prev) => prev + 1);
   };
   const [targetText] = useState(
-    "a developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative solutions",
+    "a developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative",
   );
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(10);
@@ -109,6 +109,7 @@ const TypingArea = () => {
         autoFocus
         onKeyDown={handleKeyDown}
       />
+      <Cursor />
       {targetText.split("").map((char, i) => {
         const typedChar = typedText[i];
         let className = "text-gray-400";
