@@ -10,5 +10,5 @@
 }
 
 .cursor {
-    animation: cursorBlink 1.7s ease-in-out infinite;
+    animation: cursorBlink 1.5s ease-in-out infinite;
 }

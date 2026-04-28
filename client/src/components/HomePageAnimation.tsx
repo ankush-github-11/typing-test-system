@@ -1,4 +1,4 @@
-import { useTheme } from '../../context/useTheme';
+import { useTheme } from '../context/useTheme';
 import { BgKeyboard } from './BgKeyboard';
 import { Link } from 'react-router-dom';
 const HomePageAnimation = () => {

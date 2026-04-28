@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { useAutoRedirect } from "../../hooks/useAutoRedirect";
+import { useEffect, useState, useRef } from "react";
+import { useAutoRedirect } from "../hooks/useAutoRedirect";
 import Cursor from "./Cursor"
 
 const TypingArea = () => {
+  const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
   // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
   //     const prevCharIsSpace = targetText[index - 1] === " ";
 
@@ -53,12 +54,13 @@ const TypingArea = () => {
     setIndex((prev) => prev + 1);
   };
   const [targetText] = useState(
-    "a developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative",
+    "developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative",
   );
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(10);
   const [started, setStarted] = useState(false);
   const [index, setIndex] = useState(0);
+  const [cursorPos, setCursorPos] = useState<{ top: number; left: number } | null>(null);
 
   const calculateResults = () => {
     const wordsTyped = typedText.trim().split(/\s+/).filter(Boolean).length;
@@ -73,6 +75,7 @@ const TypingArea = () => {
       : 0;
     return { wpm, accuracy, typedText };
   };
+
   useEffect(() => {
     if (!started) return;
 
@@ -82,11 +85,24 @@ const TypingArea = () => {
 
     return () => clearInterval(timer);
   }, [started]);
+
   useEffect(() => {
     if (timeLeft <= 0) {
       setTimeLeft(0);
     }
   }, [timeLeft]);
+
+  useEffect(() => {
+    const currentChar = charRefs.current[index];
+    if (currentChar) {
+      const rect = currentChar.getBoundingClientRect();
+      setCursorPos({
+        top: rect.top,
+        left: rect.left,
+      });
+    }
+  }, [index]);
+
   useAutoRedirect({
     path: "/results",
     delay: 0,
@@ -94,7 +110,7 @@ const TypingArea = () => {
     data: calculateResults(),
   });
   return (
-    <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray">
+    <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px]">
       <div className="text-2xl mb-4 flex justify-center">{timeLeft}s</div>
       <label htmlFor="typing-input" className="hidden">
         Typing Input
@@ -109,15 +125,17 @@ const TypingArea = () => {
         autoFocus
         onKeyDown={handleKeyDown}
       />
-      <Cursor />
+      {cursorPos && (
+        <Cursor top={cursorPos.top} left={cursorPos.left} cn={!started ? 'cursor' : ''} />
+      )}
       {targetText.split("").map((char, i) => {
         const typedChar = typedText[i];
         let className = "text-gray-400";
         if (typedChar === undefined) className = "text-gray";
         else if (typedChar === char) className = "text-textcolorless";
-        else className = "text-red-500";
+        else className = "text-red-500 border-b-1 border-red-500";
         return (
-          <span key={i} className={className}>
+          <span key={i} ref={(el) => { charRefs.current[i] = el; }} className={className}>
             {char}
           </span>
         );

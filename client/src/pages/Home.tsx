@@ -1,6 +1,6 @@
 import { useTheme } from '../context/useTheme';
-import HomePageAnimation from "../components/layout/HomePageAnimation"
-import Navbar from "../components/layout/Navbar"
+import HomePageAnimation from "../components/HomePageAnimation"
+import Navbar from "../components/Navbar"
 import { useTitle } from '../hooks/useTitle';
 const Home = () => {
   const { isDark } = useTheme();

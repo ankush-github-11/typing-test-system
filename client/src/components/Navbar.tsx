@@ -1,6 +1,6 @@
-import { useTheme } from '../../context/useTheme';
+import { useTheme } from '../context/useTheme';
 import { UserRound, Sun, Moon } from 'lucide-react';
-import EtherTypeLogo from '../../assets/images/EtherTypeLogo.png';
+import EtherTypeLogo from '../assets/images/EtherTypeLogo.png';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {

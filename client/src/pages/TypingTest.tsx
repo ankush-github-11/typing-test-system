@@ -1,9 +1,9 @@
 import { useTheme } from '../context/useTheme';
 import { useTitle } from '../hooks/useTitle';
 import { Timer, WandSparkles, SlidersHorizontal, Wrench } from 'lucide-react';
-import Navbar from '../components/layout/Navbar';
+import Navbar from '../components/Navbar';
 import "../styles/TypingTest.css"
-import TypingArea from '../components/layout/TypingArea';
+import TypingArea from '../components/TypingArea';
 const TypingTest = () => {
   useTitle("Ether Typing Test")
   const { isDark } = useTheme();
