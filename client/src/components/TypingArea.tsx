@@ -15,7 +15,7 @@ const TypingArea = () => {
     top: number;
     left: number;
   } | null>(null);
-  const [wpmPerSecond, setWpmPerSecond] = useState<number[]>([]);
+  const [wpmPerSecondArr, setWpmPerSecondArr] = useState<number[]>([]);
   // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
   //     const prevCharIsSpace = targetText[index - 1] === " ";
 
@@ -74,7 +74,7 @@ const TypingArea = () => {
       if (typedText[i] === char) correctChars++;
     });
     const wpm = Math.round(correctChars / (5 * timeInMinutes));
-    setWpmPerSecond((prev) => [...prev, wpm]);
+    setWpmPerSecondArr((prev) => [...prev, wpm]);
   }, [timeLeft]);
 
   const calculateFinalResults = () => {
@@ -118,8 +118,8 @@ const TypingArea = () => {
   useAutoRedirect({
     path: "/results",
     delay: 0,
-    trigger: wpmPerSecond.length === 10,
-    data: { ...calculateFinalResults(), wpmPerSecond: wpmPerSecond },
+    trigger: wpmPerSecondArr.length === 10,
+    data: { ...calculateFinalResults(), wpmPerSecondArr: wpmPerSecondArr },
   });
   return (
     <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px]">

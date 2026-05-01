@@ -5,7 +5,7 @@ type TypingResult = {
   wpm: number;
   rawAccuracy: number;
   typedText: string;
-  wpmPerSecond: number[];
+  wpmPerSecondArr: number[];
 };
 interface useAutoRedirectProps {
   path: string;
