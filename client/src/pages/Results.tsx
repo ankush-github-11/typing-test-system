@@ -5,8 +5,9 @@ import { useTitle } from "../hooks/useTitle";
 import { useLocation, useNavigate } from "react-router-dom";
 type TypingResult = {
   wpm: number;
-  accuracy: number;
+  rawAccuracy: number;
   typedText: string;
+  wpmPerSecond: number[];
 };
 
 const Results = () => {
@@ -38,8 +39,9 @@ const Results = () => {
       <Navbar />
       <h1>Your Results</h1>
       <p>WPM: {data.wpm}</p>
-      <p>Accuracy: {data.accuracy}%</p>
+      <p>Raw Accuracy: {data.rawAccuracy}%</p>
       <p>Typed Text: {data.typedText}</p>
+      <p>WPM per Second: {data.wpmPerSecond.join(", ")}</p>
     </div>
   );
 };

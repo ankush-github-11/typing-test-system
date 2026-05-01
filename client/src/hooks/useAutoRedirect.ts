@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 type TypingResult = {
   wpm: number;
-  accuracy: number;
+  rawAccuracy: number;
   typedText: string;
+  wpmPerSecond: number[];
 };
 interface useAutoRedirectProps {
   path: string;

@@ -1,9 +1,21 @@
 import { useEffect, useState, useRef } from "react";
 import { useAutoRedirect } from "../hooks/useAutoRedirect";
-import Cursor from "./Cursor"
+import Cursor from "./Cursor";
 
 const TypingArea = () => {
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const [targetText] = useState(
+    "developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative",
+  );
+  const [typedText, setTypedText] = useState("");
+  const [timeLeft, setTimeLeft] = useState(10);
+  const [started, setStarted] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [cursorPos, setCursorPos] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+  const [wpmPerSecond, setWpmPerSecond] = useState<number[]>([]);
   // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
   //     const prevCharIsSpace = targetText[index - 1] === " ";
 
@@ -53,43 +65,46 @@ const TypingArea = () => {
 
     setIndex((prev) => prev + 1);
   };
-  const [targetText] = useState(
-    "developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative",
-  );
-  const [typedText, setTypedText] = useState("");
-  const [timeLeft, setTimeLeft] = useState(10);
-  const [started, setStarted] = useState(false);
-  const [index, setIndex] = useState(0);
-  const [cursorPos, setCursorPos] = useState<{ top: number; left: number } | null>(null);
 
-  const calculateResults = () => {
-    const wordsTyped = typedText.trim().split(/\s+/).filter(Boolean).length;
-    const timeInMinutes = 10 / 60;
-    const wpm = Math.round(wordsTyped / timeInMinutes);
+  const calculateFinalResults = () => {
     let correctChars = 0;
     targetText.split("").forEach((char, i) => {
       if (typedText[i] === char) correctChars++;
     });
-    const accuracy = typedText.length
+
+    const timeInMinutes = 10 / 60;
+    const wpm = Math.round(correctChars / (5 * timeInMinutes));
+
+    const rawAccuracy = typedText.length
       ? Math.round((correctChars / typedText.length) * 100)
       : 0;
-    return { wpm, accuracy, typedText };
+    return { wpm, rawAccuracy, typedText };
   };
 
   useEffect(() => {
-    if (!started) return;
-
+    if (!started || timeLeft <= 0) return;
     const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
-
     return () => clearInterval(timer);
   }, [started]);
 
   useEffect(() => {
-    if (timeLeft <= 0) {
-      setTimeLeft(0);
-    }
+    if (!started || timeLeft < 0) return;
+    const timeInMinutes = (10 - timeLeft) / 60;
+    if (timeInMinutes <= 0) return;
+    let correctChars = 0;
+    targetText.split("").forEach((char, i) => {
+      if (typedText[i] === char) correctChars++;
+    });
+    const wpm = Math.round(correctChars / (5 * timeInMinutes));
+    setWpmPerSecond((prev) => [...prev, wpm]);
   }, [timeLeft]);
 
   useEffect(() => {
@@ -107,7 +122,7 @@ const TypingArea = () => {
     path: "/results",
     delay: 0,
     trigger: timeLeft === 0,
-    data: calculateResults(),
+    data: { ...calculateFinalResults(), wpmPerSecond: wpmPerSecond },
   });
   return (
     <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px]">
@@ -126,7 +141,11 @@ const TypingArea = () => {
         onKeyDown={handleKeyDown}
       />
       {cursorPos && (
-        <Cursor top={cursorPos.top} left={cursorPos.left} cn={!started ? 'cursor' : ''} />
+        <Cursor
+          top={cursorPos.top}
+          left={cursorPos.left}
+          cn={!started ? "cursor" : ""}
+        />
       )}
       {targetText.split("").map((char, i) => {
         const typedChar = typedText[i];
@@ -135,7 +154,13 @@ const TypingArea = () => {
         else if (typedChar === char) className = "text-textcolorless";
         else className = "text-red-500 border-b-1 border-red-500";
         return (
-          <span key={i} ref={(el) => { charRefs.current[i] = el; }} className={className}>
+          <span
+            key={i}
+            ref={(el) => {
+              charRefs.current[i] = el;
+            }}
+            className={className}
+          >
             {char}
           </span>
         );
