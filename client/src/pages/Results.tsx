@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar";
+import ResultGraph from "../components/ResultGraph";
 import { useTheme } from "../context/useTheme";
 import useButtonNavigator from "../hooks/useButtonNavigator";
 import { useTitle } from "../hooks/useTitle";
@@ -7,7 +8,7 @@ type TypingResult = {
   wpm: number;
   rawAccuracy: number;
   typedText: string;
-  wpmPerSecond: number[];
+  wpmPerSecondArr: number[];
 };
 
 const Results = () => {
@@ -37,11 +38,7 @@ const Results = () => {
       className="font-poppins h-screen bg-bgcolor text-textcolor"
     >
       <Navbar />
-      <h1>Your Results</h1>
-      <p>WPM: {data.wpm}</p>
-      <p>Raw Accuracy: {data.rawAccuracy}%</p>
-      <p>Typed Text: {data.typedText}</p>
-      <p>WPM per Second: {data.wpmPerSecond.join(", ")}</p>
+      <ResultGraph result={data} />
     </div>
   );
 };
