@@ -65,6 +65,17 @@ const TypingArea = () => {
 
     setIndex((prev) => prev + 1);
   };
+  useEffect(() => {
+    if (!started || timeLeft < 0) return;
+    const timeInMinutes = (10 - timeLeft) / 60;
+    if (timeInMinutes <= 0) return;
+    let correctChars = 0;
+    targetText.split("").forEach((char, i) => {
+      if (typedText[i] === char) correctChars++;
+    });
+    const wpm = Math.round(correctChars / (5 * timeInMinutes));
+    setWpmPerSecond((prev) => [...prev, wpm]);
+  }, [timeLeft]);
 
   const calculateFinalResults = () => {
     let correctChars = 0;
@@ -73,14 +84,12 @@ const TypingArea = () => {
     });
 
     const timeInMinutes = 10 / 60;
-    const wpm = Math.round(correctChars / (5 * timeInMinutes));
-
+    const wpm = Math.round(correctChars / (5 * timeInMinutes));    
     const rawAccuracy = typedText.length
       ? Math.round((correctChars / typedText.length) * 100)
       : 0;
     return { wpm, rawAccuracy, typedText };
   };
-
   useEffect(() => {
     if (!started || timeLeft <= 0) return;
     const timer = setInterval(() => {
@@ -96,18 +105,6 @@ const TypingArea = () => {
   }, [started]);
 
   useEffect(() => {
-    if (!started || timeLeft < 0) return;
-    const timeInMinutes = (10 - timeLeft) / 60;
-    if (timeInMinutes <= 0) return;
-    let correctChars = 0;
-    targetText.split("").forEach((char, i) => {
-      if (typedText[i] === char) correctChars++;
-    });
-    const wpm = Math.round(correctChars / (5 * timeInMinutes));
-    setWpmPerSecond((prev) => [...prev, wpm]);
-  }, [timeLeft]);
-
-  useEffect(() => {
     const currentChar = charRefs.current[index];
     if (currentChar) {
       const rect = currentChar.getBoundingClientRect();
@@ -121,7 +118,7 @@ const TypingArea = () => {
   useAutoRedirect({
     path: "/results",
     delay: 0,
-    trigger: timeLeft === 0,
+    trigger: wpmPerSecond.length === 10,
     data: { ...calculateFinalResults(), wpmPerSecond: wpmPerSecond },
   });
   return (
