@@ -1,12 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import type { TypingResult } from "../types/typingResult";
 
-type TypingResult = {
-  wpm: number;
-  rawAccuracy: number;
-  typedText: string;
-  wpmPerSecondArr: number[];
-};
 interface useAutoRedirectProps {
   path: string;
   delay: number;

@@ -6,7 +6,7 @@ const TypingArea = () => {
   const variableTime = 15;
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [targetText] = useState(
-    "developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative",
+    "good hello prev new world test this test state while which show please last time how you hello are doing now school hear people work kill code valid whole live auto graph top",
   );
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(variableTime);
@@ -16,7 +16,10 @@ const TypingArea = () => {
     top: number;
     left: number;
   } | null>(null);
-  const [wpmPerSecondArr, setWpmPerSecondArr] = useState<number[]>([]);
+  const [avgWpmPerSecondArr, setAvgWpmPerSecondArr] = useState<number[]>([]);
+  const [currentWpm, setCurrentWpm] = useState(0);
+  const [burstPerSecondArr, setBurstPerSecondArr] = useState<number[]>([]);
+  const prevLengthRef = useRef(0);
   // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
   //     const prevCharIsSpace = targetText[index - 1] === " ";
 
@@ -66,7 +69,7 @@ const TypingArea = () => {
 
     setIndex((prev) => prev + 1);
   };
-  useEffect(() => {
+  useEffect(() => { // Avg WPM Array
     if (!started || timeLeft < 0) return;
     const timeInMinutes = (variableTime - timeLeft) / 60;
     if (timeInMinutes <= 0) return;
@@ -74,9 +77,21 @@ const TypingArea = () => {
     targetText.split("").forEach((char, i) => {
       if (typedText[i] === char) correctChars++;
     });
-    const wpm = Math.round(correctChars / (5 * timeInMinutes));
-    setWpmPerSecondArr((prev) => [...prev, wpm]);
+    const avgWpm = Math.round(correctChars / (5 * timeInMinutes));
+    setAvgWpmPerSecondArr((prev) => [...prev, avgWpm]);
   }, [timeLeft]);
+
+useEffect(() => { // Burst WPM Array
+  if (!started || timeLeft < 0) return;
+  const currentLength = typedText.length;
+  const prevLength = prevLengthRef.current;
+  const charsThisSecond = Math.max(0, currentLength - prevLength);
+  prevLengthRef.current = currentLength;
+  const instantWpm = Math.round((charsThisSecond / 5) * 60);
+  setCurrentWpm(instantWpm);
+  setBurstPerSecondArr((prev) => [...prev, instantWpm]);
+
+}, [timeLeft]);
 
   const calculateFinalResults = () => {
     let correctChars = 0;
@@ -119,8 +134,8 @@ const TypingArea = () => {
   useAutoRedirect({
     path: "/results",
     delay: 0,
-    trigger: wpmPerSecondArr.length === variableTime,
-    data: { ...calculateFinalResults(), wpmPerSecondArr: wpmPerSecondArr },
+    trigger: avgWpmPerSecondArr.length === variableTime,
+    data: { ...calculateFinalResults(), avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr },
   });
   return (
     <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px]">

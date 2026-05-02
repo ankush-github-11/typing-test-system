@@ -10,19 +10,14 @@ import {
 } from "recharts";
 // import { RechartsDevtools } from "@recharts/devtools";
 import { useTheme } from "../context/useTheme";
-
-type TypingResult = {
-  wpm: number;
-  rawAccuracy: number;
-  typedText: string;
-  wpmPerSecondArr: number[];
-};
+import type { TypingResult } from "../types/typingResult";
 
 export default function ResultGraph({ result }: { result: TypingResult }) {
   const { isDark } = useTheme();
-  const data = result.wpmPerSecondArr.map((wpm, index) => ({
+  const data = result.avgWpmPerSecondArr.map((wpm, index) => ({
     second: index + 1,
     wpm: wpm,
+    burst: result.burstPerSecondArr[index],
   }));
 
   return (
@@ -51,9 +46,9 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
               <Tooltip
                 labelFormatter={(label) => `second: ${label}`}
                 cursor={{
-                  stroke: "#FB923C", // your theme color
+                  stroke: "#FB923C",
                   strokeWidth: 2,
-                  strokeDasharray: "4 4", // optional (dashed)
+                  strokeDasharray: "4 4",
                 }}
                 contentStyle={{
                   backgroundColor: "#333333",
@@ -65,6 +60,12 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
                 itemStyle={{ color: "#fff" }}
               />
               <Legend />
+              <Line
+                type="natural"
+                dataKey="burst"
+                stroke="#BABABA"
+                strokeWidth={2}
+              />
               <Line
                 type="natural"
                 dataKey="wpm"
@@ -87,9 +88,9 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
               {/* domain={[0, 200]} */}
               <Tooltip
                 cursor={{
-                  stroke: "#FB923C", // your theme color
+                  stroke: "#FB923C",
                   strokeWidth: 2,
-                  strokeDasharray: "4 4", // optional (dashed)
+                  strokeDasharray: "4 4",
                 }}
                 contentStyle={{
                   backgroundColor: "#333333",
@@ -101,6 +102,12 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
                 itemStyle={{ color: "#fff" }}
               />
               <Legend />
+              <Line
+                type="natural"
+                dataKey="burst"
+                stroke="#4D4D4D"
+                strokeWidth={2}
+              />
               <Line
                 type="natural"
                 dataKey="wpm"
