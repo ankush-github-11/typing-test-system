@@ -1,7 +1,7 @@
 @import "../index.css";
 
 .activeTypingSetting{
-  color: rgb(0, 212, 146);
+  color: var(--color-color1);
   opacity: 1;
   font-weight: 500;
 }

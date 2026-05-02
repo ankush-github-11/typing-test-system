@@ -10,7 +10,7 @@ const Navbar = () => {
     <nav className="font-poppins bg-bgcolor flex items-center px-6 py-4 font-medium text-textcolorless justify-between" data-theme={isDark ? 'dark' : ''}>
       <Link to={"/"} className="flex space-x-2">
         <img src={EtherTypeLogo} draggable="false" className="h-[30px] mt-1 select-none" alt="EtherType Logo" />
-        <div className="font-bold text-2xl select-none">EtherType</div>
+        <div className="font-bold text-2xl select-none text-color1">EtherType</div>
       </Link>
 
       <div className="hidden lg:flex px-20 py-1.5 items-center space-x-4 mt-1 rounded-full border-2 border-cyan-100 dark:border-cyan-950 select-none">
@@ -34,7 +34,7 @@ const Navbar = () => {
           </Link>
       </div>
 
-      <a href="#" className="flex items-center space-x-2 p-2 lg:pr-3 bg-color1 dark:bg-color3 rounded-full hover:bg-color3 dark:hover:bg-color1 select-none">
+      <a href="#" className="flex items-center space-x-2 p-2 lg:pr-3 bg-color1 dark:bg-color1 rounded-full hover:bg-color1 dark:hover:bg-color1 select-none">
         <UserRound className="text-white h-5" />
         <div className="hidden lg:flex text-white">Create Account</div>
       </a>

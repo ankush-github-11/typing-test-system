@@ -10,7 +10,7 @@ const HomePageAnimation = () => {
                 Own The Keys and Beat Your Best
             </h1>
         </div>
-        <Link to={"/typingtest"} draggable="false" className="z-2 rounded-md p-1.5 pb-2 px-7 bg-color3 hover:bg-color1 text-white font-bold tracking-wider" >
+        <Link to={"/typingtest"} draggable="false" className="z-2 rounded-md p-1.5 pb-2 px-7 bg-color1 hover:bg-color1 text-white font-bold tracking-wider" >
             Typing Test
         </Link>
         <div className="select-none bg-[#fafafa9f] dark:bg-[#212121b0] px-4 flex relative top-[-100px] left-0 z-1 space-x-8 h-[430px] w-fit">

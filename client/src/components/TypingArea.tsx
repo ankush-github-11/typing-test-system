@@ -3,12 +3,13 @@ import { useAutoRedirect } from "../hooks/useAutoRedirect";
 import Cursor from "./Cursor";
 
 const TypingArea = () => {
+  const variableTime = 15;
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [targetText] = useState(
     "developer is someone who solves problems using logic and code while continuously learning and adapting to new technologies in order to build efficient and innovative",
   );
   const [typedText, setTypedText] = useState("");
-  const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLeft, setTimeLeft] = useState(variableTime);
   const [started, setStarted] = useState(false);
   const [index, setIndex] = useState(0);
   const [cursorPos, setCursorPos] = useState<{
@@ -67,7 +68,7 @@ const TypingArea = () => {
   };
   useEffect(() => {
     if (!started || timeLeft < 0) return;
-    const timeInMinutes = (10 - timeLeft) / 60;
+    const timeInMinutes = (variableTime - timeLeft) / 60;
     if (timeInMinutes <= 0) return;
     let correctChars = 0;
     targetText.split("").forEach((char, i) => {
@@ -83,7 +84,7 @@ const TypingArea = () => {
       if (typedText[i] === char) correctChars++;
     });
 
-    const timeInMinutes = 10 / 60;
+    const timeInMinutes = variableTime / 60;
     const wpm = Math.round(correctChars / (5 * timeInMinutes));    
     const rawAccuracy = typedText.length
       ? Math.round((correctChars / typedText.length) * 100)
@@ -118,7 +119,7 @@ const TypingArea = () => {
   useAutoRedirect({
     path: "/results",
     delay: 0,
-    trigger: wpmPerSecondArr.length === 10,
+    trigger: wpmPerSecondArr.length === variableTime,
     data: { ...calculateFinalResults(), wpmPerSecondArr: wpmPerSecondArr },
   });
   return (

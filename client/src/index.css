@@ -6,7 +6,7 @@
     --font-mono: "JetBrains Mono", monospace; 
     
     
-    --color-color1: oklch(78.9% 0.154 211.53);
+    --color-color1: #EA580C;
     --color-color2: oklch(86.5% 0.127 207.078);
     --color-color3: oklch(71.5% 0.143 215.221);
     
@@ -27,7 +27,7 @@
     --font-mono: "JetBrains Mono", monospace; 
 
 
-    --color-color1: oklch(78.9% 0.154 211.53);
+    --color-color1: #FB923C;
     --color-color2: oklch(86.5% 0.127 207.078);
     --color-color3: oklch(71.5% 0.143 215.221);
 
