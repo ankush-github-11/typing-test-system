@@ -17,7 +17,7 @@ const TypingArea = () => {
     left: number;
   } | null>(null);
   const [avgWpmPerSecondArr, setAvgWpmPerSecondArr] = useState<number[]>([]);
-  const [currentWpm, setCurrentWpm] = useState(0);
+  const [, setCurrentWpm] = useState(0);
   const [burstPerSecondArr, setBurstPerSecondArr] = useState<number[]>([]);
   const prevLengthRef = useRef(0);
   // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
