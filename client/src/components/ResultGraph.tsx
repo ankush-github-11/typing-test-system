@@ -142,8 +142,7 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
 
       <h1 className="text-xl font-bold mt-4">Your Results</h1>
       <p>Typed Text: {result.typedText}</p>
-      <p>Burst: {result.burstPerSecondArr.join(", ")}</p>
-
+      <p>Wrong Characters: {result.wrongChars}</p>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { useAutoRedirect } from "../hooks/useAutoRedirect";
 import Cursor from "./Cursor";
 
 const TypingArea = () => {
-  const variableTime = 15;
+  const variableTime = 5;
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [targetText] = useState(
     "good hello prev new world test this test state while which show please last time how you hello are doing now school hear people work kill code valid whole live auto graph top",
@@ -20,6 +20,7 @@ const TypingArea = () => {
   const [, setCurrentWpm] = useState(0);
   const [burstPerSecondArr, setBurstPerSecondArr] = useState<number[]>([]);
   const prevLengthRef = useRef(0);
+  const [wrongChars, setWrongChars] = useState(0);
   // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
   //     const prevCharIsSpace = targetText[index - 1] === " ";
 
@@ -61,12 +62,15 @@ const TypingArea = () => {
 
     e.preventDefault();
 
+    if (e.key !== targetText[index]) { // Wrong chars count
+      setWrongChars((prev) => prev + 1);
+    }
+
     // INSERT CHARACTER AT INDEX
     setTypedText((prev) => {
       const newText = prev.slice(0, index) + e.key + prev.slice(index);
       return newText;
     });
-
     setIndex((prev) => prev + 1);
   };
   useEffect(() => { // Avg WPM Array
@@ -81,17 +85,17 @@ const TypingArea = () => {
     setAvgWpmPerSecondArr((prev) => [...prev, avgWpm]);
   }, [timeLeft]);
 
-useEffect(() => { // Burst WPM Array
-  if (!started || timeLeft < 0) return;
-  const currentLength = typedText.length;
-  const prevLength = prevLengthRef.current;
-  const charsThisSecond = Math.max(0, currentLength - prevLength);
-  prevLengthRef.current = currentLength;
-  const instantWpm = Math.round((charsThisSecond / 5) * 60);
-  setCurrentWpm(instantWpm);
-  setBurstPerSecondArr((prev) => [...prev, instantWpm]);
+  useEffect(() => { // Burst WPM Array
+    if (!started || timeLeft < 0) return;
+    const currentLength = typedText.length;
+    const prevLength = prevLengthRef.current;
+    const charsThisSecond = Math.max(0, currentLength - prevLength);
+    prevLengthRef.current = currentLength;
+    const instantWpm = Math.round((charsThisSecond / 5) * 60);
+    setCurrentWpm(instantWpm);
+    setBurstPerSecondArr((prev) => [...prev, instantWpm]);
 
-}, [timeLeft]);
+  }, [timeLeft]);
 
   const calculateFinalResults = () => {
     let correctChars = 0;
@@ -135,7 +139,7 @@ useEffect(() => { // Burst WPM Array
     path: "/results",
     delay: 0,
     trigger: avgWpmPerSecondArr.length === variableTime,
-    data: { ...calculateFinalResults(), avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr },
+    data: { ...calculateFinalResults(), wrongChars, avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr },
   });
   return (
     <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px]">
