@@ -33,7 +33,9 @@ const Results = () => {
       className="font-poppins h-screen bg-bgcolor text-textcolor"
     >
       <Navbar />
-      <ResultGraph result={data} />
+      <div className="pt-7">
+        <ResultGraph result={data} />
+      </div>
     </div>
   );
 };
