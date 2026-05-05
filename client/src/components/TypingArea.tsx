@@ -6,7 +6,7 @@ const TypingArea = () => {
   const variableTime = 5;
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [targetText] = useState(
-    "good hello prev new world test this test state while which show please last time how you hello are doing now school hear people work kill code valid whole live auto graph top",
+    "if good hello prev new world test this test state while which show please last time how you hello are doing now school hear people work kill code valid whole live auto graph top",
   );
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(variableTime);
@@ -20,7 +20,8 @@ const TypingArea = () => {
   const [, setCurrentWpm] = useState(0);
   const [burstPerSecondArr, setBurstPerSecondArr] = useState<number[]>([]);
   const prevLengthRef = useRef(0);
-  const [wrongChars, setWrongChars] = useState(0);
+  const [totalCharsTyped, setTotalCharsTyped] = useState(0);
+  const [wrongCharsTyped, setWrongCharsTyped] = useState(0);
   // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
   //     const prevCharIsSpace = targetText[index - 1] === " ";
 
@@ -42,7 +43,7 @@ const TypingArea = () => {
   // }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!started) setStarted(true);
-    // BACKSPACE
+    // BACKSPACE Handling
     if (e.key === "Backspace") {
       e.preventDefault();
       if (index === 0) return;
@@ -63,8 +64,9 @@ const TypingArea = () => {
     e.preventDefault();
 
     if (e.key !== targetText[index]) { // Wrong chars count
-      setWrongChars((prev) => prev + 1);
+      setWrongCharsTyped((prev) => prev + 1);
     }
+    setTotalCharsTyped((prev) => prev + 1);
 
     // INSERT CHARACTER AT INDEX
     setTypedText((prev) => {
@@ -139,7 +141,7 @@ const TypingArea = () => {
     path: "/results",
     delay: 0,
     trigger: avgWpmPerSecondArr.length === variableTime,
-    data: { ...calculateFinalResults(), wrongChars, avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr },
+    data: { ...calculateFinalResults(), wrongCharsTyped, totalCharsTyped, avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr },
   });
   return (
     <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px]">

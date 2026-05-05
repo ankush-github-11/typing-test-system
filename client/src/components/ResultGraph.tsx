@@ -42,8 +42,8 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
           <div className="text-3xl text-color1">{result.wpm}</div>
         </div>
         <div className="flex gap-x-2 items-center">
-          <div>Raw Accuracy</div>
-          <div className="text-3xl text-color1">{result.rawAccuracy}%</div>
+          <div>Accuracy</div>
+          <div className="text-3xl text-color1">{result.totalCharsTyped > 0 ? Math.round((result.totalCharsTyped - result.wrongCharsTyped) / result.totalCharsTyped * 100) : 0}%</div>
         </div>
       </div>
       <div className="w-full max-w-5xl mx-auto h-[350px]">
@@ -142,7 +142,8 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
 
       <h1 className="text-xl font-bold mt-4">Your Results</h1>
       <p>Typed Text: {result.typedText}</p>
-      <p>Wrong Characters: {result.wrongChars}</p>
+      <p>Wrong Characters: {result.wrongCharsTyped}</p>
+      <p>Total Characters: {result.totalCharsTyped}</p>
     </div>
   );
 }
