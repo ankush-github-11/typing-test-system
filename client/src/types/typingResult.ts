@@ -6,4 +6,5 @@ export type TypingResult = {
   totalCharsTyped: number;
   avgWpmPerSecondArr: number[];
   burstPerSecondArr: number[];
+  rawWpmPerSecondArr: number[];
 };

@@ -3,10 +3,10 @@ import { useAutoRedirect } from "../hooks/useAutoRedirect";
 import Cursor from "./Cursor";
 
 const TypingArea = () => {
-  const variableTime = 5;
+  const variableTime = 15;
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [targetText] = useState(
-    "if good hello prev new world test this test state while which show please last time how you hello are doing now school hear people work kill code valid whole live auto graph top",
+    "good hello prev new world test this test state while which show please last time how you hello are doing now school hear people work kill code valid whole live auto graph top",
   );
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(variableTime);
@@ -17,6 +17,7 @@ const TypingArea = () => {
     left: number;
   } | null>(null);
   const [avgWpmPerSecondArr, setAvgWpmPerSecondArr] = useState<number[]>([]);
+  const [rawWpmPerSecondArr, setRawWpmPerSecondArr] = useState<number[]>([]);
   const [, setCurrentWpm] = useState(0);
   const [burstPerSecondArr, setBurstPerSecondArr] = useState<number[]>([]);
   const prevLengthRef = useRef(0);
@@ -87,7 +88,16 @@ const TypingArea = () => {
     setAvgWpmPerSecondArr((prev) => [...prev, avgWpm]);
   }, [timeLeft]);
 
-  useEffect(() => { // Burst WPM Array
+  useEffect(() => { // Raw WPM Array 
+    if (!started || timeLeft < 0) return;
+    const timeInMinutes = (variableTime - timeLeft) / 60;
+    if (timeInMinutes <= 0) return;
+    const rawWpm = Math.round((typedText.length / (5 * timeInMinutes)));
+
+    setRawWpmPerSecondArr((prev) =>[...prev, rawWpm]);
+  }, [timeLeft]);
+
+  useEffect(() => { // Raw Burst WPM Array
     if (!started || timeLeft < 0) return;
     const currentLength = typedText.length;
     const prevLength = prevLengthRef.current;
@@ -112,7 +122,8 @@ const TypingArea = () => {
       : 0;
     return { wpm, rawAccuracy, typedText };
   };
-  useEffect(() => {
+
+  useEffect(() => { // Timer decrement 
     if (!started || timeLeft <= 0) return;
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -126,7 +137,7 @@ const TypingArea = () => {
     return () => clearInterval(timer);
   }, [started]);
 
-  useEffect(() => {
+  useEffect(() => { // Index increment
     const currentChar = charRefs.current[index];
     if (currentChar) {
       const rect = currentChar.getBoundingClientRect();
@@ -137,11 +148,11 @@ const TypingArea = () => {
     }
   }, [index]);
 
-  useAutoRedirect({
+  useAutoRedirect({ // Redirect with Data
     path: "/results",
     delay: 0,
     trigger: avgWpmPerSecondArr.length === variableTime,
-    data: { ...calculateFinalResults(), wrongCharsTyped, totalCharsTyped, avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr },
+    data: { ...calculateFinalResults(), wrongCharsTyped, totalCharsTyped, avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr, rawWpmPerSecondArr: rawWpmPerSecondArr },
   });
   return (
     <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px]">

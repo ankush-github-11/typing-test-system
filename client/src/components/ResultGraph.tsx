@@ -6,7 +6,6 @@ import {
   Tooltip,
   CartesianGrid,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
 // import { RechartsDevtools } from "@recharts/devtools";
 import { useTheme } from "../context/useTheme";
@@ -18,10 +17,12 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
     second: index + 1,
     wpm: wpm,
     burst: result.burstPerSecondArr[index],
+    rawWpm: result.rawWpmPerSecondArr[index],
   }));
   const allValues = [
     ...result.avgWpmPerSecondArr,
     ...result.burstPerSecondArr,
+    ...result.rawWpmPerSecondArr,
   ];
   const maxValue = Math.max(...allValues);
   const upperLimit = Math.ceil(maxValue / 20) * 20;
@@ -72,9 +73,9 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
                 }}
                 itemStyle={{ color: "#000000" }}
               />
-              <Legend />
               <Line
                 type="monotone"
+                name="Burst"
                 dataKey="burst"
                 stroke="#D6D6D6"
                 strokeWidth={2}
@@ -83,7 +84,18 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
               />
               <Line
                 type="natural"
+                dataKey="rawWpm"
+                name="Raw"
+                stroke="#FB923C"
+                strokeWidth={1}
+                strokeDasharray="5 5"
+                dot={{ r: 2, fill: "#FB8323", strokeWidth: 0 }}
+                activeDot={{ r: 3, fill: "#FB8323", stroke: "#FB8323", strokeWidth: 1 }}
+              />
+              <Line
+                type="natural"
                 dataKey="wpm"
+                name="Wpm"
                 stroke="#FB923C"
                 strokeWidth={3}
                 dot={{ r: 2.5, fill: "#FB8323", strokeWidth: 1 }}
@@ -118,9 +130,9 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
                 }}
                 itemStyle={{ color: "#fff" }}
               />
-              <Legend />
               <Line
                 type="monotone"
+                name="Burst"
                 dataKey="burst"
                 stroke="#4D4D4D"
                 strokeWidth={2}
@@ -129,6 +141,17 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
               />
               <Line
                 type="natural"
+                name="Raw"
+                dataKey="rawWpm"
+                stroke="#FB923C"
+                strokeWidth={1}
+                strokeDasharray="5 5"
+                dot={{ r: 2, fill: "#FBA760", strokeWidth: 0 }}
+                activeDot={{ r: 3, fill: "#FBA760", stroke: "#FBA760", strokeWidth: 1 }}
+              />
+              <Line
+                type="natural"
+                name="Wpm"
                 dataKey="wpm"
                 stroke="#FB923C"
                 strokeWidth={3}
@@ -138,6 +161,24 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
             </LineChart>
           </ResponsiveContainer>
         )}
+        <div className="flex gap-x-6 justify-center">
+          <div className="flex items-center gap-x-2"> 
+            <div className="h-[4px] w-5 bg-[#FB923C] dark:bg-[#FB923C]" /> 
+            <p>WPM</p>
+          </div>
+          <div className="flex items-center gap-x-2">
+            <div className="flex gap-x-[3px]">
+              <div className="h-[2px] w-2 bg-[#FB923C] dark:bg-[#FB923C]" />
+              <div className="h-[2px] w-2 bg-[#FB923C] dark:bg-[#FB923C]" />
+              <div className="h-[2px] w-2 bg-[#FB923C] dark:bg-[#FB923C]" />
+            </div>
+            <p>Raw</p>
+          </div>
+          <div className="flex items-center gap-x-2">
+            <div className="h-1 w-5 bg-[#D6D6D6] dark:bg-[#4D4D4D]" />
+            <p>Burst</p>
+          </div>
+        </div>
       </div>
 
       <h1 className="text-xl font-bold mt-4">Your Results</h1>
