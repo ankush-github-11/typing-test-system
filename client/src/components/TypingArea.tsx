@@ -3,7 +3,7 @@ import { useAutoRedirect } from "../hooks/useAutoRedirect";
 import Cursor from "./Cursor";
 
 const TypingArea = () => {
-  const variableTime = 15;
+  const variableTime = 10;
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [targetText] = useState(
     "good hello prev new world test this test state while which show please last time how you hello are doing now school hear people work kill code valid whole live auto graph top",
@@ -18,11 +18,12 @@ const TypingArea = () => {
   } | null>(null);
   const [avgWpmPerSecondArr, setAvgWpmPerSecondArr] = useState<number[]>([]);
   const [rawWpmPerSecondArr, setRawWpmPerSecondArr] = useState<number[]>([]);
-  const [, setCurrentWpm] = useState(0);
   const [burstPerSecondArr, setBurstPerSecondArr] = useState<number[]>([]);
+  const [wrongCharsPerSecondArr, setWrongCharsPerSecondArr] = useState<number[]>([]);
   const prevLengthRef = useRef(0);
   const [totalCharsTyped, setTotalCharsTyped] = useState(0);
   const [wrongCharsTyped, setWrongCharsTyped] = useState(0);
+  const [wrongCharsTypedPerSecond, setWrongCharsTypedPerSecond] = useState(0);
   // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
   //     const prevCharIsSpace = targetText[index - 1] === " ";
 
@@ -66,6 +67,7 @@ const TypingArea = () => {
 
     if (e.key !== targetText[index]) { // Wrong chars count
       setWrongCharsTyped((prev) => prev + 1);
+      setWrongCharsTypedPerSecond((prev) => prev + 1);
     }
     setTotalCharsTyped((prev) => prev + 1);
 
@@ -104,9 +106,14 @@ const TypingArea = () => {
     const charsThisSecond = Math.max(0, currentLength - prevLength);
     prevLengthRef.current = currentLength;
     const instantWpm = Math.round((charsThisSecond / 5) * 60);
-    setCurrentWpm(instantWpm);
     setBurstPerSecondArr((prev) => [...prev, instantWpm]);
 
+  }, [timeLeft]);
+
+  useEffect(() => {
+    if (!started || timeLeft < 0) return;
+    setWrongCharsPerSecondArr((prev) => [...prev, wrongCharsTypedPerSecond]);
+    setWrongCharsTypedPerSecond(0);
   }, [timeLeft]);
 
   const calculateFinalResults = () => {
@@ -152,7 +159,7 @@ const TypingArea = () => {
     path: "/results",
     delay: 0,
     trigger: avgWpmPerSecondArr.length === variableTime,
-    data: { ...calculateFinalResults(), wrongCharsTyped, totalCharsTyped, avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr, rawWpmPerSecondArr: rawWpmPerSecondArr },
+    data: { ...calculateFinalResults(), wrongCharsTyped, totalCharsTyped, avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr, rawWpmPerSecondArr: rawWpmPerSecondArr, wrongCharsPerSecondArr: wrongCharsPerSecondArr},
   });
   return (
     <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px]">
