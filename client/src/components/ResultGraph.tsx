@@ -12,6 +12,14 @@ import {
 import { useTheme } from "../context/useTheme";
 import type { TypingResult } from "../types/typingResult";
 
+type ScatterPointProps = {
+  cx?: number;
+  cy?: number;
+  payload?: {
+    errors: number;
+  };
+};
+
 export default function ResultGraph({ result }: { result: TypingResult }) {
   const { isDark } = useTheme();
   const data = result.avgWpmPerSecondArr.map((wpm, index) => ({
@@ -43,22 +51,24 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
     errorStep * 3,
     errorUpperLimit,
   ];
-
   return (
     <div className="h-full">
       <div className="flex gap-x-5 justify-center">
         <div className="flex gap-x-2 items-center">
-          <div>WPM</div>
-          <div className="text-3xl text-color1">{result.wpm}</div>
+          <div className="font-semibold text-2xl">WPM</div>
+          <div className="font-semibold text-5xl text-color1">{result.wpm}</div>
         </div>
         <div className="flex gap-x-2 items-center">
-          <div>Accuracy</div>
-          <div className="text-3xl text-color1">
-            {result.totalCharsTyped > 0 ? Math.round(((result.totalCharsTyped - result.wrongCharsTyped) / result.totalCharsTyped) * 100): 0}%
+          <div className="font-semibold text-2xl">Accuracy</div>
+          <div className="font-semibold text-5xl text-color1">
+            {result.totalCharsTyped > 0 ? Math.round(((result.totalCharsTyped - result.wrongCharsTyped) / result.totalCharsTyped) * 100) : 0}%
           </div>
         </div>
       </div>
-      <div className="w-full max-w-5xl mx-auto h-[350px]">
+      <div
+        className="rounded-full w-full max-w-6xl mx-auto h-[350px]"
+        onMouseDown={(e) => e.preventDefault()}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={data}
@@ -70,14 +80,14 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
             />
 
             <XAxis
-              stroke={isDark ? "#707070" : "#828282"}
+              stroke={isDark ? "#696969" : "#A8A8A8"}
               strokeWidth={1}
               dataKey="second"
             />
 
             <YAxis
               yAxisId="left"
-              stroke="#828282"
+              stroke={isDark ? "#696969" : "#A8A8A8"}
               strokeWidth={1}
               domain={[0, upperLimit]}
               ticks={ticks}
@@ -86,7 +96,7 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
             <YAxis
               yAxisId="right"
               orientation="right"
-              stroke="#828282"
+              stroke={isDark ? "#696969" : "#A8A8A8"}
               strokeWidth={1}
               domain={[0, errorUpperLimit]}
               ticks={errorTicks}
@@ -169,7 +179,21 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
               }}
             />
 
-            <Scatter yAxisId="right" dataKey="errors" fill="red" />
+            <Scatter
+              name="Errors"
+              yAxisId="right"
+              dataKey="errors"
+              shape={(props: ScatterPointProps) => {
+                const { cx, cy, payload } = props;
+
+                if (cx == null || cy == null) return null;
+
+                // 👇 hide when errors = 0
+                if (!payload || payload.errors === 0) return null;
+
+                return <circle cx={cx} cy={cy} r={2.5} fill="#E00006" />;
+              }}
+            />
           </ComposedChart>
         </ResponsiveContainer>
         <div className="flex gap-x-6 justify-center">
@@ -189,6 +213,10 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
             <div className="h-1 w-5 bg-[#D6D6D6] dark:bg-[#4D4D4D]" />
             <p>Burst</p>
           </div>
+          <div className="flex items-center gap-x-2">
+            <div className="rounded-full h-[7px] w-[7px] bg-[#E00006] dark:bg-[#E00006]" />
+            <p>Wrong</p>
+          </div>
         </div>
       </div>
 
@@ -196,7 +224,6 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
       <p>Typed Text: {result.typedText}</p>
       <p>Wrong Characters: {result.wrongCharsTyped}</p>
       <p>Total Characters: {result.totalCharsTyped}</p>
-      <p>Total Wrongs: {result.wrongCharsPerSecondArr.join(", ")}</p>
     </div>
   );
 }
