@@ -1,12 +1,12 @@
 export type TokenType =
   | "word"
   | "number"
-  | "punctuation"
+  | "punctuation";
 
 export type DifficultyType =
   | "easy"
   | "medium"
-  | "hard"
+  | "hard";
 
 export interface TypingTokenData {
   tid: number;

@@ -180,7 +180,7 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
             />
 
             <Scatter
-              name="Errors"
+              name="Wrong"
               yAxisId="right"
               dataKey="errors"
               shape={(props: ScatterPointProps) => {
@@ -221,7 +221,6 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
       </div>
 
       <h1 className="text-xl font-bold mt-4">Your Results</h1>
-      <p>Typed Text: {result.typedText}</p>
       <p>Wrong Characters: {result.wrongCharsTyped}</p>
       <p>Total Characters: {result.totalCharsTyped}</p>
     </div>

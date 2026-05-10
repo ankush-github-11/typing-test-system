@@ -1,172 +1,264 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAutoRedirect } from "../hooks/useAutoRedirect";
 import Cursor from "./Cursor";
+import { useTokens } from "../hooks/useTokens";
 
 const TypingArea = () => {
-  const variableTime = 10;
+  const variableTime = 45;
+
+  const { data: tokens } = useTokens({
+    token_type: ["word"],
+    difficulty: ["easy"],
+  });
+
+  const targetText =
+    tokens?.map((token) => token.token_string).join(" ") || "";
+
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const [targetText] = useState(
-    "good hello prev new world test this test state while which show please last time how you hello are doing now school hear people work kill code valid whole live auto graph top",
-  );
+
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(variableTime);
   const [started, setStarted] = useState(false);
   const [index, setIndex] = useState(0);
+
   const [cursorPos, setCursorPos] = useState<{
     top: number;
     left: number;
   } | null>(null);
+
   const [avgWpmPerSecondArr, setAvgWpmPerSecondArr] = useState<number[]>([]);
   const [rawWpmPerSecondArr, setRawWpmPerSecondArr] = useState<number[]>([]);
   const [burstPerSecondArr, setBurstPerSecondArr] = useState<number[]>([]);
   const [wrongCharsPerSecondArr, setWrongCharsPerSecondArr] = useState<number[]>([]);
+
   const prevLengthRef = useRef(0);
+
   const [totalCharsTyped, setTotalCharsTyped] = useState(0);
   const [wrongCharsTyped, setWrongCharsTyped] = useState(0);
+
   const [wrongCharsTypedPerSecond, setWrongCharsTypedPerSecond] = useState(0);
-  // const isCurrCharSpaceAndPrevWordWasCorrect = () => {
-  //     const prevCharIsSpace = targetText[index - 1] === " ";
 
-  //     // Get last word boundaries
-  //     const lastSpaceIndex = targetText.lastIndexOf(" ", index - 2);
-  //     const wordStart = lastSpaceIndex + 1;
-  //     const wordEnd = index - 1;
+  const [visibleStartLine, setVisibleStartLine] = useState(0);
+  const [charsPerLine, setCharsPerLine] = useState(60);
 
-  //     const typedWord = typedText.slice(wordStart, wordEnd);
-  //     const targetWord = targetText.slice(wordStart, wordEnd);
+  const lines = useMemo(() => { // CREATE FIXED LINES
+    const words = targetText.split(" ");
+    const result: string[] = [];
 
-  //     const isWordCorrect = typedWord === targetWord;
+    let currentLine = "";
 
-  //     // LOCK: don't allow going back into correct word
-  //     if (prevCharIsSpace && isWordCorrect) {
-  //       return true;
-  //     }
-  //     return false;
-  // }
+    words.forEach((word) => {
+      const testLine = currentLine + word + " ";
+
+      if (testLine.length > charsPerLine) {
+        result.push(currentLine.trim());
+        currentLine = word + " ";
+      }
+      else {
+        currentLine = testLine;
+      }
+    });
+
+    if (currentLine.trim()) {
+      result.push(currentLine.trim());
+    }
+
+    return result;
+  }, [targetText, charsPerLine]);
+
+  useEffect(() => {   // DETECT CURRENT LINE
+    let totalChars = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      totalChars += lines[i].length + 1;
+
+      if (index < totalChars) {
+        if (i >= visibleStartLine + 2) { // SHIFT WHEN ENTERING 3RD LINE
+          setVisibleStartLine(i - 1);
+        }
+        break;
+      }
+    }
+  }, [index, lines, visibleStartLine]);
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!started) setStarted(true);
-    // BACKSPACE Handling
-    if (e.key === "Backspace") {
+
+    if (e.key === "Backspace") {     // BACKSPACE HANDLING
       e.preventDefault();
+
       if (index === 0) return;
-      // if(isCurrCharSpaceAndPrevWordWasCorrect()) return;
-      if (index > 0) {
-        setTypedText((prev) => prev.slice(0, index - 1));
-        setIndex((prev) => prev - 1);
-      }
+
+      setTypedText((prev) => prev.slice(0, index - 1));
+      setIndex((prev) => prev - 1);
+
       return;
     }
 
-    // IGNORE NON-CHAR KEYS
+    // IGNORE SPECIAL KEYS
     if (e.key.length > 1) return;
-
-    // STOP IF LIMIT REACHED
-    // if (index >= targetText.length) return;
 
     e.preventDefault();
 
-    if (e.key !== targetText[index]) { // Wrong chars count
+    if (e.key !== targetText[index]) {
       setWrongCharsTyped((prev) => prev + 1);
       setWrongCharsTypedPerSecond((prev) => prev + 1);
     }
+
     setTotalCharsTyped((prev) => prev + 1);
 
-    // INSERT CHARACTER AT INDEX
     setTypedText((prev) => {
       const newText = prev.slice(0, index) + e.key + prev.slice(index);
       return newText;
     });
+
     setIndex((prev) => prev + 1);
   };
-  useEffect(() => { // Avg WPM Array
+
+  useEffect(() => { // AVG WPM
     if (!started || timeLeft < 0) return;
+
     const timeInMinutes = (variableTime - timeLeft) / 60;
+
     if (timeInMinutes <= 0) return;
+
     let correctChars = 0;
+
     targetText.split("").forEach((char, i) => {
       if (typedText[i] === char) correctChars++;
     });
+
     const avgWpm = Math.round(correctChars / (5 * timeInMinutes));
+
     setAvgWpmPerSecondArr((prev) => [...prev, avgWpm]);
   }, [timeLeft]);
 
-  useEffect(() => { // Raw WPM Array 
+  useEffect(() => {// RAW WPM
     if (!started || timeLeft < 0) return;
-    const timeInMinutes = (variableTime - timeLeft) / 60;
-    if (timeInMinutes <= 0) return;
-    const rawWpm = Math.round((typedText.length / (5 * timeInMinutes)));
 
-    setRawWpmPerSecondArr((prev) =>[...prev, rawWpm]);
+    const timeInMinutes = (variableTime - timeLeft) / 60;
+
+    if (timeInMinutes <= 0) return;
+
+    const rawWpm = Math.round(typedText.length / (5 * timeInMinutes));
+
+    setRawWpmPerSecondArr((prev) => [...prev, rawWpm]);
   }, [timeLeft]);
 
-  useEffect(() => { // Raw Burst WPM Array
+  useEffect(() => { // BURST WPM
     if (!started || timeLeft < 0) return;
+
     const currentLength = typedText.length;
     const prevLength = prevLengthRef.current;
-    const charsThisSecond = Math.max(0, currentLength - prevLength);
-    prevLengthRef.current = currentLength;
-    const instantWpm = Math.round((charsThisSecond / 5) * 60);
-    setBurstPerSecondArr((prev) => [...prev, instantWpm]);
 
+    const charsThisSecond = Math.max(0, currentLength - prevLength);
+
+    prevLengthRef.current = currentLength;
+
+    const instantWpm = Math.round((charsThisSecond / 5) * 60);
+
+    setBurstPerSecondArr((prev) => [...prev, instantWpm]);
   }, [timeLeft]);
 
-  useEffect(() => {
+  useEffect(() => { // WRONG CHARS PER SECOND
     if (!started || timeLeft < 0) return;
-    setWrongCharsPerSecondArr((prev) => [...prev, wrongCharsTypedPerSecond]);
+
+    setWrongCharsPerSecondArr((prev) => [
+      ...prev,
+      wrongCharsTypedPerSecond,
+    ]);
+
     setWrongCharsTypedPerSecond(0);
   }, [timeLeft]);
 
-  const calculateFinalResults = () => {
+  useEffect(() => {
+    const calculateCharsPerLine = () => {
+    // 85% viewport width
+    const containerWidth = window.innerWidth * 0.85;
+    // text-4xl in Tailwind = 36px
+    // monospace average char width ≈ 0.6 of font size
+    const fontSize = 36;
+    const approxCharWidth = fontSize * 0.6;
+    const chars = Math.floor(containerWidth / approxCharWidth);
+    setCharsPerLine(chars);
+  };
+  calculateCharsPerLine();
+  window.addEventListener("resize", calculateCharsPerLine);
+  return () =>
+    window.removeEventListener("resize", calculateCharsPerLine);
+  }, []);
+
+  const calculateFinalResults = () => { // FINAL RESULTS
     let correctChars = 0;
+
     targetText.split("").forEach((char, i) => {
       if (typedText[i] === char) correctChars++;
     });
 
     const timeInMinutes = variableTime / 60;
-    const wpm = Math.round(correctChars / (5 * timeInMinutes));    
+
+    const wpm = Math.round(correctChars / (5 * timeInMinutes));
+
     const rawAccuracy = typedText.length
       ? Math.round((correctChars / typedText.length) * 100)
       : 0;
+
     return { wpm, rawAccuracy, typedText };
   };
-
-  useEffect(() => { // Timer decrement 
+  
+  useEffect(() => { // TIMER DECREMENT
     if (!started || timeLeft <= 0) return;
+
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
           return 0;
         }
+
         return prev - 1;
       });
     }, 1000);
+
     return () => clearInterval(timer);
   }, [started]);
 
-  useEffect(() => { // Index increment
+  useEffect(() => { // CURSOR POSITION
     const currentChar = charRefs.current[index];
+
     if (currentChar) {
       const rect = currentChar.getBoundingClientRect();
+
       setCursorPos({
         top: rect.top,
         left: rect.left,
       });
     }
-  }, [index]);
-
-  useAutoRedirect({ // Redirect with Data
+  }, [index, targetText, visibleStartLine]);
+  
+  useAutoRedirect({ // REDIRECT
     path: "/results",
     delay: 0,
     trigger: avgWpmPerSecondArr.length === variableTime,
-    data: { ...calculateFinalResults(), wrongCharsTyped, totalCharsTyped, avgWpmPerSecondArr: avgWpmPerSecondArr, burstPerSecondArr: burstPerSecondArr, rawWpmPerSecondArr: rawWpmPerSecondArr, wrongCharsPerSecondArr: wrongCharsPerSecondArr},
+    data: {
+      ...calculateFinalResults(),
+      wrongCharsTyped,
+      totalCharsTyped,
+      avgWpmPerSecondArr,
+      burstPerSecondArr,
+      rawWpmPerSecondArr,
+      wrongCharsPerSecondArr,
+    },
   });
+
   return (
-    <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px]">
+    <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px] overflow-hidden">
       <div className="text-2xl mb-4 flex justify-center">{timeLeft}s</div>
+
       <label htmlFor="typing-input" className="hidden">
         Typing Input
       </label>
+
       <input
         disabled={timeLeft === 0}
         autoComplete="off"
@@ -177,6 +269,7 @@ const TypingArea = () => {
         autoFocus
         onKeyDown={handleKeyDown}
       />
+
       {cursorPos && (
         <Cursor
           top={cursorPos.top}
@@ -184,25 +277,51 @@ const TypingArea = () => {
           cn={!started ? "cursor" : ""}
         />
       )}
-      {targetText.split("").map((char, i) => {
-        const typedChar = typedText[i];
-        let className = "text-gray-400";
-        if (typedChar === undefined) className = "text-gray";
-        else if (typedChar === char) className = "text-textcolorless";
-        else className = "text-red-500 border-b-1 border-red-500";
-        return (
-          <span
-            key={i}
-            ref={(el) => {
-              charRefs.current[i] = el;
-            }}
-            className={className}
-          >
-            {char}
-          </span>
-        );
-      })}
+
+      {lines
+        .slice(visibleStartLine, visibleStartLine + 3)
+        .map((line, lineIdx) => {
+          const actualLineIndex = visibleStartLine + lineIdx;
+
+          const charsBefore = lines
+            .slice(0, actualLineIndex)
+            .reduce((acc, l) => acc + l.length + 1, 0);
+
+          return (
+            <div key={actualLineIndex}>
+              {line.split("").map((char, charIdx) => {
+                const globalIndex = charsBefore + charIdx;
+
+                const typedChar = typedText[globalIndex];
+
+                let className = "text-gray-400";
+
+                if (typedChar === undefined) className = "text-gray";
+                else if (typedChar === char)
+                  className = "text-textcolorless";
+                else
+                  className =
+                    "text-red-500 border-b-1 border-red-500";
+
+                return (
+                  <span
+                    key={globalIndex}
+                    ref={(el) => {
+                      charRefs.current[globalIndex] = el;
+                    }}
+                    className={className}
+                  >
+                    {char}
+                  </span>
+                );
+              })}
+
+              <span> </span>
+            </div>
+          );
+        })}
     </div>
   );
 };
+
 export default TypingArea;

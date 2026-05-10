@@ -1,10 +1,6 @@
-import { TokenType, DifficultyType } from './../types/TypingTokenData';
 import { Request, Response } from "express";
 import { pool } from "../config/db";
-interface GetTokensBody {
-    token_type: TokenType[];
-    difficulty: DifficultyType[];
-}
+import { GetTokensBody } from './../types/TypingTokenData';
 export const getTokens = async (req : Request, res : Response) => {
     try{
         const{ token_type, difficulty }: GetTokensBody = req.body;
@@ -20,10 +16,7 @@ export const getTokens = async (req : Request, res : Response) => {
             query,
             values
         );
-        res.status(200).json({
-            success: true,
-            data: result.rows,
-        });
+        res.status(200).json(result.rows);
     }
     catch (err: unknown) {
         console.error(err);
