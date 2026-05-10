@@ -6,7 +6,13 @@ import tokenRoutes from "./routes/tokenRoutes";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://typing-test-system.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/typing", typingRoutes);
