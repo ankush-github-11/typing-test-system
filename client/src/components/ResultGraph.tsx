@@ -71,18 +71,37 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
         <div className="flex gap-x-2 items-center">
           <div className="font-semibold text-2xl">Accuracy</div>
           <div className="font-semibold text-5xl text-color1">
-            {result.totalCharsTyped > 0 ? Math.round(((result.totalCharsTyped - result.wrongCharsTyped) / result.totalCharsTyped) * 100) : 0}%
+            {result.totalCharsTyped > 0
+              ? Math.round(
+                  ((result.totalCharsTyped - result.wrongCharsTyped) /
+                    result.totalCharsTyped) *
+                    100,
+                )
+              : 0}
+            %
           </div>
         </div>
       </div>
       <div
-        className="rounded-full w-full max-w-6xl mx-auto h-[350px]"
+        className="relative rounded-full w-full max-w-6xl mx-auto h-[350px]"
         onMouseDown={(e) => e.preventDefault()}
       >
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-8">
+          <p className="[writing-mode:vertical-rl] text-md tracking-wider text-textcolorless">
+            Words Per Minute
+          </p>
+        </div>
+
+        {/* RIGHT Y AXIS LABEL */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-8">
+          <p className="[writing-mode:vertical-lr] text-md tracking-wider text-textcolorless">
+            Errors
+          </p>
+        </div>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={data}
-            margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+            margin={{ top: 5, right: 40, left: 40, bottom: 5 }}
           >
             <CartesianGrid
               stroke={isDark ? "#444" : "#C9C9C9"}
@@ -238,6 +257,7 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
       <h1 className="text-xl font-bold mt-4">Your Results</h1>
       <p>Wrong Characters: {result.wrongCharsTyped}</p>
       <p>Total Characters: {result.totalCharsTyped}</p>
+      <p>Test Time: {result.testTime} seconds</p>
     </div>
   );
 }

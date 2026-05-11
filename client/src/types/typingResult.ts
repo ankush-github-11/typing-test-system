@@ -1,4 +1,5 @@
 export type TypingResult = {
+  testTime: number;
   wpm: number;
   rawAccuracy: number;
   typedText: string;

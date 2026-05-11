@@ -242,6 +242,7 @@ const TypingArea = () => {
     trigger: avgWpmPerSecondArr.length === testTime,
     data: {
       ...calculateFinalResults(),
+      testTime,
       wrongCharsTyped,
       totalCharsTyped,
       avgWpmPerSecondArr,
