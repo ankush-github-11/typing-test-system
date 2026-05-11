@@ -22,8 +22,12 @@ type ScatterPointProps = {
 
 export default function ResultGraph({ result }: { result: TypingResult }) {
   const { isDark } = useTheme();
+  const totalSeconds = result.avgWpmPerSecondArr.length;
+  const secondsPerGrid = totalSeconds / 15;
+
   const data = result.avgWpmPerSecondArr.map((wpm, index) => ({
-    second: index + 1,
+    second: (index + 1) / secondsPerGrid,
+    actualSecond: index + 1,
     wpm: wpm,
     burst: result.burstPerSecondArr[index],
     rawWpm: result.rawWpmPerSecondArr[index],
@@ -188,7 +192,6 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
 
                 if (cx == null || cy == null) return null;
 
-                // 👇 hide when errors = 0
                 if (!payload || payload.errors === 0) return null;
 
                 return <circle cx={cx} cy={cy} r={2.5} fill="#E00006" />;

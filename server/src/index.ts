@@ -8,7 +8,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://typing-test-system.vercel.app",
+    origin: [
+      "https://typing-test-system.vercel.app",
+      "http://localhost:5173",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -18,7 +21,7 @@ app.use(express.json());
 app.use("/api/typing", typingRoutes);
 app.use("/api/tokens", tokenRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 pool.connect()
     .then(() => {
