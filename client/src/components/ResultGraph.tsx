@@ -22,12 +22,8 @@ type ScatterPointProps = {
 
 export default function ResultGraph({ result }: { result: TypingResult }) {
   const { isDark } = useTheme();
-  const totalSeconds = result.avgWpmPerSecondArr.length;
-  const secondsPerGrid = totalSeconds / 15;
-
   const data = result.avgWpmPerSecondArr.map((wpm, index) => ({
-    second: (index + 1) / secondsPerGrid,
-    actualSecond: index + 1,
+    second: index + 1,
     wpm: wpm,
     burst: result.burstPerSecondArr[index],
     rawWpm: result.rawWpmPerSecondArr[index],
@@ -55,6 +51,16 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
     errorStep * 3,
     errorUpperLimit,
   ];
+  const totalSeconds = data.length;
+  const divisions = totalSeconds % 20 === 0 ? 20 : 15;
+  const interval = Math.floor(totalSeconds / divisions);
+  const xTicks: number[] = [];
+  for (let i = 1; i <= totalSeconds; i += interval) {
+    xTicks.push(i);
+  }
+  if (xTicks[xTicks.length - 1] !== totalSeconds) {
+    xTicks.push(totalSeconds);
+  }
   return (
     <div className="h-full">
       <div className="flex gap-x-5 justify-center">
@@ -87,6 +93,8 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
               stroke={isDark ? "#696969" : "#A8A8A8"}
               strokeWidth={1}
               dataKey="second"
+              ticks={xTicks}
+              domain={[1, totalSeconds]}
             />
 
             <YAxis
