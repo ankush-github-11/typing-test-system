@@ -4,7 +4,7 @@ import Cursor from "./Cursor";
 import { useTokens } from "../hooks/useTokens";
 
 const TypingArea = () => {
-  const [testTime, setTestTime] = useState(15);
+  const [testTime,] = useState(15);
 
   const { data: tokens } = useTokens({
     token_type: ["word"],
