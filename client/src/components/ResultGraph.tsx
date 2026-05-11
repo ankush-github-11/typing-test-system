@@ -115,7 +115,11 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
             />
 
             <Tooltip
-              labelFormatter={() => ``}
+              labelFormatter={(value) => `${value}`}
+              formatter={(value, name) => {
+                if (name === "second") return null;
+                return [value, name];
+              }}
               cursor={{
                 stroke: "#FB923C",
                 strokeWidth: 2,

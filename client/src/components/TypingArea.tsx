@@ -4,7 +4,7 @@ import Cursor from "./Cursor";
 import { useTokens } from "../hooks/useTokens";
 
 const TypingArea = () => {
-  const variableTime = 15;
+  const [testTime, setTestTime] = useState(15);
 
   const { data: tokens } = useTokens({
     token_type: ["word"],
@@ -17,7 +17,7 @@ const TypingArea = () => {
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   const [typedText, setTypedText] = useState("");
-  const [timeLeft, setTimeLeft] = useState(variableTime);
+  const [timeLeft, setTimeLeft] = useState(testTime);
   const [started, setStarted] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -118,7 +118,7 @@ const TypingArea = () => {
   useEffect(() => { // AVG WPM
     if (!started || timeLeft < 0) return;
 
-    const timeInMinutes = (variableTime - timeLeft) / 60;
+    const timeInMinutes = (testTime - timeLeft) / 60;
 
     if (timeInMinutes <= 0) return;
 
@@ -136,7 +136,7 @@ const TypingArea = () => {
   useEffect(() => {// RAW WPM
     if (!started || timeLeft < 0) return;
 
-    const timeInMinutes = (variableTime - timeLeft) / 60;
+    const timeInMinutes = (testTime - timeLeft) / 60;
 
     if (timeInMinutes <= 0) return;
 
@@ -195,7 +195,7 @@ const TypingArea = () => {
       if (typedText[i] === char) correctChars++;
     });
 
-    const timeInMinutes = variableTime / 60;
+    const timeInMinutes = testTime / 60;
 
     const wpm = Math.round(correctChars / (5 * timeInMinutes));
 
@@ -239,7 +239,7 @@ const TypingArea = () => {
   useAutoRedirect({ // REDIRECT
     path: "/results",
     delay: 0,
-    trigger: avgWpmPerSecondArr.length === variableTime,
+    trigger: avgWpmPerSecondArr.length === testTime,
     data: {
       ...calculateFinalResults(),
       wrongCharsTyped,
