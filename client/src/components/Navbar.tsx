@@ -8,7 +8,7 @@ import ProfileMenu from "./ProfileMenu";
 const Navbar = () => {
 
   const { isDark, toggleTheme } = useTheme();
-  const { data: user , isLoading } = useMe();
+  const { data: user } = useMe();
   return (
     <nav
       className="font-poppins bg-bgcolor flex items-center px-6 py-4 font-medium text-textcolorless justify-between"

@@ -6,6 +6,7 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import { useLogout } from "../hooks/useLogout";
 
 const ProfileMenu = () => {
   const [open, setOpen] = useState(false);
@@ -32,8 +33,11 @@ const ProfileMenu = () => {
     };
   }, []);
 
+  // call hook at top level
+  const { mutate } = useLogout();
+
   const handleLogout = () => {
-    
+    mutate();
   };
 
   return (
