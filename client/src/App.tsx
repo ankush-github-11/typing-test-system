@@ -6,6 +6,9 @@ import Features from "./pages/Features"
 import Settings from "./pages/Settings"
 import TypingTest from "./pages/TypingTest"
 import Results from "./pages/Results"
+import Signup from "./pages/Signup"
+import Login from "./pages/Login"
+import Profile from "./pages/Profile"
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
         <Route path="/settings" element={<Settings />}/>
         <Route path="/typingtest" element={<TypingTest />}/>
         <Route path="/results" element={<Results />}/>
+        <Route path="/signup" element={<Signup />}/>
+        <Route path="/login" element={<Login />}/>
+        <Route path="/profile" element={<Profile />}/>
       </Routes>
     </>
   )

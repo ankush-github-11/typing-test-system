@@ -3,9 +3,13 @@ import cors from "cors";
 import typingRoutes from "./routes/typingRoutes";
 import { pool } from "./config/db"
 import tokenRoutes from "./routes/tokenRoutes";
+import cookieParser from "cookie-parser";
+import authRoutes from "./routes/auth";
 
 const app = express();
 
+app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: [
@@ -16,10 +20,10 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
 
 app.use("/api/typing", typingRoutes);
 app.use("/api/tokens", tokenRoutes);
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
