@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import type { AxiosError } from "axios";
+import { useTheme } from '../context/useTheme';
+import { useTitle } from "../hooks/useTitle";
 
 const Login = () => {
+  const { isDark } = useTheme();
+  useTitle("Settings");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,10 +22,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div data-theme={isDark ? 'dark' : ''} className="font-poppins min-h-screen flex items-center justify-center bg-bgcolor text-textcolor">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-xl shadow-md w-[400px] flex flex-col gap-4"
+        className="bg-bgcolorless text-textcolor p-8 rounded-xl shadow-md w-[400px] flex flex-col gap-4"
       >
         <h1 className="text-3xl font-bold text-center">
           Login
@@ -48,7 +52,7 @@ const Login = () => {
         <button
           type="submit"
           disabled={isPending}
-          className="bg-black text-white py-3 rounded-lg hover:opacity-90 transition"
+          className="bg-black text-white py-3 rounded-lg hover:opacity-90 transition cursor-pointer"
         >
           {isPending ? "Logging In..." : "Login"}
         </button>

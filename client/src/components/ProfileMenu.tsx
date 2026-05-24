@@ -45,7 +45,7 @@ const ProfileMenu = () => {
       {/* Profile Button */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center space-x-2 p-2 lg:pr-3 bg-color1 dark:bg-color1 rounded-full hover:bg-color1 dark:hover:bg-color1 select-none"
+        className="cursor-pointer flex items-center space-x-2 p-2 lg:pr-3 bg-color1 dark:bg-color1 rounded-full hover:bg-color1 dark:hover:bg-color1 select-none"
       >
         <div className="hidden lg:flex text-white">
           <UserRound className="text-white h-5" />
@@ -74,7 +74,7 @@ const ProfileMenu = () => {
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition text-left text-red-500"
+            className="w-full flex items-center gap-3 cursor-pointer px-4 py-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition text-left text-red-500"
           >
             <LogOut size={18} />
             <span>Logout</span>
