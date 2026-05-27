@@ -5,8 +5,13 @@ import useButtonNavigator from "../hooks/useButtonNavigator";
 import { useTitle } from "../hooks/useTitle";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { TypingResult } from "../types/typingResult";
+import { useMe } from "../hooks/useMe";
 
 const Results = () => {
+  const {data : user} = useMe();
+  if(user.email){
+    // If user is logged in, then only store the results
+  }
   const navigate = useNavigate();
   // Navigate back to typing test on esc
   useButtonNavigator({ targetKey: "Escape", targetPath: "/typingtest" });

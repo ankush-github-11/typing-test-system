@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import typingRoutes from "./routes/typingRoutes";
+import testsRoutes from "./routes/testsRoutes";
 import { pool } from "./config/db"
 import tokenRoutes from "./routes/tokenRoutes";
 import cookieParser from "cookie-parser";
@@ -21,7 +21,7 @@ app.use(
   })
 );
 
-app.use("/api/typing", typingRoutes);
+app.use("/api/tests", testsRoutes);
 app.use("/api/tokens", tokenRoutes);
 app.use("/api/auth", authRoutes);
 

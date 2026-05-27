@@ -1,10 +1,11 @@
 export interface TypingData {
-  tid?: number;
-  seconds: number;
-  totalwords: number;
-  correctwords: number;
-  totalchars: number;
-  correctchars: number;
-  difficulty: string;
+  testid?: number;          // PRIMARY KEY
+  id: number;               // user_id (FK to users table)
+  wpm: number;
+  accuracy: number;         // NUMERIC(5,2)
+  total_chars_typed: number;
+  correct_chars: number;
+  test_time: number;        // in seconds
+  difficulty: "easy" | "medium" | "hard"; // or string if not enum
   created_at?: Date;
 }
