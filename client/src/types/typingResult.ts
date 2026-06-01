@@ -1,3 +1,5 @@
+import type { DifficultyType } from "./typingTokenData";
+
 export type TypingResult = {
   testTime: number;
   wpm: number;
@@ -9,4 +11,5 @@ export type TypingResult = {
   burstPerSecondArr: number[];
   rawWpmPerSecondArr: number[];
   wrongCharsPerSecondArr: number[];
+  difficulty: DifficultyType;
 };

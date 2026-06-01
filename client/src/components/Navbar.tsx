@@ -26,7 +26,7 @@ const Navbar = () => {
         </div>
       </Link>
 
-      <div className="hidden lg:flex px-20 py-1.5 items-center space-x-4 mt-1 rounded-full border-2 border-cyan-100 dark:border-cyan-950 select-none">
+      <div className="hidden absolute left-1/2 -translate-x-1/2 lg:flex px-20 py-1.5 items-center space-x-4 mt-1 rounded-tl-[50px] rounded-tr-[5px] rounded-bl-[5px] rounded-br-[50px] border-2 border-color1/50 dark:border-color1/50 select-none">
         {isDark ? (
           <Moon
             onClick={toggleTheme}

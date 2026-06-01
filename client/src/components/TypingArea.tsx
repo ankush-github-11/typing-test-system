@@ -2,13 +2,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAutoRedirect } from "../hooks/useAutoRedirect";
 import Cursor from "./Cursor";
 import { useTokens } from "../hooks/useTokens";
+import { useDifficultyTokenStore } from "../store/useDifficultyTokenStore";
 
 const TypingArea = () => {
   const [testTime,] = useState(15);
-
+  const difficulty = useDifficultyTokenStore((state) => state.difficulty);
   const { data: tokens } = useTokens({
     token_type: ["word"],
-    difficulty: ["easy"],
+    difficulty: [difficulty],
   });
 
   const targetText =
@@ -82,7 +83,6 @@ const TypingArea = () => {
   }, [index, lines, visibleStartLine]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!started) setStarted(true);
 
     if (e.key === "Backspace") {     // BACKSPACE HANDLING
       e.preventDefault();
@@ -97,6 +97,7 @@ const TypingArea = () => {
 
     // IGNORE SPECIAL KEYS
     if (e.key.length > 1) return;
+    if (!started) setStarted(true); // Start the test
 
     e.preventDefault();
 
@@ -249,6 +250,7 @@ const TypingArea = () => {
       burstPerSecondArr,
       rawWpmPerSecondArr,
       wrongCharsPerSecondArr,
+      difficulty,
     },
   });
 

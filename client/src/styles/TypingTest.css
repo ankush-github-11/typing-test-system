@@ -3,7 +3,6 @@
 .activeTypingSetting{
   color: var(--color-color1);
   opacity: 1;
-  font-weight: 500;
 }
 @layer components{
     .typing-settings-nav-element{

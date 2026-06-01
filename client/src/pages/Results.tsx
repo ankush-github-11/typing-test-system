@@ -35,7 +35,7 @@ const Results = () => {
       total_chars_typed: data.totalCharsTyped,
       correct_chars: data.totalCharsTyped - data.wrongCharsTyped,
       test_time: data.testTime,
-      difficulty: "easy",
+      difficulty: data.difficulty,
     });
   }, [user, data, addTest]);
 
