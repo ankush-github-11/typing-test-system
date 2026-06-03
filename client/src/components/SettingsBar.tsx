@@ -1,8 +1,8 @@
 import {
-  BookA,
+  // BookA,
   Swords,
   Timer,
-  WandSparkles,
+  // WandSparkles,
   Wrench,
   // WandSparkles,
   //  SlidersHorizontal,
