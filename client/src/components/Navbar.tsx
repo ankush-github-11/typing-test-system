@@ -15,12 +15,12 @@ const Navbar = () => {
       data-theme={isDark ? "dark" : ""}
     >
       <Link to={"/"} className="flex space-x-2">
-        <img
+        {/* <img
           src={EtherTypeLogo}
           draggable="false"
           className="h-[30px] mt-1 select-none"
           alt="EtherType Logo"
-        />
+        /> */}
         <div className="font-bold text-2xl select-none text-color1">
           EtherType
         </div>

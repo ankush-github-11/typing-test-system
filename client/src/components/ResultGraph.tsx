@@ -178,18 +178,18 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
               type="monotone"
               name="Raw"
               dataKey="rawWpm"
-              stroke="#FB923C"
+              stroke={isDark ? "#C607F3" : "#A607CA"}
               strokeWidth={1}
               strokeDasharray="5 5"
               dot={{
                 r: 2,
-                fill: isDark ? "#FBA760" : "#FB8323",
+                fill: isDark ? "#C607F3" : "#A607CA",
                 strokeWidth: 0,
               }}
               activeDot={{
                 r: 3,
-                fill: isDark ? "#FBA760" : "#FB8323",
-                stroke: isDark ? "#FBA760" : "#FB8323",
+                fill: isDark ? "#C607F3" : "#A607CA",
+                stroke: isDark ? "#C607F3" : "#A607CA",
                 strokeWidth: 1,
               }}
             />
@@ -199,17 +199,17 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
               type="monotone"
               name="Wpm"
               dataKey="wpm"
-              stroke="#FB923C"
+              stroke={isDark ? "#C607F3" : "#A607CA"}
               strokeWidth={3}
               dot={{
                 r: 2.5,
-                fill: isDark ? "#FBA760" : "#FB8323",
+                fill: isDark ? "#C607F3" : "#A607CA",
                 strokeWidth: 1,
               }}
               activeDot={{
                 r: 4,
-                fill: isDark ? "#FBA760" : "#FB8323",
-                stroke: isDark ? "#FBA760" : "#FB8323",
+                fill: isDark ? "#C607F3" : "#A607CA",
+                stroke: isDark ? "#C607F3" : "#A607CA",
                 strokeWidth: 1,
               }}
             />
@@ -232,14 +232,14 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
         </ResponsiveContainer>
         <div className="flex gap-x-6 justify-center">
           <div className="flex items-center gap-x-2">
-            <div className="h-[4px] w-5 bg-[#FB923C] dark:bg-[#FB923C]" />
+            <div className="h-[4px] w-5 bg-[#A607CA] dark:bg-[#C607F3]" />
             <p>WPM</p>
           </div>
           <div className="flex items-center gap-x-2">
             <div className="flex gap-x-[3px]">
-              <div className="h-[2px] w-2 bg-[#FB923C] dark:bg-[#FB923C]" />
-              <div className="h-[2px] w-2 bg-[#FB923C] dark:bg-[#FB923C]" />
-              <div className="h-[2px] w-2 bg-[#FB923C] dark:bg-[#FB923C]" />
+              <div className="h-[2px] w-2 bg-[#A607CA] dark:bg-[#C607F3]" />
+              <div className="h-[2px] w-2 bg-[#A607CA] dark:bg-[#C607F3]" />
+              <div className="h-[2px] w-2 bg-[#A607CA] dark:bg-[#C607F3]" />
             </div>
             <p>Raw</p>
           </div>

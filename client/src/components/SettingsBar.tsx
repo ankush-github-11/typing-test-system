@@ -85,7 +85,7 @@ const SettingsNavbar = () => {
         </div>
       </div>
 
-      <div className="opacity-25">
+      {/* <div className="opacity-25">
         <div className="flex items-center w-fit gap-x-3">
           <BookA className="font-2xl h-[30px] p-[4.5px] pb-[7px] pt-[4px] text-[20px] w-[30px] rounded-lg flex justify-center items-center bg-bgcolorless" />
           <div className="h-[30px] text-md flex justify-center items-center">
@@ -108,7 +108,7 @@ const SettingsNavbar = () => {
           </div>
           <Wrench className="cursor-pointer h-[30px] p-[6.5px] text-[20px] w-fit py-1 px-2 rounded-lg flex justify-center items-center hover:bg-lightgray text-textcolorless" />
         </div>
-      </div>
+      </div> */}
 
       <div className="w-fit">
         <div className="activeTypingSetting flex items-center w-fit gap-x-3">
@@ -154,12 +154,12 @@ const SettingsNavbar = () => {
         </div>
       </div>
 
-      <div className="flex flex-row opacity-25 w-fit gap-x-3 cursor-pointer hover:opacity-60">
+      {/* <div className="flex flex-row opacity-25 w-fit gap-x-3 cursor-pointer hover:opacity-60">
         <WandSparkles className="font-2xl h-[30px] p-[4.5px] pb-[7px] pt-[4px] text-[20px] w-[30px] rounded-lg flex justify-center items-center bg-lightgray" />
         <div className="h-[30px] text-textcolorless flex justify-center items-center">
           Freestyle
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
