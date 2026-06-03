@@ -3,9 +3,10 @@ import { useAutoRedirect } from "../hooks/useAutoRedirect";
 import Cursor from "./Cursor";
 import { useTokens } from "../hooks/useTokens";
 import { useDifficultyTokenStore } from "../store/useDifficultyTokenStore";
+import { useTestTimeStore } from "../store/useTestTimeStore";
 
 const TypingArea = () => {
-  const [testTime,] = useState(15);
+  const testTime = useTestTimeStore((state) => state.testTime);
   const difficulty = useDifficultyTokenStore((state) => state.difficulty);
   const { data: tokens } = useTokens({
     token_type: ["word"],
@@ -19,6 +20,9 @@ const TypingArea = () => {
 
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(testTime);
+  useEffect(() => {
+    setTimeLeft(testTime);
+  }, [testTime]);
   const [started, setStarted] = useState(false);
   const [index, setIndex] = useState(0);
 
