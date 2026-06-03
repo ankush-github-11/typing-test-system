@@ -14,7 +14,7 @@ export const useTestTimeStore = create<TestTimeState>()(
         set({ testTime }),
     }),
     {
-      name: "difficulty-storage",
+      name: "test-time-storage",
     }
   )
 );

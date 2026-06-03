@@ -5,9 +5,9 @@ const Features = () => {
   const { isDark } = useTheme();
   useTitle("Features");
   return (
-    <div data-theme={isDark ? 'dark' : ''} className="font-poppins">
+    <div data-theme={isDark ? 'dark' : ''} className="font-poppins bg-bgcolor text-textcolor">
       <Navbar />
-      <div className="bg-bgcolor text-textcolor min-h-screen h-fit flex justify-center items-center">Features</div>
+      <div className="min-h-screen h-fit flex justify-center items-center">Features</div>
     </div>
   )
 }

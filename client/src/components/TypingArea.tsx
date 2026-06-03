@@ -4,6 +4,7 @@ import Cursor from "./Cursor";
 import { useTokens } from "../hooks/useTokens";
 import { useDifficultyTokenStore } from "../store/useDifficultyTokenStore";
 import { useTestTimeStore } from "../store/useTestTimeStore";
+import { useTestStartedStore } from "../store/useTestStartedStore";
 
 const TypingArea = () => {
   const testTime = useTestTimeStore((state) => state.testTime);
@@ -17,13 +18,15 @@ const TypingArea = () => {
     tokens?.map((token) => token.token_string).join(" ") || "";
 
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
-
+  
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(testTime);
   useEffect(() => {
     setTimeLeft(testTime);
   }, [testTime]);
-  const [started, setStarted] = useState(false);
+  
+  const started = useTestStartedStore((state) => state.testStarted);
+  const setStarted = useTestStartedStore((state) => state.setTestStarted);
   const [index, setIndex] = useState(0);
 
   const [cursorPos, setCursorPos] = useState<{
@@ -211,6 +214,12 @@ const TypingArea = () => {
     return { wpm, rawAccuracy, typedText };
   };
   
+  useEffect(() => {
+    if (timeLeft === 0) {
+      setStarted(false);
+    }
+  }, [timeLeft, setStarted]);
+
   useEffect(() => { // TIMER DECREMENT
     if (!started || timeLeft <= 0) return;
 

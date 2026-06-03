@@ -45,7 +45,7 @@ const ProfileMenu = () => {
       {/* Profile Button */}
       <button
         onClick={() => setOpen(!open)}
-        className="cursor-pointer flex items-center space-x-2 p-2 lg:pr-3 bg-color1 dark:bg-color1 rounded-full hover:bg-color1 dark:hover:bg-color1 select-none"
+        className="cursor-pointer flex items-center space-x-2 p-2 lg:pr-3 mt-3 mr-4 bg-color1 dark:bg-color1 rounded-full hover:bg-color1 dark:hover:bg-color1 select-none"
       >
         <div className="hidden lg:flex text-white">
           <UserRound className="text-white h-5" />

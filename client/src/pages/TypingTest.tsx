@@ -1,7 +1,7 @@
 import { useTheme } from '../context/useTheme';
 import { useTitle } from '../hooks/useTitle';
 import Navbar from '../components/Navbar';
-import "../styles/TypingTest.css"
+import "../styles/typingTest.css"
 import TypingArea from '../components/TypingArea';
 // import MobileSettingsNavbar from '../components/MobileSettingsBar';
 import SettingsBar from '../components/SettingsBar';
