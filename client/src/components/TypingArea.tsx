@@ -6,6 +6,7 @@ import { useDifficultyTokenStore } from "../store/useDifficultyTokenStore";
 import { useTestTimeStore } from "../store/useTestTimeStore";
 import { useTestStartedStore } from "../store/useTestStartedStore";
 import { useTypingAreaFocusedStore } from "../store/useTypingAreaFocusedStore";
+import useCursorVisibility from "../hooks/useCursorVisibility";
 
 const TypingArea = () => {
   const testTime = useTestTimeStore((state) => state.testTime);
@@ -53,6 +54,12 @@ const TypingArea = () => {
 
   const focused = useTypingAreaFocusedStore((state) => state.focused);
   const setFocused = useTypingAreaFocusedStore((state) => state.setFocused);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleMouseEnter = () =>{
+    inputRef.current?.focus();
+  };
+  const cursorVisible = useCursorVisibility(started);
 
   const lines = useMemo(() => { // CREATE FIXED LINES
     const words = targetText.split(" ");
@@ -129,6 +136,14 @@ const TypingArea = () => {
   };
 
   const handleBlur = () => {
+    if (started) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
+
+      return;
+    }
+
     setFocused(false);
   };
 
@@ -277,19 +292,16 @@ const TypingArea = () => {
       difficulty,
     },
   });
-  const inputRef = useRef<HTMLInputElement>(null);
-  const handleMouseEnter = () =>{
-    inputRef.current?.focus();
-  };
-
   return (
-    <div onMouseEnter={handleMouseEnter} className={`select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[88%] font-mono text-gray leading-[50px] overflow-hidden px-5`}>
-      <div className={`text-2xl mb-4 flex justify-center ${focused ? "" : "blur-md"}`}>{timeLeft}s</div>
+    <div onMouseEnter={handleMouseEnter} className={`select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[88%] font-mono text-gray leading-[50px] overflow-hidden px-5 ${ !cursorVisible ? "cursor-none" : "cursor-default" }`}> 
+
+      <div className={`text-2xl mb-4 flex justify-center ${started || focused ? "" : "blur-md"}`}>{timeLeft}s</div>
 
       <label htmlFor="typing-input" className="hidden">
         Typing Input
       </label>
-      <div className={`relative text-textcolorless flex items-center ${focused ? "hidden" : ""}`}>
+      
+      <div className={`relative text-textcolorless flex items-center ${started || focused ? "hidden" : ""}`}>
         <div className="absolute top-10 left-1/2 -translate-x-1/2 !text-3xl">
           hover here to focus
         </div>
@@ -300,7 +312,7 @@ const TypingArea = () => {
         disabled={timeLeft === 0}
         autoComplete="off"
         id="typing-input"
-        className={`min-h-[35vh] w-[85%] absolute opacity-0 cursor-default`}
+        className={`min-h-[35vh] w-[85%] absolute opacity-0 ${ !cursorVisible ? "cursor-none" : "cursor-default" }`}
         type="text"
         value={typedText}
         autoFocus
@@ -327,7 +339,7 @@ const TypingArea = () => {
             .reduce((acc, l) => acc + l.length + 1, 0);
 
           return (
-            <div key={actualLineIndex} className={`${focused ? "" : "blur-md"}`}>
+            <div key={actualLineIndex} className={`${started || focused ? "" : "blur-md"}`}>
               {line.split("").map((char, charIdx) => {
                 const globalIndex = charsBefore + charIdx;
 
