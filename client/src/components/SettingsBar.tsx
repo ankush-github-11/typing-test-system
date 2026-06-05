@@ -11,15 +11,24 @@ import {
 import { useDifficultyTokenStore } from "../store/useDifficultyTokenStore";
 import { useTestTimeStore } from "../store/useTestTimeStore";
 import { useTestStartedStore } from "../store/useTestStartedStore";
+import { useTypingAreaFocusedStore } from "../store/useTypingAreaFocusedStore";
 
 const SettingsNavbar = () => {
   const setDifficulty = useDifficultyTokenStore((state) => state.setDifficulty);
   const difficulty = useDifficultyTokenStore((state) => state.difficulty);
   const setTestTime = useTestTimeStore((state) => state.setTestTime);
-  const testTime = useTestTimeStore((state) => state.testTime);  const started = useTestStartedStore((state) => state.testStarted);
-  
+  const testTime = useTestTimeStore((state) => state.testTime);
+  const started = useTestStartedStore((state) => state.testStarted);
+  const setFocused = useTypingAreaFocusedStore((state) => state.setFocused);
+
   return (
-    <div className={`z-10 group absolute right-0 top-1/2 -translate-y-1/2 h-fit w-15 hover:w-70 overflow-hidden ease-in-out border-2 border-color1/80 border-r-0 rounded-bl-[50px] rounded-tl-[50px] flex flex-col p-5 gap-y-2 bg-black/3 dark:bg-white/3 backdrop-blur-md ${started ? "invisible" : "transition-all duration-400"}`}>
+    <div
+      onMouseDown={(e) => {
+        e.preventDefault();
+        setFocused(true);
+      }}
+      className={`z-10 group absolute right-0 top-1/2 -translate-y-1/2 h-fit w-15 hover:w-70 overflow-hidden ease-in-out border-2 border-color1/80 border-r-0 rounded-bl-[50px] rounded-tl-[50px] flex flex-col p-5 gap-y-2 bg-black/3 dark:bg-white/3 backdrop-blur-md ${started ? "invisible" : "transition-all duration-400"}`}
+    >
       <div className="flex flex-row opacity-25 w-fit gap-x-3 cursor-pointer hover:opacity-60">
         <div className="h-[30px] text-[17px] w-[30px] rounded-lg flex justify-center items-center bg-lightgray font-medium">
           #

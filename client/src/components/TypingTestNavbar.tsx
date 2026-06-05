@@ -4,14 +4,16 @@ import { UserRound, Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useMe } from "../hooks/useMe";
 import ProfileMenu from "./ProfileMenu";
+import { useTestStartedStore } from "../store/useTestStartedStore";
 
-const Navbar = () => {
+const TypingTestNavbar = () => {
   const { isDark, toggleTheme } = useTheme();
   const { data: user } = useMe();
+  const started = useTestStartedStore((state) => state.testStarted);
 
   return (
     <div className="flex">
-      <Link to={"/"} className="flex abosolute pl-10 pt-5 space-x-2 w-fit">
+      <Link to={"/"} className={`flex abosolute pl-10 pt-5 space-x-2 w-fit ${started ? "pointer-events-none" : ""}`}>
         {/* <img
           src={EtherTypeLogo}
           draggable="false"
@@ -23,7 +25,9 @@ const Navbar = () => {
         </div>
       </Link>
       <nav
-        className="font-poppins bg-bgcolor flex ml-auto px-6 py-4 font-medium text-textcolorless justify-between"
+        className={`font-poppins bg-bgcolor flex ml-auto px-6 py-4 font-medium text-textcolorless justify-between ${
+          started ? "invisible" : ""
+        }`}
       >
         <div className="hidden absolute left-1/2 -translate-x-1/2 lg:flex px-20 py-1.5 items-center space-x-4 mt-1 select-none">
           {isDark ? (
@@ -69,4 +73,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default TypingTestNavbar;

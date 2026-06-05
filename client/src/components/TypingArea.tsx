@@ -5,6 +5,7 @@ import { useTokens } from "../hooks/useTokens";
 import { useDifficultyTokenStore } from "../store/useDifficultyTokenStore";
 import { useTestTimeStore } from "../store/useTestTimeStore";
 import { useTestStartedStore } from "../store/useTestStartedStore";
+import { useTypingAreaFocusedStore } from "../store/useTypingAreaFocusedStore";
 
 const TypingArea = () => {
   const testTime = useTestTimeStore((state) => state.testTime);
@@ -14,17 +15,16 @@ const TypingArea = () => {
     difficulty: [difficulty],
   });
 
-  const targetText =
-    tokens?.map((token) => token.token_string).join(" ") || "";
+  const targetText = tokens?.map((token) => token.token_string).join(" ") || "";
 
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  
+
   const [typedText, setTypedText] = useState("");
   const [timeLeft, setTimeLeft] = useState(testTime);
   useEffect(() => {
     setTimeLeft(testTime);
   }, [testTime]);
-  
+
   const started = useTestStartedStore((state) => state.testStarted);
   const setStarted = useTestStartedStore((state) => state.setTestStarted);
   const [index, setIndex] = useState(0);
@@ -37,7 +37,9 @@ const TypingArea = () => {
   const [avgWpmPerSecondArr, setAvgWpmPerSecondArr] = useState<number[]>([]);
   const [rawWpmPerSecondArr, setRawWpmPerSecondArr] = useState<number[]>([]);
   const [burstPerSecondArr, setBurstPerSecondArr] = useState<number[]>([]);
-  const [wrongCharsPerSecondArr, setWrongCharsPerSecondArr] = useState<number[]>([]);
+  const [wrongCharsPerSecondArr, setWrongCharsPerSecondArr] = useState<
+    number[]
+  >([]);
 
   const prevLengthRef = useRef(0);
 
@@ -48,6 +50,9 @@ const TypingArea = () => {
 
   const [visibleStartLine, setVisibleStartLine] = useState(0);
   const [charsPerLine, setCharsPerLine] = useState(60);
+
+  const focused = useTypingAreaFocusedStore((state) => state.focused);
+  const setFocused = useTypingAreaFocusedStore((state) => state.setFocused);
 
   const lines = useMemo(() => { // CREATE FIXED LINES
     const words = targetText.split(" ");
@@ -74,7 +79,7 @@ const TypingArea = () => {
     return result;
   }, [targetText, charsPerLine]);
 
-  useEffect(() => {   // DETECT CURRENT LINE
+  useEffect(() => { // DETECT CURRENT LINE
     let totalChars = 0;
 
     for (let i = 0; i < lines.length; i++) {
@@ -90,8 +95,8 @@ const TypingArea = () => {
   }, [index, lines, visibleStartLine]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-
-    if (e.key === "Backspace") {     // BACKSPACE HANDLING
+    if (e.key === "Backspace") {
+      // BACKSPACE HANDLING
       e.preventDefault();
 
       if (index === 0) return;
@@ -123,6 +128,14 @@ const TypingArea = () => {
     setIndex((prev) => prev + 1);
   };
 
+  const handleBlur = () => {
+    setFocused(false);
+  };
+
+  const handleFocus = () => {
+    setFocused(true);
+  };
+
   useEffect(() => { // AVG WPM
     if (!started || timeLeft < 0) return;
 
@@ -141,7 +154,7 @@ const TypingArea = () => {
     setAvgWpmPerSecondArr((prev) => [...prev, avgWpm]);
   }, [timeLeft]);
 
-  useEffect(() => {// RAW WPM
+  useEffect(() => { // RAW WPM
     if (!started || timeLeft < 0) return;
 
     const timeInMinutes = (testTime - timeLeft) / 60;
@@ -171,29 +184,25 @@ const TypingArea = () => {
   useEffect(() => { // WRONG CHARS PER SECOND
     if (!started || timeLeft < 0) return;
 
-    setWrongCharsPerSecondArr((prev) => [
-      ...prev,
-      wrongCharsTypedPerSecond,
-    ]);
+    setWrongCharsPerSecondArr((prev) => [...prev, wrongCharsTypedPerSecond]);
 
     setWrongCharsTypedPerSecond(0);
   }, [timeLeft]);
 
   useEffect(() => {
     const calculateCharsPerLine = () => {
-    // 85% viewport width
-    const containerWidth = window.innerWidth * 0.85;
-    // text-4xl in Tailwind = 36px
-    // monospace average char width ≈ 0.6 of font size
-    const fontSize = 36;
-    const approxCharWidth = fontSize * 0.6;
-    const chars = Math.floor(containerWidth / approxCharWidth);
-    setCharsPerLine(chars);
-  };
-  calculateCharsPerLine();
-  window.addEventListener("resize", calculateCharsPerLine);
-  return () =>
-    window.removeEventListener("resize", calculateCharsPerLine);
+      // 85% viewport width
+      const containerWidth = window.innerWidth * 0.85;
+      // text-4xl in Tailwind = 36px
+      // monospace average char width ≈ 0.6 of font size
+      const fontSize = 36;
+      const approxCharWidth = fontSize * 0.6;
+      const chars = Math.floor(containerWidth / approxCharWidth);
+      setCharsPerLine(chars);
+    };
+    calculateCharsPerLine();
+    window.addEventListener("resize", calculateCharsPerLine);
+    return () => window.removeEventListener("resize", calculateCharsPerLine);
   }, []);
 
   const calculateFinalResults = () => { // FINAL RESULTS
@@ -213,14 +222,15 @@ const TypingArea = () => {
 
     return { wpm, rawAccuracy, typedText };
   };
-  
+
   useEffect(() => {
     if (timeLeft === 0) {
       setStarted(false);
     }
   }, [timeLeft, setStarted]);
 
-  useEffect(() => { // TIMER DECREMENT
+  useEffect(() => {
+    // TIMER DECREMENT
     if (!started || timeLeft <= 0) return;
 
     const timer = setInterval(() => {
@@ -237,7 +247,8 @@ const TypingArea = () => {
     return () => clearInterval(timer);
   }, [started]);
 
-  useEffect(() => { // CURSOR POSITION
+  useEffect(() => {
+    // CURSOR POSITION
     const currentChar = charRefs.current[index];
 
     if (currentChar) {
@@ -249,7 +260,7 @@ const TypingArea = () => {
       });
     }
   }, [index, targetText, visibleStartLine]);
-  
+
   useAutoRedirect({ // REDIRECT
     path: "/results",
     delay: 0,
@@ -266,23 +277,35 @@ const TypingArea = () => {
       difficulty,
     },
   });
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleMouseEnter = () =>{
+    inputRef.current?.focus();
+  };
 
   return (
-    <div className="select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[85%] font-mono text-gray leading-[50px] overflow-hidden">
-      <div className="text-2xl mb-4 flex justify-center">{timeLeft}s</div>
+    <div onMouseEnter={handleMouseEnter} className={`select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[88%] font-mono text-gray leading-[50px] overflow-hidden px-5`}>
+      <div className={`text-2xl mb-4 flex justify-center ${focused ? "" : "blur-md"}`}>{timeLeft}s</div>
 
       <label htmlFor="typing-input" className="hidden">
         Typing Input
       </label>
+      <div className={`relative text-textcolorless flex items-center ${focused ? "hidden" : ""}`}>
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 !text-3xl">
+          hover here to focus
+        </div>
+      </div>
 
       <input
+        ref={inputRef}
         disabled={timeLeft === 0}
         autoComplete="off"
         id="typing-input"
-        className="min-h-[35vh] w-[85%] absolute opacity-0 cursor-default"
+        className={`min-h-[35vh] w-[85%] absolute opacity-0 cursor-default`}
         type="text"
         value={typedText}
         autoFocus
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         onKeyDown={handleKeyDown}
       />
 
@@ -304,7 +327,7 @@ const TypingArea = () => {
             .reduce((acc, l) => acc + l.length + 1, 0);
 
           return (
-            <div key={actualLineIndex}>
+            <div key={actualLineIndex} className={`${focused ? "" : "blur-md"}`}>
               {line.split("").map((char, charIdx) => {
                 const globalIndex = charsBefore + charIdx;
 
