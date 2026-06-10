@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
-import testsRoutes from "./routes/testsRoutes";
 import { pool } from "./config/db"
-import tokenRoutes from "./routes/tokenRoutes";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth";
+import testsRoutes from "./routes/testsRoutes";
+import tokenRoutes from "./routes/tokenRoutes";
+import leaderboardRoutes from "./routes/leaderboardRoutes";
 
 const app = express();
 
@@ -21,9 +22,10 @@ app.use(
   })
 );
 
+app.use("/api/auth", authRoutes);
 app.use("/api/tests", testsRoutes);
 app.use("/api/tokens", tokenRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 const PORT = process.env.PORT || 5000;
 
