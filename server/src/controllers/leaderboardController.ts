@@ -10,7 +10,8 @@ export const getLeaderboardData = async (
         const query = `
             SELECT
                 u.id,
-                u.name,
+                u.email,
+                t.testid,
                 t.wpm,
                 t.accuracy,
                 t.test_time,
