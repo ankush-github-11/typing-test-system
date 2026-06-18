@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchLeaderboardData } from "../api/leaderboardApi";
+import type { GetLeaderboardData } from "../types/getLeaderboardData";
 
-export const useLeaderboard = () => {
+export const useLeaderboard = ({duration, difficulty}: GetLeaderboardData) => {
 
   // GET QUERY
   const {
@@ -11,8 +12,11 @@ export const useLeaderboard = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["leaderboard"],
-    queryFn: fetchLeaderboardData,
+    queryKey: ["leaderboard", duration, difficulty],
+    queryFn: () => fetchLeaderboardData({
+      duration,
+      difficulty
+    }),
   });
   return {
     leaderboard,

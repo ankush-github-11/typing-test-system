@@ -5,6 +5,6 @@ import {
 
 const router = Router();
 
-router.get("/", getLeaderboardData);
+router.post("/", getLeaderboardData);
 
 export default router;
