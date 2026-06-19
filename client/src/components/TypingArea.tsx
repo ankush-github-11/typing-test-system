@@ -90,7 +90,7 @@ const TypingArea = () => {
     let totalChars = 0;
 
     for (let i = 0; i < lines.length; i++) {
-      totalChars += lines[i].length + 1;
+      totalChars += lines[i].length;
 
       if (index < totalChars) {
         if (i >= visibleStartLine + 2) { // SHIFT WHEN ENTERING 3RD LINE
