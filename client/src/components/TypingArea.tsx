@@ -71,7 +71,7 @@ const TypingArea = () => {
       const testLine = currentLine + word + " ";
 
       if (testLine.length > charsPerLine) {
-        result.push(currentLine.trim());
+        result.push(currentLine);
         currentLine = word + " ";
       }
       else {
@@ -79,8 +79,8 @@ const TypingArea = () => {
       }
     });
 
-    if (currentLine.trim()) {
-      result.push(currentLine.trim());
+    if (currentLine) {
+      result.push(currentLine);
     }
 
     return result;
@@ -336,7 +336,7 @@ const TypingArea = () => {
 
           const charsBefore = lines
             .slice(0, actualLineIndex)
-            .reduce((acc, l) => acc + l.length + 1, 0);
+            .reduce((acc, l) => acc + l.length, 0);
 
           return (
             <div key={actualLineIndex} className={`${started || focused ? "" : "blur-md"}`}>
