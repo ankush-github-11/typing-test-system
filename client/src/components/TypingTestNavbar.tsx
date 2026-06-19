@@ -47,9 +47,9 @@ const TypingTestNavbar = () => {
           <Link to={"/about"} className="nav-items-style">
             About
           </Link>
-          <Link to={"/features"} className="nav-items-style">
+          {/* <Link to={"/features"} className="nav-items-style">
             Features
-          </Link>
+          </Link> */}
           <Link to={"/settings"} className="nav-items-style">
             Settings
           </Link>
