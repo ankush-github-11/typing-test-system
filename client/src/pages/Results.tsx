@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
-import ResultGraph from "../components/ResultGraph";
 import { useTheme } from "../context/useTheme";
+import ResultGraph from "../components/ResultGraph";
 import useButtonNavigator from "../hooks/useButtonNavigator";
 import { useTitle } from "../hooks/useTitle";
 import { useLocation, useNavigate } from "react-router-dom";

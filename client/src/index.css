@@ -1,63 +1,96 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-@theme{
-    --font-poppins: "Poppins", sans-serif; 
-    --font-mono: "JetBrains Mono", monospace; 
-    
-    
-    --color-color1: #A607CA;
-    --color-color2: oklch(86.5% 0.127 207.078);
-    --color-color3: oklch(71.5% 0.143 215.221);
-    
-    --color-bgcolor: #FAFAFA;
-    --color-bgcolorless: #F0F0F0;
-    --color-textcolor: black;
-    --color-textcolorless: oklch(45% 0.013 285.805);
-    
-    --color-lightgray: oklch(96.7% 0.001 286.375);
-    --color-darkgray: oklch(37% 0.013 285.805);
-    
-    --color-bordercolor: oklch(92.8% 0.006 264.531);
-    
-    --color-gray: #a8a8a8;
-  }
-  .dark{
-    --font-poppins: "Poppins", sans-serif;
-    --font-mono: "JetBrains Mono", monospace; 
+@theme {
+  --font-poppins: "Poppins", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
+  --color-color1: #a607ca;
+  --color-color2: oklch(86.5% 0.127 207.078);
+  --color-color3: oklch(71.5% 0.143 215.221);
 
-    --color-color1: #C607F3;
-    --color-color2: oklch(86.5% 0.127 207.078);
-    --color-color3: oklch(71.5% 0.143 215.221);
+  --scrollbar-track: #e5e7eb;
+  --scrollbar-thumb: #6b7280;
+  --scrollbar-thumb-hover: #4b5563;
 
-    --color-bgcolor: #212121;
-    --color-bgcolorless: #2C2C2C;
-    --color-textcolor: white;
-    --color-textcolorless: oklch(90% 0.001 286.375);
+  --color-bgcolor: #fafafa;
+  --color-bgcolorless: #f0f0f0;
+  --color-textcolor: black;
+  --color-textcolorless: oklch(45% 0.013 285.805);
 
-    --color-lightgray: oklch(37.032% 0.01192 285.76);
-    --color-darkgray: oklch(96.7% 0.001 286.375);
+  --color-lightgray: oklch(96.7% 0.001 286.375);
+  --color-darkgray: oklch(37% 0.013 285.805);
 
-    --color-bordercolor: oklch(37% 0.013 285.805);
+  --color-bordercolor: oklch(92.8% 0.006 264.531);
 
-    --color-gray: #5f5f5f;
+  --color-gray: #a8a8a8;
 }
-@utility nav-items-style{
+.dark {
+  --font-poppins: "Poppins", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-color1: #c607f3;
+  --color-color2: oklch(86.5% 0.127 207.078);
+  --color-color3: oklch(71.5% 0.143 215.221);
+
+  --scrollbar-track: #1f2937;
+  --scrollbar-thumb: #4b5563;
+  --scrollbar-thumb-hover: #6b7280;
+
+  --color-bgcolor: #212121;
+  --color-bgcolorless: #2c2c2c;
+  --color-textcolor: white;
+  --color-textcolorless: oklch(90% 0.001 286.375);
+
+  --color-lightgray: oklch(37.032% 0.01192 285.76);
+  --color-darkgray: oklch(96.7% 0.001 286.375);
+
+  --color-bordercolor: oklch(37% 0.013 285.805);
+
+  --color-gray: #5f5f5f;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 10px;
+  border: 2px solid var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Firefox */
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+}
+@utility nav-items-style {
   @apply text-textcolorless font-medium rounded-md hover:bg-lightgray p-1.5 px-2 hover:text-cyan-900 dark:hover:text-cyan-50;
 }
-.sliding-animation{
-    animation: slide1 5s ease-in-out infinite;
+.sliding-animation {
+  animation: slide1 5s ease-in-out infinite;
 }
-@keyframes slide1{
-    from{
-        transform: translateY(0px);
-        opacity: 0;
-    }
-    to{
-        transform: translateY(385px);
-        opacity: 1;
-    }
+@keyframes slide1 {
+  from {
+    transform: translateY(0px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(385px);
+    opacity: 1;
+  }
 }
 @keyframes glow {
   0% {
@@ -72,11 +105,11 @@
     opacity: 0.8;
     color: var(--color-bgcolor);
     box-shadow:
-    0 0 20px rgba(255, 255, 255, 0.15),
-    0 0 40px rgba(255, 255, 255, 0.12),
-    0 0 80px rgba(255, 255, 255, 0.08);
+      0 0 20px rgba(255, 255, 255, 0.15),
+      0 0 40px rgba(255, 255, 255, 0.12),
+      0 0 80px rgba(255, 255, 255, 0.08);
   }
-  
+
   100% {
     opacity: 0.15;
     color: var(--color-bgcolor);
