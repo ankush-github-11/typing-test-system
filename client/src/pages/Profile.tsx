@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import { useTheme } from "../context/useTheme";
+import useButtonNavigator from "../hooks/useButtonNavigator";
 import { useMe } from "../hooks/useMe";
 import { useTitle } from "../hooks/useTitle";
 
@@ -7,6 +8,7 @@ const Profile = () => {
   const { isDark } = useTheme();
   useTitle("Profile");
   const { data: user, isLoading } = useMe();
+  useButtonNavigator({ targetKey: "Escape", targetPath: "/typingtest" });
 
   if (isLoading) {
     return <div>Loading...</div>;

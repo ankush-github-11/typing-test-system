@@ -44,8 +44,6 @@ const Results = () => {
     return null;
   }
 
-  // Navigate back to typing test on esc
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     // BACKSPACE
     if (e.key === "Backspace") {

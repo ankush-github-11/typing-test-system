@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import { useTheme } from "../context/useTheme";
+import useButtonNavigator from "../hooks/useButtonNavigator";
 import { useTitle } from "../hooks/useTitle";
 import { useSettingsStore } from "../store/useSettingsStore";
 const Settings = () => {
@@ -15,26 +16,30 @@ const Settings = () => {
   const showLiveBurstTypes = ["off", "on"] as const;
 
   const cursorType = useSettingsStore((state) => state.cursorType);
-  const setCursorType = useSettingsStore((state) => state.setCursorType);
+  const cursorSmoothness = useSettingsStore((state) => state.cursorSmoothness);
   const quickRestart = useSettingsStore((state) => state.quickRestart);
   const errorBehaviour = useSettingsStore((state) => state.errorBehaviour);
   const showLiveWpm = useSettingsStore((state) => state.showLiveWpm);
   const showLiveAccuracy = useSettingsStore((state) => state.showLiveAccuracy);
   const showLiveBurst = useSettingsStore((state) => state.showLiveBurst);
-
-  const cursorSmoothness = useSettingsStore((state) => state.cursorSmoothness);
-  const setCursorSmoothness = useSettingsStore(
-    (state) => state.setCursorSmoothness,
-  );
+  
+  const setCursorType = useSettingsStore((state) => state.setCursorType);
+  const setCursorSmoothness = useSettingsStore((state) => state.setCursorSmoothness);
   const setQuickRestart = useSettingsStore((state) => state.setQuickRestart);
-  const setErrorBehaviour = useSettingsStore(
-    (state) => state.setErrorBehaviour,
-  );
+  const setErrorBehaviour = useSettingsStore((state) => state.setErrorBehaviour);
   const setShowLiveWpm = useSettingsStore((state) => state.setShowLiveWpm);
-  const setShowLiveAccuracy = useSettingsStore(
-    (state) => state.setShowLiveAccuracy,
-  );
+  const setShowLiveAccuracy = useSettingsStore((state) => state.setShowLiveAccuracy);
   const setShowLiveBurst = useSettingsStore((state) => state.setShowLiveBurst);
+
+  useButtonNavigator({
+    targetKey:
+      quickRestart === "tab"
+        ? "Tab"
+        : quickRestart === "esc"
+        ? "Escape"
+        : "Alt",
+    targetPath: "/typingtest",
+  });
   return (
     <div
       data-theme={isDark ? "dark" : ""}
@@ -42,11 +47,11 @@ const Settings = () => {
     >
       <Navbar />
       <div className="py-10 px-20 flex flex-col gap-y-5 text-textcolorless">
-        <div className="w-full h-fit text-[30px] font-semibold">Cursor</div>
+        <div className="w-full h-fit text-[30px] font-semibold text-textcolorless/50">Cursor</div>
         <div className="h-fit flex flex-col gap-y-3 px-5 mb-8">
           <div className="flex flex-row justify-between items-center gap-x-5">
             <div className="flex flex-col flex-[6.3]">
-              <div className="text-2xl">Cursor Type</div>
+              <div className="text-[23px]">Cursor Type</div>
               <div className="text-textcolorless/60">
                 Select the cursor type of the typing test
               </div>
@@ -69,7 +74,7 @@ const Settings = () => {
           </div>
           <div className="flex flex-row justify-between items-center gap-x-5">
             <div className="flex flex-col flex-[6.3]">
-              <div className="text-2xl">Cursor Smoothness</div>
+              <div className="text-[23px]">Cursor Smoothness</div>
               <div className="text-textcolorless/60">
                 Select the smoothness of the cursor movement
               </div>
@@ -91,13 +96,13 @@ const Settings = () => {
             </div>
           </div>
         </div>
-        <div className="w-full h-fit text-[30px] font-semibold">
+        <div className="w-full h-fit text-[30px] font-semibold text-textcolorless/50">
           Test Settings
         </div>
         <div className="h-fit flex flex-col gap-y-3 px-5 mb-8">
           <div className="flex flex-row justify-between items-center gap-x-5">
             <div className="flex flex-col flex-[6.3]">
-              <div className="text-2xl">Quick restart</div>
+              <div className="text-[23px]">Quick restart</div>
               <div className="text-textcolorless/60">
                 Enable quick restart while test is running or after the test
                 using your favourite key
@@ -121,7 +126,7 @@ const Settings = () => {
           </div>
           <div className="flex flex-row justify-between items-center gap-x-5">
             <div className="flex flex-col flex-[6.3]">
-              <div className="text-2xl">Error Behaviour</div>
+              <div className="text-[23px]">Error Behaviour</div>
               <div className="text-textcolorless/60">
                 Select the behaviour when an error occurs. Free is default(you
                 can change it or continue), Nobackspace means you cannot
@@ -146,13 +151,13 @@ const Settings = () => {
             </div>
           </div>
         </div>
-        <div className="w-full h-fit text-[30px] font-semibold">
+        <div className="w-full h-fit text-[30px] font-semibold text-textcolorless/50">
           Live Results
         </div>
         <div className="h-fit flex flex-col gap-y-3 px-5 mb-8">
           <div className="flex flex-row justify-between items-center gap-x-5">
             <div className="flex flex-col flex-[6.3]">
-              <div className="text-2xl">Show Live WPM</div>
+              <div className="text-[23px]">Show Live WPM</div>
               <div className="text-textcolorless/60">
                 Toggle the visibility of live words per minute
               </div>
@@ -175,7 +180,7 @@ const Settings = () => {
           </div>
           <div className="flex flex-row justify-between items-center gap-x-5">
             <div className="flex flex-col flex-[6.3]">
-              <div className="text-2xl">Show Live Accuracy</div>
+              <div className="text-[23px]">Show Live Accuracy</div>
               <div className="text-textcolorless/60">
                 Toggle the visibility of live accuracy
               </div>
@@ -198,7 +203,7 @@ const Settings = () => {
           </div>
           <div className="flex flex-row justify-between items-center gap-x-5">
             <div className="flex flex-col flex-[6.3]">
-              <div className="text-2xl">Show Live Burst</div>
+              <div className="text-[23px]">Show Live Burst</div>
               <div className="text-textcolorless/60">
                 Toggle the visibility of live burst
               </div>
