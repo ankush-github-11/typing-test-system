@@ -1,11 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type CursorType = "default" | "line" | "block" | "underline";
-export type CursorSmoothness = "low" | "medium" | "high";
-export type QuickRestart = "esc" | "tab" | "alt";
+export type CursorType = "default" | "block" | "underline";
+export type CursorSmoothness = "off" | "low" | "medium" | "high";
+export type QuickRestart = "tab" | "esc" | "alt";
 export type StrictMode = "off" | "on" | "max";
 export type ErrorBehaviour = "free" | "nobackspace" | "terminate";
+export type ShowLiveWpm = "off" | "on";
+export type ShowLiveAccuracy = "off" | "on";
+export type ShowLiveBurst = "off" | "on";
 
 interface SettingsState {
   // Cursor
@@ -16,9 +19,9 @@ interface SettingsState {
   errorBehaviour: ErrorBehaviour;
   strictMode: StrictMode;
   // Live Stats
-  showLiveWpm: boolean;
-  showLiveAccuracy: boolean;
-  showLiveBurst: boolean;
+  showLiveWpm: ShowLiveWpm;
+  showLiveAccuracy: ShowLiveAccuracy;
+  showLiveBurst: ShowLiveBurst;
 
   // Actions
   setCursorType: (type: CursorType) => void;
@@ -28,9 +31,9 @@ interface SettingsState {
   setErrorBehaviour: (behaviour: ErrorBehaviour) => void;
   setStrictMode: (mode: StrictMode) => void;
 
-  setShowLiveWpm: () => void;
-  setShowLiveAccuracy: () => void;
-  setShowLiveBurst: () => void;
+  setShowLiveWpm: (option: ShowLiveWpm) => void;
+  setShowLiveAccuracy: (option: ShowLiveAccuracy) => void;
+  setShowLiveBurst: (option: ShowLiveBurst) => void;
 
   resetSettings: () => void;
 }
@@ -43,9 +46,9 @@ const defaultSettings = {
   errorBehaviour: "free" as ErrorBehaviour,
   strictMode: "off" as StrictMode,
 
-  showLiveWpm: true,
-  showLiveAccuracy: true,
-  showLiveBurst: true,
+  showLiveWpm: "off" as ShowLiveWpm,
+  showLiveAccuracy: "off" as ShowLiveAccuracy,
+  showLiveBurst: "off" as ShowLiveBurst,
 };
 
 export const useSettingsStore = create<SettingsState>()(
@@ -74,20 +77,14 @@ export const useSettingsStore = create<SettingsState>()(
       setStrictMode: (mode) =>
         set({ strictMode: mode }),
 
-      setShowLiveWpm: () =>
-        set((state) => ({
-          showLiveWpm: !state.showLiveWpm,
-        })),
+      setShowLiveWpm: (option) =>
+        set({ showLiveWpm: option }),
 
-      setShowLiveAccuracy: () =>
-        set((state) => ({
-          showLiveAccuracy: !state.showLiveAccuracy,
-        })),
+      setShowLiveAccuracy: (option) =>
+        set({ showLiveAccuracy: option }),
 
-      setShowLiveBurst: () =>
-        set((state) => ({
-          showLiveBurst: !state.showLiveBurst,
-        })),
+      setShowLiveBurst: (option) =>
+        set({ showLiveBurst: option }),
 
       resetSettings: () =>
         set(defaultSettings),
