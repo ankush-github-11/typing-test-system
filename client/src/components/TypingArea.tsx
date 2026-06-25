@@ -7,10 +7,8 @@ import { useTestTimeStore } from "../store/useTestTimeStore";
 import { useTestStartedStore } from "../store/useTestStartedStore";
 import { useTypingAreaFocusedStore } from "../store/useTypingAreaFocusedStore";
 import useCursorVisibility from "../hooks/useCursorVisibility";
-import { useTestRestartStore } from "../store/useTestRestartStore";
 
 const TypingArea = () => {
-  const restartKey = useTestRestartStore((state) => state.restartKey);
   const testTime = useTestTimeStore((state) => state.testTime);
   const difficulty = useDifficultyTokenStore((state) => state.difficulty);
   const { data: tokens } = useTokens({

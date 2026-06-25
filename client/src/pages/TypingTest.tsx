@@ -8,7 +8,6 @@ import SettingsBar from '../components/SettingsBar';
 import { useTestStartedStore } from '../store/useTestStartedStore';
 import useCursorVisibility from '../hooks/useCursorVisibility';
 import { useSettingsStore } from '../store/useSettingsStore';
-import { useTestTimeStore } from '../store/useTestTimeStore';
 import { useTestRestartStore } from "../store/useTestRestartStore";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -30,7 +29,6 @@ const TypingTest = () => {
   const cursorVisible = useCursorVisibility(started);
   const quickRestart = useSettingsStore((state) => state.quickRestart);
   const setTestStarted = useTestStartedStore((state) => state.setTestStarted);
-  const setTestTime = useTestTimeStore((state) => state.setTestTime);
   
   const restartKey = useTestRestartStore((state) => state.restartKey);
   const restart = useTestRestartStore((state) => state.restart);
