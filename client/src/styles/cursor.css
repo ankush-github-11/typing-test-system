@@ -1,4 +1,4 @@
-@keyframes cursorBlink {
+@keyframes cursorBreath {
     0%, 100% {
         transform: scaleY(1);
         opacity: 1;
@@ -9,6 +9,18 @@
     }
 }
 
-.cursor {
+.cursorBreath {
+    animation: cursorBreath 1.5s ease-in-out infinite;
+}
+@keyframes cursorBlink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+.cursorBlink {
     animation: cursorBlink 1.5s ease-in-out infinite;
 }

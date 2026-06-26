@@ -1,16 +1,27 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAutoRedirect } from "../hooks/useAutoRedirect";
-import Cursor from "./Cursor";
+import CursorDefault from "./CursorDefault";
+import CursorBlock from "./CursorBlock";
+import CursorUnderline from "./CursorUnderline";
 import { useTokens } from "../hooks/useTokens";
 import { useDifficultyTokenStore } from "../store/useDifficultyTokenStore";
 import { useTestTimeStore } from "../store/useTestTimeStore";
 import { useTestStartedStore } from "../store/useTestStartedStore";
 import { useTypingAreaFocusedStore } from "../store/useTypingAreaFocusedStore";
 import useCursorVisibility from "../hooks/useCursorVisibility";
-
+import { useSettingsStore } from "../store/useSettingsStore";
+const CursorComponents = {
+  default: CursorDefault,
+  block: CursorBlock,
+  underline: CursorUnderline,
+};
 const TypingArea = () => {
   const testTime = useTestTimeStore((state) => state.testTime);
   const difficulty = useDifficultyTokenStore((state) => state.difficulty);
+  const cursorType = useSettingsStore((state) => state.cursorType);
+
+  const ActiveCursor = CursorComponents[cursorType];
+
   const { data: tokens } = useTokens({
     token_type: ["word"],
     difficulty: [difficulty],
@@ -322,10 +333,10 @@ const TypingArea = () => {
       />
 
       {cursorPos && (
-        <Cursor
+        <ActiveCursor
           top={cursorPos.top}
           left={cursorPos.left}
-          cn={!started ? "cursor" : ""}
+          cn={!started ? ActiveCursor === CursorDefault ? "cursorBreath" : "cursorBlink" : ""}
         />
       )}
 
