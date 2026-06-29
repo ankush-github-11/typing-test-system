@@ -19,7 +19,7 @@ const CursorDefault = ({ top, left, cn }: { top: number; left: number; cn: strin
           top: `${top}px`,
           left: `${left}px`,
         }}
-        className={`${started || focused ? "" : "blur-md"} transition-all ${durationClass} ease-linear h-[45px] w-[2.5px] bg-color1 inline-block absolute rounded-full ${cn}`}
+        className={`${started || focused ? "" : "blur-md"} transition-all mt-[2px] ${durationClass} ease-linear h-[45px] w-[2.5px] bg-color1 inline-block absolute rounded-full ${cn}`}
       ></div>
     </>
   );

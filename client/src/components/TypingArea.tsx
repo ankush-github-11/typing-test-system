@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useAutoRedirect } from "../hooks/useAutoRedirect";
 import CursorDefault from "./CursorDefault";
 import CursorBlock from "./CursorBlock";
@@ -19,10 +19,11 @@ const TypingArea = () => {
   const testTime = useTestTimeStore((state) => state.testTime);
   const difficulty = useDifficultyTokenStore((state) => state.difficulty);
   const cursorType = useSettingsStore((state) => state.cursorType);
+  const errorBehaviour = useSettingsStore((state) => state.errorBehaviour);
 
   const ActiveCursor = CursorComponents[cursorType];
 
-  const { data: tokens } = useTokens({
+  const { data: tokens, isLoading } = useTokens({
     token_type: ["word"],
     difficulty: [difficulty],
   });
@@ -66,13 +67,29 @@ const TypingArea = () => {
   const focused = useTypingAreaFocusedStore((state) => state.focused);
   const setFocused = useTypingAreaFocusedStore((state) => state.setFocused);
 
+  const showLiveWpm = useSettingsStore((state) => state.showLiveWpm) === "on";
+  const showLiveAccuracy =
+    useSettingsStore((state) => state.showLiveAccuracy) === "on";
+  const showLiveBurst =
+    useSettingsStore((state) => state.showLiveBurst) === "on";
+
+  const liveWpm = avgWpmPerSecondArr[avgWpmPerSecondArr.length - 1] ?? 0;
+  const liveAccuracy =
+    totalCharsTyped === 0
+      ? 100
+      : Math.round(
+          ((totalCharsTyped - wrongCharsTyped) / totalCharsTyped) * 100,
+        );
+  const liveBurst = burstPerSecondArr[burstPerSecondArr.length - 1] ?? 0;
+
   const inputRef = useRef<HTMLInputElement>(null);
-  const handleMouseEnter = () =>{
+  const handleMouseEnter = () => {
     inputRef.current?.focus();
   };
   const cursorVisible = useCursorVisibility(started);
 
-  const lines = useMemo(() => { // CREATE FIXED LINES
+  const lines = useMemo(() => {
+    // CREATE FIXED LINES
     const words = targetText.split(" ");
     const result: string[] = [];
 
@@ -84,8 +101,7 @@ const TypingArea = () => {
       if (testLine.length > charsPerLine) {
         result.push(currentLine);
         currentLine = word + " ";
-      }
-      else {
+      } else {
         currentLine = testLine;
       }
     });
@@ -97,14 +113,16 @@ const TypingArea = () => {
     return result;
   }, [targetText, charsPerLine]);
 
-  useEffect(() => { // DETECT CURRENT LINE
+  useEffect(() => {
+    // DETECT CURRENT LINE
     let totalChars = 0;
 
     for (let i = 0; i < lines.length; i++) {
       totalChars += lines[i].length;
 
       if (index < totalChars) {
-        if (i >= visibleStartLine + 2) { // SHIFT WHEN ENTERING 3RD LINE
+        if (i >= visibleStartLine + 2) {
+          // SHIFT WHEN ENTERING 3RD LINE
           setVisibleStartLine(i - 1);
         }
         break;
@@ -114,6 +132,7 @@ const TypingArea = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace") {
+      if (errorBehaviour === "nobackspace") return;
       // BACKSPACE HANDLING
       e.preventDefault();
 
@@ -162,7 +181,8 @@ const TypingArea = () => {
     setFocused(true);
   };
 
-  useEffect(() => { // AVG WPM
+  useEffect(() => {
+    // AVG WPM
     if (!started || timeLeft < 0) return;
 
     const timeInMinutes = (testTime - timeLeft) / 60;
@@ -180,7 +200,8 @@ const TypingArea = () => {
     setAvgWpmPerSecondArr((prev) => [...prev, avgWpm]);
   }, [timeLeft]);
 
-  useEffect(() => { // RAW WPM
+  useEffect(() => {
+    // RAW WPM
     if (!started || timeLeft < 0) return;
 
     const timeInMinutes = (testTime - timeLeft) / 60;
@@ -192,7 +213,8 @@ const TypingArea = () => {
     setRawWpmPerSecondArr((prev) => [...prev, rawWpm]);
   }, [timeLeft]);
 
-  useEffect(() => { // BURST WPM
+  useEffect(() => {
+    // BURST WPM
     if (!started || timeLeft < 0) return;
 
     const currentLength = typedText.length;
@@ -207,7 +229,8 @@ const TypingArea = () => {
     setBurstPerSecondArr((prev) => [...prev, instantWpm]);
   }, [timeLeft]);
 
-  useEffect(() => { // WRONG CHARS PER SECOND
+  useEffect(() => {
+    // WRONG CHARS PER SECOND
     if (!started || timeLeft < 0) return;
 
     setWrongCharsPerSecondArr((prev) => [...prev, wrongCharsTypedPerSecond]);
@@ -231,7 +254,8 @@ const TypingArea = () => {
     return () => window.removeEventListener("resize", calculateCharsPerLine);
   }, []);
 
-  const calculateFinalResults = () => { // FINAL RESULTS
+  const calculateFinalResults = () => {
+    // FINAL RESULTS
     let correctChars = 0;
 
     targetText.split("").forEach((char, i) => {
@@ -248,7 +272,6 @@ const TypingArea = () => {
 
     return { wpm, rawAccuracy, typedText };
   };
-
   useEffect(() => {
     if (timeLeft === 0) {
       setStarted(false);
@@ -273,7 +296,7 @@ const TypingArea = () => {
     return () => clearInterval(timer);
   }, [started]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // CURSOR POSITION
     const currentChar = charRefs.current[index];
 
@@ -287,7 +310,7 @@ const TypingArea = () => {
     }
   }, [index, targetText, visibleStartLine]);
 
-  useAutoRedirect({ // REDIRECT
+  useAutoRedirect({
     path: "/results",
     delay: 0,
     trigger: avgWpmPerSecondArr.length === testTime,
@@ -304,15 +327,39 @@ const TypingArea = () => {
     },
   });
   return (
-    <div onMouseEnter={handleMouseEnter} className={`select-none ml-5 mt-25 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[88%] font-mono text-gray leading-[50px] overflow-hidden px-5 ${ !cursorVisible ? "cursor-none" : "cursor-default" }`}> 
-
-      <div className={`text-2xl mb-4 flex justify-center ${started || focused ? "" : "blur-md"}`}>{timeLeft}s</div>
+    <div
+      onMouseEnter={handleMouseEnter}
+      className={`select-none ml-5 mt-20 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[88%] font-mono text-gray leading-[50px] overflow-hidden px-5 ${!cursorVisible ? "cursor-none" : "cursor-default"}`}
+    >
+      <div className={`justify-between w-full flex items-center`}>
+        <div className={`w-114 flex gap-8 text-xl text-textcolorless/80`}>
+          <span className={`${started && showLiveWpm ? "" : "hidden"}`}>
+            WPM: {liveWpm}
+          </span>
+          <span
+            className={`${started && showLiveAccuracy ? "" : "hidden"}`}
+          >
+            Acc: {liveAccuracy}%
+          </span>
+          <span className={`${started && showLiveBurst ? "" : "hidden"}`}>
+            Burst: {liveBurst}
+          </span>
+        </div>
+        <div
+          className={`text-2xl flex justify-center ${started || focused ? "" : "blur-md"} ${started ? "text-textcolor/80" : ""}`}
+        >
+          {timeLeft}s
+        </div>
+        <div className="w-114"></div>
+      </div>
 
       <label htmlFor="typing-input" className="hidden">
         Typing Input
       </label>
-      
-      <div className={`relative text-textcolorless flex items-center ${started || focused ? "hidden" : ""}`}>
+
+      <div
+        className={`relative text-textcolorless flex items-center ${started || focused ? "hidden" : ""}`}
+      >
         <div className="absolute top-10 left-1/2 -translate-x-1/2 !text-3xl">
           hover here to focus
         </div>
@@ -323,7 +370,7 @@ const TypingArea = () => {
         disabled={timeLeft === 0}
         autoComplete="off"
         id="typing-input"
-        className={`min-h-[35vh] w-[85%] absolute opacity-0 ${ !cursorVisible ? "cursor-none" : "cursor-default" }`}
+        className={`min-h-[35vh] w-[85%] absolute opacity-0 ${!cursorVisible ? "cursor-none" : "cursor-default"}`}
         type="text"
         value={typedText}
         autoFocus
@@ -336,7 +383,13 @@ const TypingArea = () => {
         <ActiveCursor
           top={cursorPos.top}
           left={cursorPos.left}
-          cn={!started ? ActiveCursor === CursorDefault ? "cursorBreath" : "cursorBlink" : ""}
+          cn={
+            !started
+              ? ActiveCursor === CursorDefault
+                ? "cursorBreath"
+                : "cursorBlink"
+              : ""
+          }
         />
       )}
 
@@ -350,7 +403,10 @@ const TypingArea = () => {
             .reduce((acc, l) => acc + l.length, 0);
 
           return (
-            <div key={actualLineIndex} className={`${started || focused ? "" : "blur-md"}`}>
+            <div
+              key={actualLineIndex}
+              className={`${started || focused ? "" : "blur-md"}`}
+            >
               {line.split("").map((char, charIdx) => {
                 const globalIndex = charsBefore + charIdx;
 
@@ -359,11 +415,8 @@ const TypingArea = () => {
                 let className = "text-gray-400";
 
                 if (typedChar === undefined) className = "text-gray";
-                else if (typedChar === char)
-                  className = "text-textcolorless";
-                else
-                  className =
-                    "text-red-500 border-b-1 border-red-500";
+                else if (typedChar === char) className = "text-textcolorless";
+                else className = "text-red-500 border-b-1 border-red-500";
 
                 return (
                   <span

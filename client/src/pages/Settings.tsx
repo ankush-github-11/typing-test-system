@@ -10,7 +10,7 @@ const Settings = () => {
   const cursorTypes = ["default", "block", "underline"] as const;
   const cursorSmoothnessTypes = ["off", "low", "medium", "high"] as const;
   const quickRestartTypes = ["tab", "esc", "alt"] as const;
-  const errorBehaviourTypes = ["free", "nobackspace", "terminate"] as const;
+  const errorBehaviourTypes = ["free", "nobackspace"] as const;
   const showLiveWpmTypes = ["off", "on"] as const;
   const showLiveAccuracyTypes = ["off", "on"] as const;
   const showLiveBurstTypes = ["off", "on"] as const;
@@ -130,8 +130,7 @@ const Settings = () => {
               <div className="text-textcolorless/60">
                 Select the behaviour when an error occurs. Free is default(you
                 can change it or continue), Nobackspace means you cannot
-                backspace after an error, Terminate means the test ends when an
-                error occurs
+                backspace at all
               </div>
             </div>
             <div className="flex flex-row gap-x-5 flex-[3.7]">
