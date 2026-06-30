@@ -23,7 +23,7 @@ const TypingArea = () => {
 
   const ActiveCursor = CursorComponents[cursorType];
 
-  const { data: tokens, isLoading } = useTokens({
+  const { data: tokens } = useTokens({
     token_type: ["word"],
     difficulty: [difficulty],
   });
