@@ -3,18 +3,24 @@ import { useLogin } from "../hooks/useLogin";
 import type { AxiosError } from "axios";
 import { useTheme } from "../context/useTheme";
 import { useTitle } from "../hooks/useTitle";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import authImage from "../assets/images/AuthImage.svg";
+import { useMe } from "../hooks/useMe";
 
 const Login = () => {
   const { isDark } = useTheme();
   useTitle("Login");
-
+  const navigate = useNavigate();
+  const { data: user, isLoading } = useMe();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  
   const { mutate, isPending, isError, error, isSuccess } = useLogin();
-
+  
+  if (!isLoading && user) {
+    navigate("/");
+    return null;
+  }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     mutate({ email, password });
