@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth";
 import testsRoutes from "./routes/testsRoutes";
 import tokenRoutes from "./routes/tokenRoutes";
 import leaderboardRoutes from "./routes/leaderboardRoutes";
+import testStartedController from "./controllers/testStartedController";
 
 const app = express();
 
@@ -26,6 +27,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/tests", testsRoutes);
 app.use("/api/tokens", tokenRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
+
+app.use("/api/testStarted", testStartedController);
 
 const PORT = process.env.PORT || 5000;
 
