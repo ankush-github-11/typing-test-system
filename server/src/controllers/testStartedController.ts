@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { pool } from "../config/db";
-
+import { TestStartedData } from "../types/TestStartedData";
 const postTestStarted = async (req: Request, res: Response) => {
   try {
-    const { userid } = req.body;
+    const { id } = req.body as TestStartedData;
 
     const query = `
       UPDATE users
@@ -11,7 +11,7 @@ const postTestStarted = async (req: Request, res: Response) => {
       WHERE id = $1;
     `;
 
-    await pool.query(query, [userid]);
+    await pool.query(query, [id]);
 
     return res.status(200).json({
       success: true,

@@ -31,17 +31,17 @@ const Profile = () => {
             <div className="h-fit w-fit flex gap-x-3 items-center">
               <SquareUser size={120} strokeWidth={1}/>
               <div className="flex flex-col gap-y-1 w-full h-fit">
-                <p className="text-[16px]">Ankush Bhattacharjee</p>
-                <p className="text-[14px] text-textcolorless">coder_ankush</p>
-                <p className="text-[14px]">Rank <span>151</span></p>
+                <p className="text-[16px]">Blank Name</p>
+                <p className="text-[14px] text-textcolorless">Blank Username</p>
+                <p className="text-[14px]">Rank <span>Blank Rank</span></p>
               </div>
             </div>
             <div className="h-fit w-full flex items-center gap-x-3 mb-5">
-              <p className="w-fit text-color1 font-semibold text-[16px]">62</p>
+              <p className="w-fit text-color1 font-semibold text-[16px]">{user.level}</p>
               <div className="w-full h-2 bg-lightgray rounded-full">
                 <div className="w-[80%] h-2 bg-gray rounded-full"></div>
               </div>
-              <p className="w-fit text-textcolorless"><span className="font-semibold">51</span>/2300</p>
+              <p className="w-fit text-textcolorless"><span className="font-semibold">{user.xp}</span>/2300</p>
             </div>
             <div className="h-fit w-full mb-5">
               <p className="text-[15px]">Working Hard and Chasing My Dreams 😇💗 Building Skillset in Programming Languages 💻 Ambition of Full Stack Developer ✨ Proud Indian and Sanatani 🚩</p>
@@ -59,27 +59,27 @@ const Profile = () => {
               <div className="w-fit flex items-center">
                 <Rocket size={18} strokeWidth={2} className="text-pink-500 mr-2"/>
                 <p className="text-[14.5px] text-textcolorless/70 mr-5">Test Started</p>
-                <p className="text-[16px]">152</p>
+                <p className="text-[16px]">{user.test_started}</p>
               </div>
               <div className="w-fit flex items-center">
                 <LaptopMinimalCheck size={18} strokeWidth={2} className="text-emerald-500 mr-2"/>
                 <p className="text-[14.5px] text-textcolorless/70 mr-5">Test Completed</p>
-                <p className="text-[16px]">130</p>
+                <p className="text-[16px]">{user.test_completed}</p>
               </div>
               <div className="w-fit flex items-center">
                 <ClockArrowUp size={18} strokeWidth={2} className="text-yellow-500 mr-2" />
                 <p className="text-[14.5px] text-textcolorless/70 mr-5">Time Typing</p>
-                <p className="text-[16px]">02:25:30</p>
+                <p className="text-[16px]">{user.time_typing}</p>
               </div>
               <div className="w-fit flex items-center">
                 <Pencil size={18} strokeWidth={2} className="text-blue-500 mr-2" />
                 <p className="text-[14.5px] text-textcolorless/70 mr-5">Total Chars Typed</p>
-                <p className="text-[16px]">17.6K</p>
+                <p className="text-[16px]">{user.total_chars_typed}</p>
               </div>
               <div className="w-fit flex items-center">
                 <Flag size={18} strokeWidth={2} className="text-orange-500 mr-2" />
                 <p className="text-[14.5px] text-textcolorless/70 mr-5">Longest Streak</p>
-                <p className="text-[16px]">12 Days</p>
+                <p className="text-[16px]">{user.longest_streak}</p>
               </div>
             </div>
             <div className="h-fit w-full flex flex-col gap-y-[8px]">

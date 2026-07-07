@@ -18,7 +18,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
         }
         const jwtSecret: Secret = process.env.JWT_SECRET as Secret;
         const decoded = jwt.verify(token, jwtSecret) as { id: number };
-        const user = await pool.query("SELECT id, username, email FROM users WHERE id = $1", [decoded.id]);
+        const user = await pool.query("SELECT id, username, name, email, gender, rank, level, xp, bio, keyboard, test_started, test_completed, time_typing, total_chars_typed, longest_streak, city, country, organization FROM users WHERE id = $1", [decoded.id]);
         if(user.rows.length === 0){
             return res.status(401).json({ message: "Not Authorized, User Not Found" });
         }

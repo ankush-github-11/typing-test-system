@@ -10,6 +10,9 @@ import { useTestStartedStore } from "../store/useTestStartedStore";
 import { useTypingAreaFocusedStore } from "../store/useTypingAreaFocusedStore";
 import useCursorVisibility from "../hooks/useCursorVisibility";
 import { useSettingsStore } from "../store/useSettingsStore";
+import { useTestStarted } from "../hooks/useTestStarted";
+import { useMe } from "../hooks/useMe";
+
 const CursorComponents = {
   default: CursorDefault,
   block: CursorBlock,
@@ -72,6 +75,9 @@ const TypingArea = () => {
     useSettingsStore((state) => state.showLiveAccuracy) === "on";
   const showLiveBurst =
     useSettingsStore((state) => state.showLiveBurst) === "on";
+
+  const { data: user } = useMe();
+  const { startTest } = useTestStarted();
 
   const liveWpm = avgWpmPerSecondArr[avgWpmPerSecondArr.length - 1] ?? 0;
   const liveAccuracy =
@@ -146,7 +152,10 @@ const TypingArea = () => {
 
     // IGNORE SPECIAL KEYS
     if (e.key.length > 1) return;
-    if (!started) setStarted(true); // Start the test
+    if (!started){
+      setStarted(true); // Start the test
+      if(user.id) startTest(user.id);
+    }
 
     e.preventDefault();
 
