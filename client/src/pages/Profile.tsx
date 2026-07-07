@@ -44,15 +44,15 @@ const Profile = () => {
               <p className="w-fit text-textcolorless"><span className="font-semibold">{user.xp}</span>/2300</p>
             </div>
             <div className="h-fit w-full mb-5">
-              <p className="text-[15px]">Working Hard and Chasing My Dreams 😇💗 Building Skillset in Programming Languages 💻 Ambition of Full Stack Developer ✨ Proud Indian and Sanatani 🚩</p>
+              <p className="text-[15px]">Blank Bio</p>
             </div>
             <div className="h-fit w-full mb-1 flex gap-x-3 items-center">
               <p className="text-[16px] font-semibold text-textcolorless/50">Keyboard</p>
-              <p className="text-[15px]">ANT Esports MK 1400 RG</p>
+              <p className="text-[15px]">Blank Keyboard</p>
             </div>
             <div className="h-fit w-full mb-5 flex gap-x-3 items-center">
               <p className="text-[16px] font-semibold text-textcolorless/50">Date Joined</p>
-              <p className="text-[15px]">13th March, 2026</p>
+              <p className="text-[15px]">Blank Date Joined</p>
             </div>
             <div className="h-fit w-full flex flex-col gap-y-[8px] mb-5">
               <p className="text-[17px] font-semibold mb-1">Overall Stats</p>
@@ -87,14 +87,14 @@ const Profile = () => {
               <div className="w-fit flex items-center">
                 <MapPin size={18} strokeWidth={2} className="text-textcolorless/60 mr-2"/>
                 <p className="text-[14.5px] mr-5 text-textcolorless">
-                  <span>Kolkata</span>
+                  <span>Blank City</span>
                   <span>,{" "}</span>
-                  <span>India</span>
+                  <span>Blank Country</span>
                 </p>
               </div>
               <div className="w-fit flex items-center">
                 <Building2 size={18} strokeWidth={2} className="text-textcolorless/60 mr-2"/>
-                <p className="text-[14.5px] mr-5 text-textcolorless">Narula Institute of Technology</p>
+                <p className="text-[14.5px] mr-5 text-textcolorless">Blank Organization</p>
               </div>
             </div>
           </div>
