@@ -8,6 +8,7 @@ import tokenRoutes from "./routes/tokenRoutes";
 import leaderboardRoutes from "./routes/leaderboardRoutes";
 import testStartedController from "./controllers/testStartedController";
 import testCompletedController from "./controllers/testCompletedController";
+import timeTypingController from "./controllers/timeTypingController";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/api/leaderboard", leaderboardRoutes);
 
 app.use("/api/testStarted", testStartedController);
 app.use("/api/testCompleted", testCompletedController);
+app.use("/api/timeTyping", timeTypingController);
 
 const PORT = process.env.PORT || 5000;
 

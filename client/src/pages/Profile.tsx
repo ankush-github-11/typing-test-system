@@ -16,6 +16,15 @@ const Profile = () => {
     navigate("/login");
     return null;
   }
+  const formatTime = (totalSeconds: number) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return [hours, minutes, seconds]
+      .map((unit) => unit.toString().padStart(2, "0"))
+      .join(":");
+  };
   return (
     <div
       data-theme={isDark ? "dark" : ""}
@@ -69,7 +78,7 @@ const Profile = () => {
               <div className="w-fit flex items-center">
                 <ClockArrowUp size={18} strokeWidth={2} className="text-yellow-500 mr-2" />
                 <p className="text-[14.5px] text-textcolorless/70 mr-5">Time Typing</p>
-                <p className="text-[16px]">{user.time_typing}</p>
+                <p className="text-[16px]">{formatTime(user.time_typing)}</p>
               </div>
               <div className="w-fit flex items-center">
                 <Pencil size={18} strokeWidth={2} className="text-blue-500 mr-2" />
