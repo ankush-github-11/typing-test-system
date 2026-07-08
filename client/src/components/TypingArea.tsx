@@ -10,8 +10,9 @@ import { useTestStartedStore } from "../store/useTestStartedStore";
 import { useTypingAreaFocusedStore } from "../store/useTypingAreaFocusedStore";
 import useCursorVisibility from "../hooks/useCursorVisibility";
 import { useSettingsStore } from "../store/useSettingsStore";
-import { useTestStarted } from "../hooks/useTestStarted";
 import { useMe } from "../hooks/useMe";
+import { useTestStarted } from "../hooks/useTestStarted";
+import { useTestCompleted } from "../hooks/useTestCompleted";
 
 const CursorComponents = {
   default: CursorDefault,
@@ -78,6 +79,7 @@ const TypingArea = () => {
 
   const { data: user } = useMe();
   const { startTest } = useTestStarted();
+  const { completeTest } = useTestCompleted();
 
   const liveWpm = avgWpmPerSecondArr[avgWpmPerSecondArr.length - 1] ?? 0;
   const liveAccuracy =
@@ -284,11 +286,13 @@ const TypingArea = () => {
   useEffect(() => {
     if (timeLeft === 0) {
       setStarted(false);
+      if (user?.id) {
+        completeTest(user.id);
+      }
     }
   }, [timeLeft, setStarted]);
 
-  useEffect(() => {
-    // TIMER DECREMENT
+  useEffect(() => { // TIMER DECREMENT
     if (!started || timeLeft <= 0) return;
 
     const timer = setInterval(() => {
