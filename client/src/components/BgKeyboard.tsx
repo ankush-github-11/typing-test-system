@@ -75,7 +75,7 @@ export const BgKeyboard: React.FC = () => {
                 ? 'flex-[1.25]'
                 : 'flex-1';
 
-            const highlightClass = 'bg-gray-400 dark:bg-gray-400 border-2 border-violet-400 dark:border-violet-300 text-white font-normal animate-glow';
+            const highlightClass = `border-2 border-violet-400 dark:border-violet-900 text-textcolorless! font-normal animate-glow`;
             const defaultClass = 'bg-bgcolor';
 
             return (

@@ -11,6 +11,6 @@ export const useTestCompleted = () => {
   });
 
   return {
-    completeTest: testCompletedMutation.mutate
+    completedTest: testCompletedMutation.mutate
   };
 };

@@ -1,56 +1,76 @@
-import { useTheme } from '../context/useTheme';
-import { useTitle } from '../hooks/useTitle';
-import TypingTestNavbar from '../components/TypingTestNavbar';
-import "../styles/typingTest.css"
-import TypingArea from '../components/TypingArea';
+import { useTheme } from "../context/useTheme";
+import { useTitle } from "../hooks/useTitle";
+import TypingTestNavbar from "../components/TypingTestNavbar";
+import "../styles/typingTest.css";
+import TypingArea from "../components/TypingArea";
 // import MobileSettingsNavbar from '../components/MobileSettingsBar';
-import SettingsBar from '../components/SettingsBar';
-import { useTestStartedStore } from '../store/useTestStartedStore';
-import useCursorVisibility from '../hooks/useCursorVisibility';
-import { useSettingsStore } from '../store/useSettingsStore';
+import SettingsBar from "../components/SettingsBar";
+import { useTestStartedStore } from "../store/useTestStartedStore";
+import useCursorVisibility from "../hooks/useCursorVisibility";
+import { useSettingsStore } from "../store/useSettingsStore";
 import { useTestRestartStore } from "../store/useTestRestartStore";
 import { useQueryClient } from "@tanstack/react-query";
-
+import { useTimeTyping } from "../hooks/useTimeTyping";
+import { useTestTimeStore } from "../store/useTestTimeStore";
+import { useTestTimeLeftStore } from "../store/useTestTimeLeftStore";
+import { useMe } from "../hooks/useMe";
 
 const TypingTest = () => {
   const queryClient = useQueryClient();
   const restartTest = () => {
-  setTestStarted(false);
+    setTestStarted(false);
 
-  queryClient.invalidateQueries({
-    queryKey: ["tokens"],
-  });
+    queryClient.invalidateQueries({
+      queryKey: ["tokens"],
+    });
 
-  restart();
-};
-  useTitle("Ether Typing Test")
+    restart();
+  };
   const { isDark } = useTheme();
+  const { data: user } = useMe();
+  const { timeTyping } = useTimeTyping();
+  useTitle("Ether Typing Test");
+
   const started = useTestStartedStore((state) => state.testStarted);
   const cursorVisible = useCursorVisibility(started);
   const quickRestart = useSettingsStore((state) => state.quickRestart);
   const setTestStarted = useTestStartedStore((state) => state.setTestStarted);
-  
+
   const restartKey = useTestRestartStore((state) => state.restartKey);
   const restart = useTestRestartStore((state) => state.restart);
 
+  const testTime = useTestTimeStore((state) => state.testTime);
+  const testTimeLeft = useTestTimeLeftStore((state) => state.testTimeLeft);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
-  if (e.key === "Escape" && quickRestart === "esc") {
-    e.preventDefault();
-    restartTest();
-  }
-  
-  else if (e.key === "Tab" && quickRestart === "tab") {
-    e.preventDefault();
-    restartTest();
-  }
-  
-  else if (e.key === "Alt" && quickRestart === "alt") {
-    e.preventDefault();
-    restartTest();
-  }
-};
+    if (e.key === "Escape" && quickRestart === "esc") {
+      e.preventDefault();
+      if(user.id && testTimeLeft !== testTime) {
+        timeTyping({ id: user.id, time_typing: testTime - testTimeLeft });
+      }
+      restartTest();
+    }
+    else if (e.key === "Tab" && quickRestart === "tab") {
+      e.preventDefault();
+      if(user.id && testTimeLeft !== testTime) {
+        timeTyping({ id: user.id, time_typing: testTime - testTimeLeft });
+      }
+      restartTest();
+    }
+    else if (e.key === "Alt" && quickRestart === "alt") {
+      e.preventDefault();
+      if(user.id && testTimeLeft !== testTime) {
+        timeTyping({ id: user.id, time_typing: testTime - testTimeLeft });
+      }
+      restartTest();
+    }
+  };
   return (
-    <div onKeyDown={handleKeyDown} data-theme={isDark ? 'dark' : ''} className={`font-poppins h-screen bg-bgcolor text-textcolor ${ !cursorVisible ? "cursor-none" : "cursor-default" }`}>
+    <div
+      onKeyDown={handleKeyDown}
+      data-theme={isDark ? "dark" : ""}
+      className={`font-poppins h-screen bg-bgcolor text-textcolor ${!cursorVisible ? "cursor-none" : "cursor-default"}`}
+    >
       <TypingTestNavbar />
       <div className="flex items-center flex-col mt-7">
         {/* <MobileSettingsNavbar /> */}
@@ -59,7 +79,6 @@ const TypingTest = () => {
       </div>
     </div>
   );
+};
 
-}
-
-export default TypingTest
+export default TypingTest;

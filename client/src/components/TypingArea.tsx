@@ -13,6 +13,8 @@ import { useSettingsStore } from "../store/useSettingsStore";
 import { useMe } from "../hooks/useMe";
 import { useTestStarted } from "../hooks/useTestStarted";
 import { useTestCompleted } from "../hooks/useTestCompleted";
+import { useTestTimeLeftStore } from "../store/useTestTimeLeftStore";
+import { useTimeTyping } from "../hooks/useTimeTyping";
 
 const CursorComponents = {
   default: CursorDefault,
@@ -24,6 +26,8 @@ const TypingArea = () => {
   const difficulty = useDifficultyTokenStore((state) => state.difficulty);
   const cursorType = useSettingsStore((state) => state.cursorType);
   const errorBehaviour = useSettingsStore((state) => state.errorBehaviour);
+  const testTimeLeft = useTestTimeLeftStore((state) => state.testTimeLeft);
+  const setTestTimeLeft = useTestTimeLeftStore((state) => state.setTestTimeLeft);
 
   const ActiveCursor = CursorComponents[cursorType];
 
@@ -37,9 +41,8 @@ const TypingArea = () => {
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   const [typedText, setTypedText] = useState("");
-  const [timeLeft, setTimeLeft] = useState(testTime);
   useEffect(() => {
-    setTimeLeft(testTime);
+    setTestTimeLeft(testTime);
   }, [testTime]);
 
   const started = useTestStartedStore((state) => state.testStarted);
@@ -79,7 +82,9 @@ const TypingArea = () => {
 
   const { data: user } = useMe();
   const { startTest } = useTestStarted();
-  const { completeTest } = useTestCompleted();
+  const { completedTest } = useTestCompleted();
+  const { timeTyping } = useTimeTyping();
+
 
   const liveWpm = avgWpmPerSecondArr[avgWpmPerSecondArr.length - 1] ?? 0;
   const liveAccuracy =
@@ -194,9 +199,9 @@ const TypingArea = () => {
 
   useEffect(() => {
     // AVG WPM
-    if (!started || timeLeft < 0) return;
+    if (!started || testTimeLeft < 0) return;
 
-    const timeInMinutes = (testTime - timeLeft) / 60;
+    const timeInMinutes = (testTime - testTimeLeft) / 60;
 
     if (timeInMinutes <= 0) return;
 
@@ -209,24 +214,24 @@ const TypingArea = () => {
     const avgWpm = Math.round(correctChars / (5 * timeInMinutes));
 
     setAvgWpmPerSecondArr((prev) => [...prev, avgWpm]);
-  }, [timeLeft]);
+  }, [testTimeLeft]);
 
   useEffect(() => {
     // RAW WPM
-    if (!started || timeLeft < 0) return;
+    if (!started || testTimeLeft < 0) return;
 
-    const timeInMinutes = (testTime - timeLeft) / 60;
+    const timeInMinutes = (testTime - testTimeLeft) / 60;
 
     if (timeInMinutes <= 0) return;
 
     const rawWpm = Math.round(typedText.length / (5 * timeInMinutes));
 
     setRawWpmPerSecondArr((prev) => [...prev, rawWpm]);
-  }, [timeLeft]);
+  }, [testTimeLeft]);
 
   useEffect(() => {
     // BURST WPM
-    if (!started || timeLeft < 0) return;
+    if (!started || testTimeLeft < 0) return;
 
     const currentLength = typedText.length;
     const prevLength = prevLengthRef.current;
@@ -238,16 +243,16 @@ const TypingArea = () => {
     const instantWpm = Math.round((charsThisSecond / 5) * 60);
 
     setBurstPerSecondArr((prev) => [...prev, instantWpm]);
-  }, [timeLeft]);
+  }, [testTimeLeft]);
 
   useEffect(() => {
     // WRONG CHARS PER SECOND
-    if (!started || timeLeft < 0) return;
+    if (!started || testTimeLeft < 0) return;
 
     setWrongCharsPerSecondArr((prev) => [...prev, wrongCharsTypedPerSecond]);
 
     setWrongCharsTypedPerSecond(0);
-  }, [timeLeft]);
+  }, [testTimeLeft]);
 
   useEffect(() => {
     const calculateCharsPerLine = () => {
@@ -284,19 +289,21 @@ const TypingArea = () => {
     return { wpm, rawAccuracy, typedText };
   };
   useEffect(() => {
-    if (timeLeft === 0) {
+    if (testTimeLeft === 0 && started) {
       setStarted(false);
       if (user?.id) {
-        completeTest(user.id);
+        completedTest(user.id);
+        timeTyping({ id: user.id, time_typing: testTime });
+
       }
     }
-  }, [timeLeft, setStarted]);
+  }, [testTimeLeft, setStarted]);
 
   useEffect(() => { // TIMER DECREMENT
-    if (!started || timeLeft <= 0) return;
+    if (!started || testTimeLeft <= 0) return;
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
+      setTestTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
           return 0;
@@ -361,7 +368,7 @@ const TypingArea = () => {
         <div
           className={`text-2xl flex justify-center ${started || focused ? "" : "blur-md"} ${started ? "text-textcolor/80" : ""}`}
         >
-          {timeLeft}s
+          {testTimeLeft}s
         </div>
         <div className="w-114"></div>
       </div>
@@ -380,7 +387,7 @@ const TypingArea = () => {
 
       <input
         ref={inputRef}
-        disabled={timeLeft === 0}
+        disabled={testTimeLeft === 0}
         autoComplete="off"
         id="typing-input"
         className={`min-h-[35vh] w-[85%] absolute opacity-0 ${!cursorVisible ? "cursor-none" : "cursor-default"}`}
