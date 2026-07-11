@@ -8,6 +8,7 @@ import type { TypingResult } from "../types/typingResult";
 import { useMe } from "../hooks/useMe";
 import { useTests } from "../hooks/useTests";
 import { useEffect, useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Results = () => {
   const { data: user } = useMe();
@@ -17,7 +18,16 @@ const Results = () => {
   const data = state as TypingResult | null;
   const { isDark } = useTheme();
   useTitle("Results");
-  useButtonNavigator({ targetKey: "Escape", targetPath: "/typingtest" });
+  useButtonNavigator({
+    targetKey: "Escape",
+    targetPath: "/typingtest",
+    onBeforeNavigate: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["tokens"],
+      });
+    },
+  });
+  const queryClient = useQueryClient();
 
   const hasRun = useRef(false);
   useEffect(() => {

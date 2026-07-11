@@ -45,21 +45,21 @@ const TypingTest = () => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape" && quickRestart === "esc") {
       e.preventDefault();
-      if(user.id && testTimeLeft !== testTime) {
+      if(user?.id && testTimeLeft !== testTime) {
         timeTyping({ id: user.id, time_typing: testTime - testTimeLeft });
       }
       restartTest();
     }
     else if (e.key === "Tab" && quickRestart === "tab") {
       e.preventDefault();
-      if(user.id && testTimeLeft !== testTime) {
+      if(user?.id && testTimeLeft !== testTime) {
         timeTyping({ id: user.id, time_typing: testTime - testTimeLeft });
       }
       restartTest();
     }
     else if (e.key === "Alt" && quickRestart === "alt") {
       e.preventDefault();
-      if(user.id && testTimeLeft !== testTime) {
+      if(user?.id && testTimeLeft !== testTime) {
         timeTyping({ id: user.id, time_typing: testTime - testTimeLeft });
       }
       restartTest();

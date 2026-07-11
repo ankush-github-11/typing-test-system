@@ -99,6 +99,13 @@ const TypingArea = () => {
   const handleMouseEnter = () => {
     inputRef.current?.focus();
   };
+  useLayoutEffect(() => {
+    const id = requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+
+    return () => cancelAnimationFrame(id);
+  }, []);
   const cursorVisible = useCursorVisibility(started);
 
   const lines = useMemo(() => {
@@ -161,7 +168,7 @@ const TypingArea = () => {
     if (e.key.length > 1) return;
     if (!started){
       setStarted(true); // Start the test
-      if(user.id) startTest(user.id);
+      if(user?.id) startTest(user.id);
     }
 
     e.preventDefault();

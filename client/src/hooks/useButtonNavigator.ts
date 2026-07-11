@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 interface useButtonNavigatorProps {
   targetKey: string;
   targetPath: string;
+  onBeforeNavigate?: () => void;
 }
 const useButtonNavigator = (props: useButtonNavigatorProps) => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const useButtonNavigator = (props: useButtonNavigatorProps) => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === props.targetKey) {
         e.preventDefault();
+        props.onBeforeNavigate?.();
         navigate(props.targetPath);
       }
     };
