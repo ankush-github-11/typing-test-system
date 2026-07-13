@@ -37,13 +37,13 @@ const Results = () => {
       id: user.id,
       wpm: data.wpm,
       accuracy:
-        data.totalCharsTyped > 0
-          ? ((data.totalCharsTyped - data.wrongCharsTyped) * 100) /
-            data.totalCharsTyped
+        data.testTotalCharsTyped > 0
+          ? ((data.testTotalCharsTyped - data.wrongCharsTyped) * 100) /
+            data.testTotalCharsTyped
           : 0,
       raw_accuracy: data.rawAccuracy,
-      total_chars_typed: data.totalCharsTyped,
-      correct_chars: data.totalCharsTyped - data.wrongCharsTyped,
+      total_chars_typed: data.testTotalCharsTyped,
+      correct_chars: data.testTotalCharsTyped - data.wrongCharsTyped,
       test_time: data.testTime,
       difficulty: data.difficulty,
     });

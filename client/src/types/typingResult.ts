@@ -6,7 +6,7 @@ export type TypingResult = {
   rawAccuracy: number;
   typedText: string;
   wrongCharsTyped: number;
-  totalCharsTyped: number;
+  testTotalCharsTyped: number;
   avgWpmPerSecondArr: number[];
   burstPerSecondArr: number[];
   rawWpmPerSecondArr: number[];

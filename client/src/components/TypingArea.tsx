@@ -15,6 +15,9 @@ import { useTestStarted } from "../hooks/useTestStarted";
 import { useTestCompleted } from "../hooks/useTestCompleted";
 import { useTestTimeLeftStore } from "../store/useTestTimeLeftStore";
 import { useTimeTyping } from "../hooks/useTimeTyping";
+import { useTotalCharsTyped } from "../hooks/useTotalCharsTyped";
+import { useTestTotalCharsTypedStore } from "../store/useTestTotalCharsTypedStore";
+import { useTestRestartStore } from "../store/useTestRestartStore";
 
 const CursorComponents = {
   default: CursorDefault,
@@ -28,6 +31,9 @@ const TypingArea = () => {
   const errorBehaviour = useSettingsStore((state) => state.errorBehaviour);
   const testTimeLeft = useTestTimeLeftStore((state) => state.testTimeLeft);
   const setTestTimeLeft = useTestTimeLeftStore((state) => state.setTestTimeLeft);
+  const testTotalCharsTyped = useTestTotalCharsTypedStore((state) => state.testTotalCharsTyped);
+  const setTestTotalCharsTyped = useTestTotalCharsTypedStore((state) => state.setTestTotalCharsTyped);
+  const restartKey = useTestRestartStore((state) => state.restartKey);
 
   const ActiveCursor = CursorComponents[cursorType];
 
@@ -63,7 +69,6 @@ const TypingArea = () => {
 
   const prevLengthRef = useRef(0);
 
-  const [totalCharsTyped, setTotalCharsTyped] = useState(0);
   const [wrongCharsTyped, setWrongCharsTyped] = useState(0);
 
   const [wrongCharsTypedPerSecond, setWrongCharsTypedPerSecond] = useState(0);
@@ -84,14 +89,14 @@ const TypingArea = () => {
   const { startTest } = useTestStarted();
   const { completedTest } = useTestCompleted();
   const { timeTyping } = useTimeTyping();
-
+  const { totalCharsTyped } = useTotalCharsTyped();
 
   const liveWpm = avgWpmPerSecondArr[avgWpmPerSecondArr.length - 1] ?? 0;
   const liveAccuracy =
-    totalCharsTyped === 0
+    testTotalCharsTyped === 0
       ? 100
       : Math.round(
-          ((totalCharsTyped - wrongCharsTyped) / totalCharsTyped) * 100,
+          ((testTotalCharsTyped - wrongCharsTyped) / testTotalCharsTyped) * 100,
         );
   const liveBurst = burstPerSecondArr[burstPerSecondArr.length - 1] ?? 0;
 
@@ -99,6 +104,31 @@ const TypingArea = () => {
   const handleMouseEnter = () => {
     inputRef.current?.focus();
   };
+  const resetTest = () => {
+    setTypedText("");
+    setIndex(0);
+
+    setWrongCharsTyped(0);
+    setWrongCharsTypedPerSecond(0);
+
+    setTestTotalCharsTyped(0);
+
+    setAvgWpmPerSecondArr([]);
+    setRawWpmPerSecondArr([]);
+    setBurstPerSecondArr([]);
+    setWrongCharsPerSecondArr([]);
+
+    prevLengthRef.current = 0;
+
+    setVisibleStartLine(0);
+
+    setStarted(false);
+
+    setTestTimeLeft(testTime);
+  };
+  useEffect(() => {
+    resetTest();
+  }, [restartKey]);
   useLayoutEffect(() => {
     const id = requestAnimationFrame(() => {
       inputRef.current?.focus();
@@ -166,9 +196,9 @@ const TypingArea = () => {
 
     // IGNORE SPECIAL KEYS
     if (e.key.length > 1) return;
-    if (!started){
+    if (!started) {
       setStarted(true); // Start the test
-      if(user?.id) startTest(user.id);
+      if (user?.id) startTest(user.id);
     }
 
     e.preventDefault();
@@ -178,7 +208,7 @@ const TypingArea = () => {
       setWrongCharsTypedPerSecond((prev) => prev + 1);
     }
 
-    setTotalCharsTyped((prev) => prev + 1);
+    setTestTotalCharsTyped((prev) => prev + 1);
 
     setTypedText((prev) => {
       const newText = prev.slice(0, index) + e.key + prev.slice(index);
@@ -301,12 +331,26 @@ const TypingArea = () => {
       if (user?.id) {
         completedTest(user.id);
         timeTyping({ id: user.id, time_typing: testTime });
-
+        totalCharsTyped({
+          id: user.id,
+          total_chars_typed: testTotalCharsTyped,
+        });
       }
     }
-  }, [testTimeLeft, setStarted]);
+  }, [
+    testTimeLeft,
+    setStarted,
+    started,
+    testTotalCharsTyped,
+    user.id,
+    completedTest,
+    timeTyping,
+    testTime,
+    totalCharsTyped,
+  ]);
 
-  useEffect(() => { // TIMER DECREMENT
+  useEffect(() => {
+    // TIMER DECREMENT
     if (!started || testTimeLeft <= 0) return;
 
     const timer = setInterval(() => {
@@ -345,7 +389,7 @@ const TypingArea = () => {
       ...calculateFinalResults(),
       testTime,
       wrongCharsTyped,
-      totalCharsTyped,
+      testTotalCharsTyped,
       avgWpmPerSecondArr,
       burstPerSecondArr,
       rawWpmPerSecondArr,
@@ -363,9 +407,7 @@ const TypingArea = () => {
           <span className={`${started && showLiveWpm ? "" : "hidden"}`}>
             WPM: {liveWpm}
           </span>
-          <span
-            className={`${started && showLiveAccuracy ? "" : "hidden"}`}
-          >
+          <span className={`${started && showLiveAccuracy ? "" : "hidden"}`}>
             Acc: {liveAccuracy}%
           </span>
           <span className={`${started && showLiveBurst ? "" : "hidden"}`}>

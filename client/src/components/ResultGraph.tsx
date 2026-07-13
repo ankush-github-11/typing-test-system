@@ -71,10 +71,10 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
         <div className="flex gap-x-2 items-center">
           <div className="font-semibold text-2xl">Accuracy</div>
           <div className="font-semibold text-5xl text-color1">
-            {result.totalCharsTyped > 0
+            {result.testTotalCharsTyped > 0
               ? Math.round(
-                  ((result.totalCharsTyped - result.wrongCharsTyped) /
-                    result.totalCharsTyped) *
+                  ((result.testTotalCharsTyped - result.wrongCharsTyped) /
+                    result.testTotalCharsTyped) *
                     100,
                 )
               : 0}
@@ -256,7 +256,7 @@ export default function ResultGraph({ result }: { result: TypingResult }) {
 
       <h1 className="text-xl font-bold mt-4">Your Results</h1>
       <p>Wrong Characters: {result.wrongCharsTyped}</p>
-      <p>Total Characters: {result.totalCharsTyped}</p>
+      <p>Total Characters: {result.testTotalCharsTyped}</p>
       <p>Test Time: {result.testTime} seconds</p>
     </div>
   );

@@ -14,6 +14,8 @@ import { useTimeTyping } from "../hooks/useTimeTyping";
 import { useTestTimeStore } from "../store/useTestTimeStore";
 import { useTestTimeLeftStore } from "../store/useTestTimeLeftStore";
 import { useMe } from "../hooks/useMe";
+import { useTestTotalCharsTypedStore } from "../store/useTestTotalCharsTypedStore";
+import { useTotalCharsTyped } from "../hooks/useTotalCharsTyped";
 
 const TypingTest = () => {
   const queryClient = useQueryClient();
@@ -29,6 +31,7 @@ const TypingTest = () => {
   const { isDark } = useTheme();
   const { data: user } = useMe();
   const { timeTyping } = useTimeTyping();
+  const { totalCharsTyped } = useTotalCharsTyped();
   useTitle("Ether Typing Test");
 
   const started = useTestStartedStore((state) => state.testStarted);
@@ -42,11 +45,14 @@ const TypingTest = () => {
   const testTime = useTestTimeStore((state) => state.testTime);
   const testTimeLeft = useTestTimeLeftStore((state) => state.testTimeLeft);
 
+  const testTotalCharsTyped = useTestTotalCharsTypedStore((state) => state.testTotalCharsTyped);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape" && quickRestart === "esc") {
       e.preventDefault();
       if(user?.id && testTimeLeft !== testTime) {
         timeTyping({ id: user.id, time_typing: testTime - testTimeLeft });
+        totalCharsTyped({ id: user.id, total_chars_typed: testTotalCharsTyped });
       }
       restartTest();
     }
@@ -54,6 +60,7 @@ const TypingTest = () => {
       e.preventDefault();
       if(user?.id && testTimeLeft !== testTime) {
         timeTyping({ id: user.id, time_typing: testTime - testTimeLeft });
+        totalCharsTyped({ id: user.id, total_chars_typed: testTotalCharsTyped });
       }
       restartTest();
     }
@@ -61,6 +68,7 @@ const TypingTest = () => {
       e.preventDefault();
       if(user?.id && testTimeLeft !== testTime) {
         timeTyping({ id: user.id, time_typing: testTime - testTimeLeft });
+        totalCharsTyped({ id: user.id, total_chars_typed: testTotalCharsTyped });
       }
       restartTest();
     }
