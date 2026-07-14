@@ -16,9 +16,9 @@ const Edit = () => {
 
         <div className="mb-8 flex flex-col items-center gap-4">
           <img
-            src="https://ui-avatars.com/api/?name=Ankush+Bhattacharjee&background=0D8ABC&color=fff&size=200"
+            src="https://ui-avatars.com/api/?name=Ankush+Bhattacharjee&background=002&color=fff&size=200"
             alt="Profile"
-            className="h-32 w-32 rounded-full border-4 border-gray object-cover"
+            className="h-32 w-32 rounded-full border-4 border-color1 object-cover"
           />
 
           <button className="cursor-pointer rounded-lg px-5 py-2 bg-color1 text-white">
