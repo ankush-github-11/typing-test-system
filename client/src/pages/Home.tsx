@@ -1,7 +1,7 @@
 import { useTheme } from '../context/useTheme';
-import HomePageAnimation from "../components/HomePageAnimation";
 import Navbar from "../components/Navbar";
 import { useTitle } from '../hooks/useTitle';
+import HomePageAnimation from "../components/HomePageAnimation";
 import { useTestStartedStore } from '../store/useTestStartedStore';
 import useButtonNavigator from '../hooks/useButtonNavigator';
 const Home = () => {
