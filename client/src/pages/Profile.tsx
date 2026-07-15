@@ -5,6 +5,7 @@ import useButtonNavigator from "../hooks/useButtonNavigator";
 import { useMe } from "../hooks/useMe";
 import { useTitle } from "../hooks/useTitle";
 import { LaptopMinimalCheck, Rocket, SquareUser, ClockArrowUp, MapPin, Building2, Pencil, Flag } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { isDark } = useTheme();
@@ -62,6 +63,11 @@ const Profile = () => {
             <div className="h-fit w-full mb-5 flex gap-x-3 items-center">
               <p className="text-[16px] font-semibold text-textcolorless/50">Date Joined</p>
               <p className="text-[15px]">Blank Date Joined</p>
+            </div>
+            <div className="mb-5 w-full h-fit select-none">
+              <Link to="/edit" className="rounded-md text-[16px] border-2 border-color1 h-10 w-full flex justify-center items-center">
+                <span className="text-color1 text-[17px]">Edit Profile</span>
+              </Link>
             </div>
             <div className="h-fit w-full flex flex-col gap-y-[8px] mb-5">
               <p className="text-[17px] font-semibold mb-1">Overall Stats</p>

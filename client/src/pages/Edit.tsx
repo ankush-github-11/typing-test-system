@@ -49,14 +49,13 @@ const Edit = () => {
             />
           </div>
 
-
           <div>
             <label className="mb-2 block text-sm font-semibold">
-              Phone Number
+              Keyboard
             </label>
             <input
-              type="tel"
-              placeholder="Phone Number"
+              type="text"
+              placeholder="Keyboard"
               className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
             />
           </div>
@@ -90,6 +89,17 @@ const Edit = () => {
             <input
               type="text"
               placeholder="City"
+              className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-semibold">
+              Institution/Organization
+            </label>
+            <input
+              type="text"
+              placeholder="Institution/Organization"
               className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
             />
           </div>
