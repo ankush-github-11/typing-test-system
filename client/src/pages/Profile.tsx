@@ -41,7 +41,7 @@ const Profile = () => {
             <div className="h-fit w-fit flex gap-x-3 items-center">
               <SquareUser size={120} strokeWidth={1}/>
               <div className="flex flex-col gap-y-1 w-full h-fit">
-                <p className="text-[16px]">Blank Name</p>
+                <p className="text-[16px]">{user.name}</p>
                 <p className="text-[14px] text-textcolorless">Blank Username</p>
                 <p className="text-[14px]">Rank <span>Blank Rank</span></p>
               </div>
@@ -54,11 +54,11 @@ const Profile = () => {
               <p className="w-fit text-textcolorless"><span className="font-semibold">{user.xp}</span>/2300</p>
             </div>
             <div className="h-fit w-full mb-5">
-              <p className="text-[15px]">Blank Bio</p>
+              <p className="text-[15px]">{user.bio}</p>
             </div>
             <div className="h-fit w-full mb-1 flex gap-x-3 items-center">
               <p className="text-[16px] font-semibold text-textcolorless/50">Keyboard</p>
-              <p className="text-[15px]">Blank Keyboard</p>
+              <p className="text-[15px]">{user.keyboard}</p>
             </div>
             <div className="h-fit w-full mb-5 flex gap-x-3 items-center">
               <p className="text-[16px] font-semibold text-textcolorless/50">Date Joined</p>
@@ -102,14 +102,14 @@ const Profile = () => {
               <div className="w-fit flex items-center">
                 <MapPin size={18} strokeWidth={2} className="text-textcolorless/60 mr-2"/>
                 <p className="text-[14.5px] mr-5 text-textcolorless">
-                  <span>Blank City</span>
+                  <span>{user.city}</span>
                   <span>,{" "}</span>
-                  <span>Blank Country</span>
+                  <span>{user.country}</span>
                 </p>
               </div>
               <div className="w-fit flex items-center">
                 <Building2 size={18} strokeWidth={2} className="text-textcolorless/60 mr-2"/>
-                <p className="text-[14.5px] mr-5 text-textcolorless">Blank Organization</p>
+                <p className="text-[14.5px] mr-5 text-textcolorless">{user.organization}</p>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useTheme } from "../context/useTheme";
 import { useTitle } from "../hooks/useTitle";
@@ -10,29 +10,35 @@ import {
   editProfileSchema,
   type EditProfileFormData,
 } from "../schemas/editProfileSchema";
+import { useMe } from "../hooks/useMe";
 
 const Edit = () => {
   const { isDark } = useTheme();
 
   useTitle("Edit Profile");
+  const { data: user } = useMe();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<EditProfileFormData>({
     resolver: zodResolver(editProfileSchema),
     mode: "onBlur",
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      keyboard: "",
-      bio: "",
-      country: "",
-      city: "",
-      institution: "",
-    },
   });
+  useEffect(() => {
+    if (!user) return;
+
+    reset({
+      name: user.name ?? "",
+      keyboard: user.keyboard ?? "",
+      bio: user.bio ?? "",
+      country: user.country ?? "",
+      city: user.city ?? "",
+      organization: user.organization ?? "",
+    });
+  }, [user, reset]);
 
   const onSubmit = async (data: EditProfileFormData) => {
     console.log(data);
@@ -70,51 +76,25 @@ const Edit = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-1 gap-6 md:grid-cols-2"
         >
-          {/* First Name */}
+          {/* Name */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              First Name
-            </label>
+            <label className="mb-2 block text-sm font-semibold">Name</label>
 
             <input
-              {...register("firstName")}
+              {...register("name")}
               type="text"
-              placeholder="Enter your first name"
+              placeholder="Enter your name"
               className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
             />
 
-            {errors.firstName && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.firstName.message}
-              </p>
-            )}
-          </div>
-
-          {/* Last Name */}
-          <div>
-            <label className="mb-2 block text-sm font-semibold">
-              Last Name
-            </label>
-
-            <input
-              {...register("lastName")}
-              type="text"
-              placeholder="Enter your last name"
-              className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
-            />
-
-            {errors.lastName && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.lastName.message}
-              </p>
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
             )}
           </div>
 
           {/* Keyboard */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              Keyboard
-            </label>
+            <label className="mb-2 block text-sm font-semibold">Keyboard</label>
 
             <input
               {...register("keyboard")}
@@ -142,17 +122,13 @@ const Edit = () => {
             />
 
             {errors.bio && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.bio.message}
-              </p>
+              <p className="mt-1 text-sm text-red-500">{errors.bio.message}</p>
             )}
           </div>
 
           {/* Country */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              Country
-            </label>
+            <label className="mb-2 block text-sm font-semibold">Country</label>
 
             <input
               {...register("country")}
@@ -180,9 +156,7 @@ const Edit = () => {
             />
 
             {errors.city && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.city.message}
-              </p>
+              <p className="mt-1 text-sm text-red-500">{errors.city.message}</p>
             )}
           </div>
 
@@ -193,15 +167,15 @@ const Edit = () => {
             </label>
 
             <input
-              {...register("institution")}
+              {...register("organization")}
               type="text"
               placeholder="Institution / Organization"
               className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
             />
 
-            {errors.institution && (
+            {errors.organization && (
               <p className="mt-1 text-sm text-red-500">
-                {errors.institution.message}
+                {errors.organization.message}
               </p>
             )}
           </div>

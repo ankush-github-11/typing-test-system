@@ -10,6 +10,7 @@ import testStartedController from "./controllers/testStartedController";
 import testCompletedController from "./controllers/testCompletedController";
 import timeTypingController from "./controllers/timeTypingController";
 import totalCharsTypedController from "./controllers/totalCharsTypedController";
+import editProfileRoutes from "./routes/editProfileRoutes";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/testStarted", testStartedController);
 app.use("/api/testCompleted", testCompletedController);
 app.use("/api/timeTyping", timeTypingController);
 app.use("/api/totalCharsTyped", totalCharsTypedController);
+app.use("/api/editProfile", editProfileRoutes);
 
 const PORT = process.env.PORT || 5000;
 
