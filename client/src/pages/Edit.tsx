@@ -11,13 +11,14 @@ import {
   type EditProfileFormData,
 } from "../schemas/editProfileSchema";
 import { useMe } from "../hooks/useMe";
+import { useEditProfile } from "../hooks/useEditProfile";
 
 const Edit = () => {
   const { isDark } = useTheme();
 
   useTitle("Edit Profile");
   const { data: user } = useMe();
-
+  const { updateProfile } = useEditProfile();
   const {
     register,
     handleSubmit,
@@ -42,9 +43,10 @@ const Edit = () => {
 
   const onSubmit = async (data: EditProfileFormData) => {
     console.log(data);
-
-    // Example
-    // await axios.put("/api/profile", data);
+    await updateProfile({
+      id: user.id,
+      ...data,
+    });
   };
 
   return (
