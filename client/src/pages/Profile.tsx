@@ -19,7 +19,6 @@ import { UserRoundPen } from "lucide-react";
 import WpmBarChart from "../components/WpmBarChart";
 import { useUserTests } from "../hooks/useUserTestsData";
 import type { userTestsData } from "../types/userTestsData";
-import { useEffect } from "react";
 
 const Profile = () => {
   const { isDark } = useTheme();
@@ -28,7 +27,7 @@ const Profile = () => {
   const { data: user, isLoading } = useMe();
   const { data: tests } = useUserTests(user?.id);
   const navigate = useNavigate();
-  console.log(tests);
+
   const getWpmDistribution = (tests: userTestsData[]) => {
     if (!tests.length) return [];
     const maxWpm = Math.max(...tests.map((test) => test.wpm));
@@ -43,10 +42,7 @@ const Profile = () => {
       count,
     }));
   };
-  useEffect(()=>{
-    if(!tests) return;
-    console.log(getWpmDistribution(tests));
-  }, [tests])
+  const wpmDistributionArray = tests ? getWpmDistribution(tests) : [];
 
   if (!isLoading && !user) {
     navigate("/login");
@@ -224,7 +220,7 @@ const Profile = () => {
           {/*Right Div*/}
           <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl p-5">
             <div>
-              <WpmBarChart />
+              <WpmBarChart data={wpmDistributionArray} />
             </div>
           </div>
         </div>

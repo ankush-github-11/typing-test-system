@@ -9,27 +9,20 @@ import {
   Cell,
 } from "recharts";
 
-const data = [
-  { range: "0-9", count: 25 },
-  { range: "10-19", count: 48 },
-  { range: "20-29", count: 76 },
-  { range: "30-49", count: 52 },
-  { range: "41-50", count: 36 },
-  { range: "51-60", count: 18 },
-  { range: "61-70", count: 9 },
-];
+export interface DataPoint {
+  range: string;
+  count: number;
+}
+
+interface WpmBarChartProps {
+  data: DataPoint[];
+}
 
 const colors = [
-  "#6366F1",
-  "#7C3AED",
-  "#9333EA",
-  "#A855F7",
-  "#C084FC",
-  "#D8B4FE",
-  "#E9D5FF",
+  "#c607f3"
 ];
 
-export default function RangeBarChart() {
+export default function WpmBarChart({ data }: WpmBarChartProps) {
   return (
     <div
       style={{
@@ -43,7 +36,7 @@ export default function RangeBarChart() {
       <h3
         style={{
           marginBottom: 20,
-          fontWeight: 600
+          fontWeight: 600,
         }}
       >
         WPM Distribution
