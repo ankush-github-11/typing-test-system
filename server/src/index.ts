@@ -11,6 +11,7 @@ import testCompletedController from "./controllers/testCompletedController";
 import timeTypingController from "./controllers/timeTypingController";
 import totalCharsTypedController from "./controllers/totalCharsTypedController";
 import editProfileRoutes from "./routes/editProfileRoutes";
+import userTestsDataRoutes from "./routes/userTestsDataRoutes";
 
 const app = express();
 
@@ -31,12 +32,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/tests", testsRoutes);
 app.use("/api/tokens", tokenRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
+app.use("/api/editProfile", editProfileRoutes);
+app.use("/api/userTestsData", userTestsDataRoutes);
 
 app.use("/api/testStarted", testStartedController);
 app.use("/api/testCompleted", testCompletedController);
 app.use("/api/timeTyping", timeTypingController);
 app.use("/api/totalCharsTyped", totalCharsTypedController);
-app.use("/api/editProfile", editProfileRoutes);
 
 const PORT = process.env.PORT || 5000;
 
