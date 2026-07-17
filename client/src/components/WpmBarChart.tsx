@@ -10,10 +10,10 @@ import {
 } from "recharts";
 
 const data = [
-  { range: "1-10", count: 25 },
-  { range: "11-20", count: 48 },
-  { range: "21-30", count: 76 },
-  { range: "31-40", count: 52 },
+  { range: "0-9", count: 25 },
+  { range: "10-19", count: 48 },
+  { range: "20-29", count: 76 },
+  { range: "30-49", count: 52 },
   { range: "41-50", count: 36 },
   { range: "51-60", count: 18 },
   { range: "61-70", count: 9 },

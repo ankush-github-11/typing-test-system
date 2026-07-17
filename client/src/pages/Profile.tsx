@@ -18,6 +18,8 @@ import { Link } from "react-router-dom";
 import { UserRoundPen } from "lucide-react";
 import WpmBarChart from "../components/WpmBarChart";
 import { useUserTests } from "../hooks/useUserTestsData";
+import type { userTestsData } from "../types/userTestsData";
+import { useEffect } from "react";
 
 const Profile = () => {
   const { isDark } = useTheme();
@@ -26,11 +28,30 @@ const Profile = () => {
   const { data: user, isLoading } = useMe();
   const { data: tests } = useUserTests(user?.id);
   const navigate = useNavigate();
+  console.log(tests);
+  const getWpmDistribution = (tests: userTestsData[]) => {
+    if (!tests.length) return [];
+    const maxWpm = Math.max(...tests.map((test) => test.wpm));
+    const bucketCount = Math.floor(maxWpm / 10) + 1;
+    const ranges = Array(bucketCount).fill(0);
+    tests.forEach((test) => {
+      const index = Math.floor(test.wpm / 10);
+      ranges[index]++;
+    });
+    return ranges.map((count, index) => ({
+      range: `${index * 10}-${index * 10 + 9}`,
+      count,
+    }));
+  };
+  useEffect(()=>{
+    if(!tests) return;
+    console.log(getWpmDistribution(tests));
+  }, [tests])
+
   if (!isLoading && !user) {
     navigate("/login");
     return null;
   }
-  console.log(tests);
   const formatDate = (date: string) => {
     const d = new Date(date);
     const day = d.getDate();
@@ -44,6 +65,7 @@ const Profile = () => {
       month: "long",
     })}, ${d.getFullYear()}`;
   };
+
   const formatTime = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -53,6 +75,7 @@ const Profile = () => {
       .map((unit) => unit.toString().padStart(2, "0"))
       .join(":");
   };
+
   return (
     <div
       data-theme={isDark ? "dark" : ""}

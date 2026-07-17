@@ -8,5 +8,5 @@ export const getUserTests = async (id: number) => {
     }
   );
 
-  return response.data;
+  return response.data.data;
 };
