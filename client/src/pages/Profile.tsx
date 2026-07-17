@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { UserRoundPen } from "lucide-react";
+import WpmBarChart from "../components/WpmBarChart";
 
 const Profile = () => {
   const { isDark } = useTheme();
@@ -195,7 +196,11 @@ const Profile = () => {
             )}
           </div>
           {/*Right Div*/}
-          <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl"></div>
+          <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl p-5">
+            <div>
+              <WpmBarChart />
+            </div>
+          </div>
         </div>
       )}
     </div>
