@@ -27,6 +27,19 @@ const Profile = () => {
     navigate("/login");
     return null;
   }
+  const formatDate = (date: string) => {
+    const d = new Date(date);
+    const day = d.getDate();
+
+    const suffix =
+      day % 100 >= 11 && day % 100 <= 13
+        ? "th"
+        : ["th", "st", "nd", "rd"][day % 10] || "th";
+
+    return `${day}${suffix} ${d.toLocaleString("default", {
+      month: "long",
+    })}, ${d.getFullYear()}`;
+  };
   const formatTime = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -72,27 +85,27 @@ const Profile = () => {
             <div className="h-fit w-full mb-5">
               <p className="text-[15px]">{user.bio}</p>
             </div>
+            <div className="h-fit w-full mb-1 flex gap-x-3 items-center">
+              <p className="text-[16px] font-semibold text-textcolorless/50">
+                Joined
+              </p>
+              <p className="text-[15px]">{formatDate(user.created_at)}</p>
+            </div>
             {user.keyboard && (
-              <div className="h-fit w-full mb-1 flex gap-x-3 items-center">
+              <div className="h-fit w-full mb-5 flex gap-x-3 items-center">
                 <p className="text-[16px] font-semibold text-textcolorless/50">
                   Keyboard
                 </p>
                 <p className="text-[15px]">{user.keyboard}</p>
               </div>
             )}
-            <div className="h-fit w-full mb-5 flex gap-x-3 items-center">
-              <p className="text-[16px] font-semibold text-textcolorless/50">
-                Date Joined
-              </p>
-              <p className="text-[15px]">Blank Date Joined</p>
-            </div>
             <div className="mb-5 w-full h-fit select-none">
               <Link
                 to="/edit"
                 className="rounded-md text-[16px] border-2 border-color1 h-10 w-full flex justify-center items-center gap-x-1"
               >
-                <UserRoundPen className="text-color1" size={17} />
-                <span className="text-color1 text-[17px]">Edit Profile</span>
+                <span className="text-color1 text-[15px]">Edit Profile</span>
+                <UserRoundPen className="text-color1" size={15} />
               </Link>
             </div>
             <div className="h-fit w-full flex flex-col gap-y-[8px] mb-5">
