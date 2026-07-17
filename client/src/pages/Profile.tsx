@@ -17,17 +17,20 @@ import {
 import { Link } from "react-router-dom";
 import { UserRoundPen } from "lucide-react";
 import WpmBarChart from "../components/WpmBarChart";
+import { useUserTests } from "../hooks/useUserTestsData";
 
 const Profile = () => {
   const { isDark } = useTheme();
   useTitle("Profile");
-  const { data: user, isLoading } = useMe();
-  const navigate = useNavigate();
   useButtonNavigator({ targetKey: "Escape", targetPath: "/typingtest" });
+  const { data: user, isLoading } = useMe();
+  const { data: tests } = useUserTests(user?.id);
+  const navigate = useNavigate();
   if (!isLoading && !user) {
     navigate("/login");
     return null;
   }
+  console.log(tests);
   const formatDate = (date: string) => {
     const d = new Date(date);
     const day = d.getDate();
