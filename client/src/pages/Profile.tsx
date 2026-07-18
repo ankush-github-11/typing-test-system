@@ -19,6 +19,8 @@ import { UserRoundPen } from "lucide-react";
 import WpmBarChart from "../components/WpmBarChart";
 import { useUserTests } from "../hooks/useUserTestsData";
 import type { userTestsData } from "../types/userTestsData";
+import Loader from "../components/Loader";
+import useMinimumLoader from "../hooks/useMinimumLoader";
 
 const Profile = () => {
   const { isDark } = useTheme();
@@ -26,6 +28,7 @@ const Profile = () => {
   useButtonNavigator({ targetKey: "Escape", targetPath: "/typingtest" });
   const { data: user, isLoading } = useMe();
   const { data: tests } = useUserTests(user?.id);
+  const showPageLoader = useMinimumLoader(isLoading);
   const navigate = useNavigate();
 
   const getWpmDistribution = (tests: userTestsData[]) => {
@@ -75,11 +78,13 @@ const Profile = () => {
   return (
     <div
       data-theme={isDark ? "dark" : ""}
-      className="font-poppins h-fit bg-bgcolor text-textcolor"
+      className="font-poppins min-h-screen h-fit bg-bgcolor text-textcolor"
     >
       <Navbar />
-      {isLoading ? (
-        <div>Loading...</div>
+      {showPageLoader ? (
+        <div className="text-[20px] h-[70vh] w-full flex justify-center items-center">
+          <Loader />
+        </div>
       ) : (
         <div className="flex gap-x-5 min-h-screen h-fit px-30 pb-30">
           {/*Left Div*/}
@@ -108,7 +113,9 @@ const Profile = () => {
             <div className="h-fit w-full mb-5">
               <p className="text-[15px]">{user.bio}</p>
             </div>
-            <div className="h-fit w-full mb-1 flex gap-x-3 items-center">
+            <div
+              className={`h-fit w-full ${user.keyboard ? "mb-1" : "mb-5"} flex gap-x-3 items-center`}
+            >
               <p className="text-[16px] font-semibold text-textcolorless/50">
                 Joined
               </p>
@@ -219,8 +226,17 @@ const Profile = () => {
           </div>
           {/*Right Div*/}
           <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl p-5">
-            <div>
-              <WpmBarChart data={wpmDistributionArray} />
+            <div className="h-fit w-full flex flex-col gap-y-5">
+              <h3 className="text-[17px] font-semibold">WPM Distribution</h3>
+              <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
+                {wpmDistributionArray.length === 0 ? (
+                  <p className="text-[16px] text-textcolorless/70">
+                    No tests taken yet.
+                  </p>
+                ) : (
+                  <WpmBarChart data={wpmDistributionArray} />
+                )}
+              </div>
             </div>
           </div>
         </div>
