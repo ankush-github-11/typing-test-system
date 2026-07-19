@@ -8,4 +8,5 @@ export interface userTestsData {
   correct_chars: number;
   test_time: number;
   difficulty: "easy" | "medium" | "hard";
+  created_at: string;
 };

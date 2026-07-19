@@ -38,8 +38,8 @@ export default function AccuracyAreaChart({
         >
           <defs>
             <linearGradient id="rawAccuracyGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#696969" stopOpacity={0.45} />
-              <stop offset="95%" stopColor="#696969" stopOpacity={0} />
+              <stop offset="5%" stopColor="#8EE600" stopOpacity={0.45} />
+              <stop offset="95%" stopColor="#8EE600" stopOpacity={0} />
             </linearGradient>
 
             <linearGradient id="accuracyGradient" x1="0" y1="0" x2="0" y2="1">
@@ -79,7 +79,7 @@ export default function AccuracyAreaChart({
           <Area
             type="monotone"
             dataKey="rawAccuracyCount"
-            stroke="#696969"
+            stroke="#8EE600"
             strokeWidth={2}
             fill="url(#rawAccuracyGradient)"
             fillOpacity={1}

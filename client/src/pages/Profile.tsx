@@ -22,6 +22,14 @@ import type { userTestsData } from "../types/userTestsData";
 import Loader from "../components/Loader";
 import useMinimumLoader from "../hooks/useMinimumLoader";
 import AccuracyAndRawAccuracyAreaChart from "../components/AccuracyAndRawAccuracyAreaChart";
+import AverageAccuracyScatterChart from "../components/AverageAccuracyScatterChart";
+import AverageWpmScatterChart from "../components/AverageWPMScatterChart";
+
+interface ScatterPoint {
+  x: number;
+  y: number;
+  date: string;
+}
 
 const Profile = () => {
   const { isDark } = useTheme();
@@ -95,7 +103,119 @@ const Profile = () => {
 
     return distribution;
   };
-  const accuracyAndRawAccuracyDistributionArray = tests ? getAccuracyAndRawAccuracyDistribution(tests) : [];
+  const accuracyAndRawAccuracyDistributionArray = tests
+    ? getAccuracyAndRawAccuracyDistribution(tests)
+    : [];
+
+  const getAverageWpmScatterData = (tests: userTestsData[]): ScatterPoint[] => {
+    if (!tests.length) return [];
+
+    const grouped = new Map<
+      string,
+      {
+        total: number;
+        count: number;
+        date: Date;
+      }
+    >();
+
+    tests.forEach((test) => {
+      const date = new Date(test.created_at);
+
+      const key = date.toISOString().split("T")[0];
+
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          total: 0,
+          count: 0,
+          date,
+        });
+      }
+
+      const current = grouped.get(key)!;
+      current.total += test.wpm;
+      current.count++;
+    });
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return [...grouped.values()]
+      .sort((a, b) => a.date.getTime() - b.date.getTime())
+      .map((item, index) => ({
+        x: index + 1,
+        y: +(item.total / item.count).toFixed(1),
+        date: `${item.date.getUTCDate()} ${
+          months[item.date.getUTCMonth()]
+        } ${item.date.getUTCFullYear()}`,
+      }));
+  };
+  const wpmScatterDataArray = tests ? getAverageWpmScatterData(tests) : [];
+
+  const getAverageAccuracyScatterData = (tests: userTestsData[]): ScatterPoint[] => {
+    if (!tests.length) return [];
+
+    const grouped = new Map<
+      string,
+      {
+        total: number;
+        count: number;
+        date: Date;
+      }
+    >();
+
+    tests.forEach((test) => {
+      const date = new Date(test.created_at);
+
+      const key = date.toISOString().split("T")[0];
+
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          total: 0,
+          count: 0,
+          date,
+        });
+      }
+
+      const current = grouped.get(key)!;
+      current.total += test.accuracy;
+      current.count++;
+    });
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return [...grouped.values()]
+      .sort((a, b) => a.date.getTime() - b.date.getTime())
+      .map((item, index) => ({
+        x: index + 1,
+        y: +(item.total / item.count).toFixed(1),
+        date: `${item.date.getUTCDate()} ${
+          months[item.date.getUTCMonth()]
+        } ${item.date.getUTCFullYear()}`,
+      }));
+  };
+  const accuracyScatterDataArray = tests ? getAverageAccuracyScatterData(tests) : [];
 
   if (!isLoading && !user) {
     navigate("/login");
@@ -302,6 +422,32 @@ const Profile = () => {
                     data={accuracyAndRawAccuracyDistributionArray}
                   />
                 )}
+              </div>
+            </div>
+            <div className="h-fit w-full flex flex-col gap-x-5">
+              <div className="flex-[5]">
+                <h3 className="text-[17px] font-semibold">Average WPM</h3>
+                <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
+                  {wpmScatterDataArray.length === 0 ? (
+                    <p className="text-[16px] text-textcolorless/70">
+                      No tests taken yet.
+                    </p>
+                  ) : (
+                    <AverageWpmScatterChart data={wpmScatterDataArray} />
+                  )}
+                </div>
+              </div>
+              <div className="flex-[5]">
+                <h3 className="text-[17px] font-semibold">Average Accuracy</h3>
+                <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
+                  {accuracyAndRawAccuracyDistributionArray.length === 0 ? (
+                    <p className="text-[16px] text-textcolorless/70">
+                      No tests taken yet.
+                    </p>
+                  ) : (
+                    <AverageAccuracyScatterChart data={accuracyScatterDataArray} />
+                  )}
+                </div>
               </div>
             </div>
           </div>

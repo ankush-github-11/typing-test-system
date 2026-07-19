@@ -19,10 +19,9 @@ interface WpmBarChartProps {
   data: DataPoint[];
 }
 
-const colors = ["#c607f3"];
-
 export default function WpmBarChart({ data }: WpmBarChartProps) {
   const maxCount = Math.max(...data.map((d) => d.count), 4);
+  const maxValue = Math.max(...data.map((d) => d.count));
   return (
     <div
       style={{
@@ -69,8 +68,11 @@ export default function WpmBarChart({ data }: WpmBarChartProps) {
           />
 
           <Bar dataKey="count" radius={[8, 8, 0, 0]} animationDuration={800}>
-            {data.map((_, index) => (
-              <Cell key={index} fill={colors[index % colors.length]} />
+            {data.map((entry, index) => (
+              <Cell
+                key={index}
+                fill={entry.count === maxValue ? "#8EE600" : "#c607f3"}
+              />
             ))}
           </Bar>
         </BarChart>
