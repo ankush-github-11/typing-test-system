@@ -1,6 +1,7 @@
 import { useLeaderboard } from "../hooks/useLeaderboard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Loader from "./Loader";
+import useMinimumLoader from "../hooks/useMinimumLoader";
 
 const LeaberboardTable = () => {
   const [selectedDuration, setSelectedDuration] = useState<15 | 30 | 60 | 120>(
@@ -17,29 +18,8 @@ const LeaberboardTable = () => {
     duration: selectedDuration,
     difficulty: selectedDifficulty,
   });
-  const [showLoader, setShowLoader] = useState(true);
 
-  useEffect(() => {
-    setShowLoader(true);
-
-    const timer = setTimeout(() => {
-      if (!isLoading) {
-        setShowLoader(false);
-      }
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [selectedDuration, selectedDifficulty]);
-
-  useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setShowLoader(false);
-      }, 1500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
+  const showPageLoader = useMinimumLoader(isLoading);
   if (isError) {
     return <div>Error loading leaderboard</div>;
   }
@@ -153,7 +133,7 @@ const LeaberboardTable = () => {
             <div>Difficulty</div>
             <div>Date</div>
           </div>
-          {showLoader ? (
+          {showPageLoader ? (
             <div className="h-20 flex justify-center items-center">
               <Loader />
             </div>

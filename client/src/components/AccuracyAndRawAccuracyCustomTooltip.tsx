@@ -1,11 +1,11 @@
-export const WpmCustomTooltip = ({ active, payload }: any) => {
+export const AccuracyAndRawAccuracyCustomTooltip = ({ active, payload }: any) => {
   if (!active || !payload?.length) return null;
-  const { range, count } = payload[0].payload;
+  const { range, accuracyCount, rawAccuracyCount } = payload[0].payload;
   return (
     <div
       style={{
         minWidth: 70,
-        height: 50,
+        height: 80,
         padding: "0 12px",
         background: "#454545",
         borderRadius: 10,
@@ -21,7 +21,8 @@ export const WpmCustomTooltip = ({ active, payload }: any) => {
       }}
     >
       <span style={{ fontSize: 13}}>{range}</span>
-      <span style={{ fontSize: 16, fontWeight: 600 }}>Tests - {count}</span>
+      <span style={{ fontSize: 16, fontWeight: 600 }}>Tests - {accuracyCount}</span>
+      <span style={{ fontSize: 16, fontWeight: 600 }}>Tests - {rawAccuracyCount}</span>
     </div>
   );
 };

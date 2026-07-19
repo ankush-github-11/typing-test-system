@@ -27,7 +27,7 @@ export default function WpmBarChart({ data }: WpmBarChartProps) {
     <div
       style={{
         width: "100%",
-        height: 330,
+        height: 280,
         padding: 10,
         display: "flex",
         alignItems: "center",

@@ -21,6 +21,7 @@ import { useUserTests } from "../hooks/useUserTestsData";
 import type { userTestsData } from "../types/userTestsData";
 import Loader from "../components/Loader";
 import useMinimumLoader from "../hooks/useMinimumLoader";
+import AccuracyAndRawAccuracyAreaChart from "../components/AccuracyAndRawAccuracyAreaChart";
 
 const Profile = () => {
   const { isDark } = useTheme();
@@ -46,6 +47,55 @@ const Profile = () => {
     }));
   };
   const wpmDistributionArray = tests ? getWpmDistribution(tests) : [];
+
+  const getAccuracyAndRawAccuracyDistribution = (tests: userTestsData[]) => {
+    const buckets = [
+      { min: 0, max: 9, label: "0-9" },
+      { min: 10, max: 19, label: "10-19" },
+      { min: 20, max: 29, label: "20-29" },
+      { min: 30, max: 39, label: "30-39" },
+      { min: 40, max: 49, label: "40-49" },
+      { min: 50, max: 59, label: "50-59" },
+      { min: 60, max: 69, label: "60-69" },
+      { min: 70, max: 79, label: "70-79" },
+      { min: 80, max: 84, label: "80-84" },
+      { min: 85, max: 89, label: "85-89" },
+      { min: 90, max: 91, label: "90-91" },
+      { min: 92, max: 93, label: "92-93" },
+      { min: 94, max: 95, label: "94-95" },
+      { min: 96, max: 97, label: "96-97" },
+      { min: 98, max: 99, label: "98-99" },
+      { min: 100, max: 100, label: "100" },
+    ];
+
+    const distribution = buckets.map((bucket) => ({
+      range: bucket.label,
+      accuracyCount: 0,
+      rawAccuracyCount: 0,
+    }));
+
+    tests.forEach((test) => {
+      const accuracy = Math.round(test.accuracy);
+      const rawAccuracy = Math.round(test.raw_accuracy);
+
+      const accuracyIndex = buckets.findIndex(
+        (bucket) => accuracy >= bucket.min && accuracy <= bucket.max,
+      );
+      if (accuracyIndex !== -1) {
+        distribution[accuracyIndex].accuracyCount++;
+      }
+
+      const rawAccuracyIndex = buckets.findIndex(
+        (bucket) => rawAccuracy >= bucket.min && rawAccuracy <= bucket.max,
+      );
+      if (rawAccuracyIndex !== -1) {
+        distribution[rawAccuracyIndex].rawAccuracyCount++;
+      }
+    });
+
+    return distribution;
+  };
+  const accuracyAndRawAccuracyDistributionArray = tests ? getAccuracyAndRawAccuracyDistribution(tests) : [];
 
   if (!isLoading && !user) {
     navigate("/login");
@@ -78,7 +128,7 @@ const Profile = () => {
   return (
     <div
       data-theme={isDark ? "dark" : ""}
-      className="font-poppins min-h-screen h-fit bg-bgcolor text-textcolor"
+      className="font-poppins min-h-[110vh] h-fit bg-bgcolor text-textcolor"
     >
       <Navbar />
       {showPageLoader ? (
@@ -225,8 +275,8 @@ const Profile = () => {
             )}
           </div>
           {/*Right Div*/}
-          <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl p-5">
-            <div className="h-fit w-full flex flex-col gap-y-5">
+          <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl p-5 flex flex-col gap-y-3">
+            <div className="h-fit w-full flex flex-col gap-y-1">
               <h3 className="text-[17px] font-semibold">WPM Distribution</h3>
               <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
                 {wpmDistributionArray.length === 0 ? (
@@ -235,6 +285,22 @@ const Profile = () => {
                   </p>
                 ) : (
                   <WpmBarChart data={wpmDistributionArray} />
+                )}
+              </div>
+            </div>
+            <div className="h-fit w-full flex flex-col gap-y-1">
+              <h3 className="text-[17px] font-semibold">
+                Accuracy and Raw Accuracy Distribution
+              </h3>
+              <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
+                {accuracyAndRawAccuracyDistributionArray.length === 0 ? (
+                  <p className="text-[16px] text-textcolorless/70">
+                    No tests taken yet.
+                  </p>
+                ) : (
+                  <AccuracyAndRawAccuracyAreaChart
+                    data={accuracyAndRawAccuracyDistributionArray}
+                  />
                 )}
               </div>
             </div>
