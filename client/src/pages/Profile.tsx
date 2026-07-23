@@ -25,11 +25,17 @@ import AccuracyAndRawAccuracyAreaChart from "../components/AccuracyAndRawAccurac
 import AverageAccuracyScatterChart from "../components/AverageAccuracyScatterChart";
 import AverageWpmScatterChart from "../components/AverageWpmScatterChart";
 import { useState } from "react";
+import { ActivityCalendar } from "react-activity-calendar";
 
 interface ScatterPoint {
   x: number;
   y: number;
   date: string;
+}
+interface ActivityData {
+  date: string;
+  count: number;
+  level: 0 | 1 | 2 | 3 | 4;
 }
 
 const Profile = () => {
@@ -106,9 +112,7 @@ const Profile = () => {
 
     return distribution;
   };
-  const accuracyAndRawAccuracyDistributionArray = tests
-    ? getAccuracyAndRawAccuracyDistribution(tests)
-    : [];
+  const accuracyAndRawAccuracyDistributionArray = tests ? getAccuracyAndRawAccuracyDistribution(tests) : [];
 
   const getAverageWpmScatterData = (tests: userTestsData[]): ScatterPoint[] => {
     if (!tests.length) return [];
@@ -220,9 +224,55 @@ const Profile = () => {
         } ${item.date.getUTCFullYear()}`,
       }));
   };
-  const accuracyScatterDataArray = tests
-    ? getAverageAccuracyScatterData(tests)
-    : [];
+  const accuracyScatterDataArray = tests ? getAverageAccuracyScatterData(tests) : [];
+
+  const getActivityCalendarData = (tests: userTestsData[]): ActivityData[] => {
+    const activityMap = new Map<string, number>();
+
+    tests.forEach((test) => {
+      const date = new Date(test.created_at).toISOString().split("T")[0];
+
+      activityMap.set(date, (activityMap.get(date) ?? 0) + 1);
+    });
+    
+    const today = new Date();
+    const start = new Date(today);
+    start.setUTCDate(today.getUTCDate() - 364);
+
+    const activity: ActivityData[] = [];
+
+    for (
+      let date = new Date(start);
+      date <= today;
+      date.setUTCDate(date.getUTCDate() + 1)
+    ) {
+      const key = date.toISOString().split("T")[0];
+      const count = activityMap.get(key) ?? 0;
+
+      let level: 0 | 1 | 2 | 3 | 4 = 0;
+
+      if (count === 0) {
+        level = 0;
+      } else if (count <= 3) {
+        level = 1;
+      } else if (count <= 6) {
+        level = 2;
+      } else if (count <= 9) {
+        level = 3;
+      } else {
+        level = 4;
+      }
+
+      activity.push({
+        date: key,
+        count,
+        level,
+      });
+    }
+
+    return activity;
+  };
+  const activityCalendarData = tests ? getActivityCalendarData(tests) : [];
 
   if (!isLoading && !user) {
     navigate("/login");
@@ -403,6 +453,57 @@ const Profile = () => {
           </div>
           {/*Right Div*/}
           <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl p-5 flex flex-col gap-y-3">
+            <div className="h-fit w-full flex flex-col gap-y-1">
+              <h3 className="text-[17px] font-semibold">Activity Calendar</h3>
+              <div className="min-h-[28vh] h-fit w-full flex justify-center items-center">
+                {activityCalendarData.length === 0 ? (
+                  <p className="text-[16px] text-textcolorless/70">
+                    No tests taken yet.
+                  </p>
+                ) : (
+                  <ActivityCalendar
+                    data={activityCalendarData}
+                    blockSize={12}
+                    blockMargin={4}
+                    blockRadius={3}
+                    fontSize={13}
+                    showWeekdayLabels
+                    theme={{
+                      light: isDark
+                        ? [
+                            "#363636", // dark
+                            "#5E0472",
+                            "#82059E",
+                            "#A706CB",
+                            "#C607F3",
+                          ]
+                        : [
+                            "#D9D9D9", // light
+                            "#F0BAFD",
+                            "#DD62F9",
+                            "#CB09F6",
+                            "#A607CA",
+                          ],
+                      dark: isDark
+                        ? [
+                            "#363636", // dark
+                            "#5E0472",
+                            "#82059E",
+                            "#A706CB",
+                            "#C607F3",
+                          ]
+                        : [
+                            "#D9D9D9", // light
+                            "#F0BAFD",
+                            "#DD62F9",
+                            "#CB09F6",
+                            "#A607CA",
+                          ],
+                    }}
+                  />
+                )}
+              </div>
+            </div>
             <div className="h-fit w-full flex flex-col gap-y-1">
               <h3 className="text-[17px] font-semibold">WPM Distribution</h3>
               <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
