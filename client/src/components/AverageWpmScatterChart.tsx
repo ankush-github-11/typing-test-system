@@ -1,7 +1,6 @@
 import {
   ResponsiveContainer,
   ComposedChart,
-  Scatter,
   Line,
   XAxis,
   YAxis,
@@ -96,7 +95,7 @@ export default function AverageWpmScatterChart({
                 <circle
                   cx={cx}
                   cy={cy}
-                  r={isMax ? 3 : 2.5}
+                  r={isMax ? 2.5 : 2}
                   fill={isMax ? "#8EE600" : "#C607F3"}
                 />
               );

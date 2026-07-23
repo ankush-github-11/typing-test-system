@@ -23,7 +23,8 @@ import Loader from "../components/Loader";
 import useMinimumLoader from "../hooks/useMinimumLoader";
 import AccuracyAndRawAccuracyAreaChart from "../components/AccuracyAndRawAccuracyAreaChart";
 import AverageAccuracyScatterChart from "../components/AverageAccuracyScatterChart";
-import AverageWpmScatterChart from "../components/AverageWPMScatterChart";
+import AverageWpmScatterChart from "../components/AverageWpmScatterChart";
+import { useState } from "react";
 
 interface ScatterPoint {
   x: number;
@@ -39,6 +40,8 @@ const Profile = () => {
   const { data: tests } = useUserTests(user?.id);
   const showPageLoader = useMinimumLoader(isLoading);
   const navigate = useNavigate();
+
+  const [selectedGraph, setSelectedGraph] = useState<"wpm" | "accuracy">("wpm");
 
   const getWpmDistribution = (tests: userTestsData[]) => {
     if (!tests.length) return [];
@@ -162,7 +165,9 @@ const Profile = () => {
   };
   const wpmScatterDataArray = tests ? getAverageWpmScatterData(tests) : [];
 
-  const getAverageAccuracyScatterData = (tests: userTestsData[]): ScatterPoint[] => {
+  const getAverageAccuracyScatterData = (
+    tests: userTestsData[],
+  ): ScatterPoint[] => {
     if (!tests.length) return [];
 
     const grouped = new Map<
@@ -215,7 +220,9 @@ const Profile = () => {
         } ${item.date.getUTCFullYear()}`,
       }));
   };
-  const accuracyScatterDataArray = tests ? getAverageAccuracyScatterData(tests) : [];
+  const accuracyScatterDataArray = tests
+    ? getAverageAccuracyScatterData(tests)
+    : [];
 
   if (!isLoading && !user) {
     navigate("/login");
@@ -424,30 +431,49 @@ const Profile = () => {
                 )}
               </div>
             </div>
-            <div className="h-fit w-full flex flex-col gap-x-5">
-              <div className="flex-[5]">
-                <h3 className="text-[17px] font-semibold">Average WPM</h3>
-                <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
-                  {wpmScatterDataArray.length === 0 ? (
+            <div className="h-fit w-full flex flex-col gap-y-1">
+              <div className="flex flex-wrap gap-x-1 w-fit rounded-lg bg-bgcolor border-1 border-gray/50 p-1">
+                <button
+                  onClick={() => setSelectedGraph("wpm")}
+                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                    selectedGraph === "wpm"
+                      ? "bg-color1 text-white shadow"
+                      : "text-textcolorless hover:bg-bgcolorless"
+                  }`}
+                >
+                  Average WPM
+                </button>
+
+                <button
+                  onClick={() => setSelectedGraph("accuracy")}
+                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                    selectedGraph === "accuracy"
+                      ? "bg-color1 text-white shadow"
+                      : "text-textcolorless hover:bg-bgcolorless"
+                  }`}
+                >
+                  Average Accuracy
+                </button>
+              </div>
+
+              <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
+                {selectedGraph === "wpm" ? (
+                  wpmScatterDataArray.length === 0 ? (
                     <p className="text-[16px] text-textcolorless/70">
                       No tests taken yet.
                     </p>
                   ) : (
                     <AverageWpmScatterChart data={wpmScatterDataArray} />
-                  )}
-                </div>
-              </div>
-              <div className="flex-[5]">
-                <h3 className="text-[17px] font-semibold">Average Accuracy</h3>
-                <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
-                  {accuracyAndRawAccuracyDistributionArray.length === 0 ? (
-                    <p className="text-[16px] text-textcolorless/70">
-                      No tests taken yet.
-                    </p>
-                  ) : (
-                    <AverageAccuracyScatterChart data={accuracyScatterDataArray} />
-                  )}
-                </div>
+                  )
+                ) : accuracyScatterDataArray.length === 0 ? (
+                  <p className="text-[16px] text-textcolorless/70">
+                    No tests taken yet.
+                  </p>
+                ) : (
+                  <AverageAccuracyScatterChart
+                    data={accuracyScatterDataArray}
+                  />
+                )}
               </div>
             </div>
           </div>
