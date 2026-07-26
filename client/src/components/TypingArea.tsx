@@ -18,6 +18,7 @@ import { useTimeTyping } from "../hooks/useTimeTyping";
 import { useTotalCharsTyped } from "../hooks/useTotalCharsTyped";
 import { useTestTotalCharsTypedStore } from "../store/useTestTotalCharsTypedStore";
 import { useTestRestartStore } from "../store/useTestRestartStore";
+import { useTests } from "../hooks/useTests";
 
 const CursorComponents = {
   default: CursorDefault,
@@ -30,9 +31,15 @@ const TypingArea = () => {
   const cursorType = useSettingsStore((state) => state.cursorType);
   const errorBehaviour = useSettingsStore((state) => state.errorBehaviour);
   const testTimeLeft = useTestTimeLeftStore((state) => state.testTimeLeft);
-  const setTestTimeLeft = useTestTimeLeftStore((state) => state.setTestTimeLeft);
-  const testTotalCharsTyped = useTestTotalCharsTypedStore((state) => state.testTotalCharsTyped);
-  const setTestTotalCharsTyped = useTestTotalCharsTypedStore((state) => state.setTestTotalCharsTyped);
+  const setTestTimeLeft = useTestTimeLeftStore(
+    (state) => state.setTestTimeLeft,
+  );
+  const testTotalCharsTyped = useTestTotalCharsTypedStore(
+    (state) => state.testTotalCharsTyped,
+  );
+  const setTestTotalCharsTyped = useTestTotalCharsTypedStore(
+    (state) => state.setTestTotalCharsTyped,
+  );
   const restartKey = useTestRestartStore((state) => state.restartKey);
 
   const ActiveCursor = CursorComponents[cursorType];
@@ -90,6 +97,7 @@ const TypingArea = () => {
   const { completedTest } = useTestCompleted();
   const { timeTyping } = useTimeTyping();
   const { totalCharsTyped } = useTotalCharsTyped();
+  const { addTest } = useTests();
 
   const liveWpm = avgWpmPerSecondArr[avgWpmPerSecondArr.length - 1] ?? 0;
   const liveAccuracy =
@@ -335,18 +343,25 @@ const TypingArea = () => {
           id: user.id,
           total_chars_typed: testTotalCharsTyped,
         });
+        const {wpm, rawAccuracy} = calculateFinalResults();
+        addTest({
+          id: user.id,
+          wpm: wpm,
+          accuracy:
+            testTotalCharsTyped > 0
+              ? ((testTotalCharsTyped - wrongCharsTyped) * 100) /
+                testTotalCharsTyped
+              : 0,
+          raw_accuracy: rawAccuracy,
+          total_chars_typed: testTotalCharsTyped,
+          correct_chars: testTotalCharsTyped - wrongCharsTyped,
+          test_time: testTime,
+          difficulty: difficulty,
+        });
       }
     }
-  }, [
-    testTimeLeft,
-    setStarted,
-    started,
-    testTotalCharsTyped,
-    user?.id,
-    completedTest,
-    timeTyping,
-    testTime,
-    totalCharsTyped,
+  },[ 
+    testTimeLeft, setStarted, started, testTotalCharsTyped, user?.id, completedTest, timeTyping, testTime, totalCharsTyped, wrongCharsTyped, difficulty, addTest
   ]);
 
   useEffect(() => {

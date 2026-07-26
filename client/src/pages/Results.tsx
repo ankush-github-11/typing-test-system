@@ -5,14 +5,11 @@ import useButtonNavigator from "../hooks/useButtonNavigator";
 import { useTitle } from "../hooks/useTitle";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { TypingResult } from "../types/typingResult";
-import { useMe } from "../hooks/useMe";
-import { useTests } from "../hooks/useTests";
-import { useEffect, useRef } from "react";
+// import { useMe } from "../hooks/useMe";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Results = () => {
-  const { data: user } = useMe();
-  const { addTest } = useTests();
+  // const { data: user } = useMe();
   const navigate = useNavigate();
   const { state } = useLocation();
   const data = state as TypingResult | null;
@@ -28,26 +25,6 @@ const Results = () => {
     },
   });
   const queryClient = useQueryClient();
-
-  const hasRun = useRef(false);
-  useEffect(() => {
-    if (!user || !data || hasRun.current) return;
-    hasRun.current = true;
-    addTest({
-      id: user.id,
-      wpm: data.wpm,
-      accuracy:
-        data.testTotalCharsTyped > 0
-          ? ((data.testTotalCharsTyped - data.wrongCharsTyped) * 100) /
-            data.testTotalCharsTyped
-          : 0,
-      raw_accuracy: data.rawAccuracy,
-      total_chars_typed: data.testTotalCharsTyped,
-      correct_chars: data.testTotalCharsTyped - data.wrongCharsTyped,
-      test_time: data.testTime,
-      difficulty: data.difficulty,
-    });
-  }, [user, data, addTest]);
 
   if (!data) {
     navigate("/");
