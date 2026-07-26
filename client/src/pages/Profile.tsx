@@ -475,8 +475,15 @@ const Profile = () => {
                     showWeekdayLabels={["sun", "tue", "thu", "sat"]}
                     tooltips={{
                       activity: {
-                        text: ({ level, date }) =>
-                          `${level} activities on ${formatDate(new Date(date).toLocaleDateString("en-US"))}`,
+                        text: ({ date }) => {
+                          const count =
+                            activityCalendarData.find((item) => item.date === date)
+                              ?.count ?? 0;
+
+                          return `${count} activities on ${formatDate(
+                            new Date(date).toLocaleDateString("en-US"),
+                          )}`;
+                        },
                         placement: "top",
                         offset: 6,
                         hoverRestMs: 100,
