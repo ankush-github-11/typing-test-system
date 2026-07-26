@@ -1,0 +1,42 @@
+.react-activity-calendar svg {
+  overflow: visible;
+}
+.react-activity-calendar {
+  overflow: visible;
+}
+.react-activity-calendar__scroll-container{
+  overflow-x: auto;
+  padding-left: 5px;
+}
+
+.react-activity-calendar text {
+  fill: #afafaf;
+}
+.react-activity-calendar__footer {
+  color: #afafaf;
+}
+.react-activity-calendar__count{
+  display: none;
+}
+
+
+.react-activity-calendar__tooltip {
+  width: max-content;
+  max-width: calc(100vw - 20px);
+  padding: 0.4em 0.7em;
+  padding-bottom: 0.6em;
+  border-radius: 10px;
+  background-color: var(--color-bgcolor);
+  color: var(--color-textcolor);
+  font-size: 13px;
+  border: 1px solid var(--color-gray);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &[data-color-scheme='dark'] {
+    background-color: var(--color-bgcolorless);
+    color: var(--color-textcolor);
+    border: 1px solid var(--color-gray);
+  }
+}

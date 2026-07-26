@@ -26,6 +26,7 @@ import AverageAccuracyScatterChart from "../components/AverageAccuracyScatterCha
 import AverageWpmScatterChart from "../components/AverageWpmScatterChart";
 import { useState } from "react";
 import { ActivityCalendar } from "react-activity-calendar";
+import "../styles/profileHeatMap.css";
 
 interface ScatterPoint {
   x: number;
@@ -112,7 +113,9 @@ const Profile = () => {
 
     return distribution;
   };
-  const accuracyAndRawAccuracyDistributionArray = tests ? getAccuracyAndRawAccuracyDistribution(tests) : [];
+  const accuracyAndRawAccuracyDistributionArray = tests
+    ? getAccuracyAndRawAccuracyDistribution(tests)
+    : [];
 
   const getAverageWpmScatterData = (tests: userTestsData[]): ScatterPoint[] => {
     if (!tests.length) return [];
@@ -224,7 +227,9 @@ const Profile = () => {
         } ${item.date.getUTCFullYear()}`,
       }));
   };
-  const accuracyScatterDataArray = tests ? getAverageAccuracyScatterData(tests) : [];
+  const accuracyScatterDataArray = tests
+    ? getAverageAccuracyScatterData(tests)
+    : [];
 
   const getActivityCalendarData = (tests: userTestsData[]): ActivityData[] => {
     const activityMap = new Map<string, number>();
@@ -234,7 +239,7 @@ const Profile = () => {
 
       activityMap.set(date, (activityMap.get(date) ?? 0) + 1);
     });
-    
+
     const today = new Date();
     const start = new Date(today);
     start.setUTCDate(today.getUTCDate() - 364);
@@ -455,7 +460,7 @@ const Profile = () => {
           <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl p-5 flex flex-col gap-y-3">
             <div className="h-fit w-full flex flex-col gap-y-1">
               <h3 className="text-[17px] font-semibold">Activity Calendar</h3>
-              <div className="min-h-[28vh] h-fit w-full flex justify-center items-center">
+              <div className="min-h-[25vh] h-fit w-full flex justify-center items-center rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
                 {activityCalendarData.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
                     No tests taken yet.
@@ -467,20 +472,32 @@ const Profile = () => {
                     blockMargin={4}
                     blockRadius={3}
                     fontSize={13}
-                    showWeekdayLabels
+                    showWeekdayLabels={["sun", "tue", "thu", "sat"]}
+                    tooltips={{
+                      activity: {
+                        text: ({ level, date }) =>
+                          `${level} activities on ${formatDate(new Date(date).toLocaleDateString("en-US"))}`,
+                        placement: "top",
+                        offset: 6,
+                        hoverRestMs: 100,
+                        transitionStyles: {
+                          duration: 500,
+                        },
+                      },
+                    }}
                     theme={{
                       light: isDark
                         ? [
                             "#363636", // dark
                             "#5E0472",
                             "#82059E",
-                            "#A706CB",
-                            "#C607F3",
+                            "#B306DA",
+                            "#D53FF8",
                           ]
                         : [
                             "#D9D9D9", // light
                             "#F0BAFD",
-                            "#DD62F9",
+                            "#E380F9",
                             "#CB09F6",
                             "#A607CA",
                           ],
@@ -489,13 +506,13 @@ const Profile = () => {
                             "#363636", // dark
                             "#5E0472",
                             "#82059E",
-                            "#A706CB",
-                            "#C607F3",
+                            "#B306DA",
+                            "#D53FF8",
                           ]
                         : [
                             "#D9D9D9", // light
                             "#F0BAFD",
-                            "#DD62F9",
+                            "#E380F9",
                             "#CB09F6",
                             "#A607CA",
                           ],
