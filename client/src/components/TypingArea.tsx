@@ -342,7 +342,7 @@ const TypingArea = () => {
     setStarted,
     started,
     testTotalCharsTyped,
-    user.id,
+    user?.id,
     completedTest,
     timeTyping,
     testTime,
