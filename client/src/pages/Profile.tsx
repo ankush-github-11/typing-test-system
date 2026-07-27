@@ -14,6 +14,10 @@ import {
   Pencil,
   Flag,
 } from "lucide-react";
+import { FaLinkedinIn } from "react-icons/fa";
+import { IoIosLink } from "react-icons/io";
+import { IoLogoGithub } from "react-icons/io5";
+import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { UserRoundPen } from "lucide-react";
 import WpmBarChart from "../components/WpmBarChart";
@@ -429,7 +433,7 @@ const Profile = () => {
               </div>
             </div>
             {user.city && user.country && user.organization && (
-              <div className="h-fit w-full flex flex-col gap-y-[8px]">
+              <div className="h-fit w-full flex flex-col gap-y-[8px] mb-5">
                 <p className="text-[17px] font-semibold mb-1">Details</p>
                 <div className="w-fit flex items-center">
                   <MapPin
@@ -452,6 +456,51 @@ const Profile = () => {
                   <p className="text-[14.5px] mr-5 text-textcolorless">
                     {user.organization}
                   </p>
+                </div>
+              </div>
+            )}
+            {user.city && user.country && user.organization && (
+              <div className="h-fit w-full flex flex-col gap-y-[8px]">
+                <p className="text-[17px] font-semibold mb-1">Socials</p>
+                <div className="w-fit flex items-center">
+                  <IoIosLink 
+                    size={16}
+                    strokeWidth={2}
+                    className="text-textcolorless/60 mr-2"
+                  />
+                  <a className="text-[14.5px] mr-5 text-textcolorless">
+                    Blank Portfolio
+                  </a>
+                </div>
+                <div className="w-fit flex items-center">
+                  <FaLinkedinIn
+                    size={16}
+                    strokeWidth={2}
+                    className="text-textcolorless/60 mr-2"
+                  />
+                  <a className="text-[14.5px] mr-5 text-textcolorless">
+                    Blank LinkedIn
+                  </a>
+                </div>
+                <div className="w-fit flex items-center">
+                  <IoLogoGithub
+                    size={16}
+                    strokeWidth={2}
+                    className="text-textcolorless/60 mr-2"
+                  />
+                  <a className="text-[14.5px] mr-5 text-textcolorless">
+                    Blank Github
+                  </a>
+                </div>
+                <div className="w-fit flex items-center">
+                  <FaXTwitter
+                    size={15}
+                    strokeWidth={2}
+                    className="text-textcolorless/60 mr-2"
+                  />
+                  <a className="text-[14.5px] mr-5 text-textcolorless">
+                    Blank X
+                  </a>
                 </div>
               </div>
             )}
