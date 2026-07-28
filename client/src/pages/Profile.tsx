@@ -327,11 +327,13 @@ const Profile = () => {
         case "github":
         case "x": {
           const username = pathname.split("/").filter(Boolean)[0];
-          return username ? `@${username}` : hostname;
+          return username ? `${username}` : hostname;
         }
 
-        case "linkedin":
-          return `${hostname.replace(/^www\./, "")}${pathname}`;
+        case "linkedin": {
+          const username = pathname.split("/").filter(Boolean).pop();
+          return username ? username : hostname;
+        }
       }
     } catch {
       return url;
