@@ -6,4 +6,8 @@ export interface editProfileData {
     country: string;
     city: string;
     organization: string;
+    portfolio_url: string;
+    linkedin_url: string;
+    github_url: string;
+    x_url: string;
 }

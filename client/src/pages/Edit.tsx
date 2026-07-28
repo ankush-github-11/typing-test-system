@@ -38,6 +38,10 @@ const Edit = () => {
       country: user.country ?? "",
       city: user.city ?? "",
       organization: user.organization ?? "",
+      portfolio_url: user.portfolio_url ?? "",
+      linkedin_url: user.linkedin_url ?? "",
+      github_url: user.github_url ?? "",
+      x_url: user.x_url ?? "",
     });
   }, [user, reset]);
 
@@ -178,6 +182,86 @@ const Edit = () => {
             {errors.organization && (
               <p className="mt-1 text-sm text-red-500">
                 {errors.organization.message}
+              </p>
+            )}
+          </div>
+
+          {/* Portfolio URL */}
+          <div className="">
+            <label className="mb-2 block text-sm font-semibold">
+              Portfolio URL
+            </label>
+
+            <input
+              {...register("portfolio_url")}
+              type="text"
+              placeholder="Portfolio URL"
+              className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
+            />
+
+            {errors.portfolio_url && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.portfolio_url.message}
+              </p>
+            )}
+          </div>
+
+          {/* LinkedIn URL */}
+          <div className="">
+            <label className="mb-2 block text-sm font-semibold">
+              LinkedIn URL
+            </label>
+
+            <input
+              {...register("linkedin_url")}
+              type="text"
+              placeholder="LinkedIn URL"
+              className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
+            />
+
+            {errors.linkedin_url && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.linkedin_url.message}
+              </p>
+            )}
+          </div>
+
+          {/* GitHub URL */}
+          <div className="">
+            <label className="mb-2 block text-sm font-semibold">
+              GitHub URL
+            </label>
+
+            <input
+              {...register("github_url")}
+              type="text"
+              placeholder="GitHub URL"
+              className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
+            />
+
+            {errors.github_url && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.github_url.message}
+              </p>
+            )}
+          </div>
+
+          {/* X URL */}
+          <div className="">
+            <label className="mb-2 block text-sm font-semibold">
+              X URL
+            </label>
+
+            <input
+              {...register("x_url")}
+              type="text"
+              placeholder="X URL"
+              className="w-full rounded-lg border border-gray px-4 py-3 outline-none focus:border-color1"
+            />
+
+            {errors.x_url && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.x_url.message}
               </p>
             )}
           </div>

@@ -32,6 +32,26 @@ export const editProfileSchema = z.object({
     .string()
     .trim()
     .min(2, "Organization is required"),
+
+  portfolio_url: z
+    .string()
+    .trim()
+    .max(255, "Portfolio url maximum can be 255 characters"),
+
+  linkedin_url: z
+    .string()
+    .trim()
+    .max(255, "LinkedIn url maximum can be 255 characters"),
+
+  github_url: z
+    .string()
+    .trim()
+    .max(255, "GitHub url maximum can be 255 characters"),
+
+  x_url: z
+    .string()
+    .trim()
+    .max(255, "X url maximum can be 255 characters"),
 });
 
 // Automatically infer the TypeScript type

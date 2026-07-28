@@ -311,6 +311,33 @@ const Profile = () => {
       .join(":");
   };
 
+  const formatUrl = (
+    url: string | null | undefined,
+    type: "portfolio" | "github" | "linkedin" | "x",
+  ) => {
+    if (!url) return "";
+
+    try {
+      const { hostname, pathname } = new URL(url);
+
+      switch (type) {
+        case "portfolio":
+          return hostname.replace(/^www\./, "");
+
+        case "github":
+        case "x": {
+          const username = pathname.split("/").filter(Boolean)[0];
+          return username ? `@${username}` : hostname;
+        }
+
+        case "linkedin":
+          return `${hostname.replace(/^www\./, "")}${pathname}`;
+      }
+    } catch {
+      return url;
+    }
+  };
+
   return (
     <div
       data-theme={isDark ? "dark" : ""}
@@ -324,7 +351,7 @@ const Profile = () => {
       ) : (
         <div className="flex gap-x-5 min-h-screen h-fit px-30 pb-30">
           {/*Left Div*/}
-          <div className="flex-[2.5] min-h-screen h-fit rounded-xl pt-5">
+          <div className="flex-[2.5] min-h-screen h-fit pt-5">
             <div className="h-fit w-fit flex gap-x-3 items-center">
               <SquareUser size={120} strokeWidth={1} />
               <div className="flex flex-col gap-y-1 w-full h-fit">
@@ -434,7 +461,9 @@ const Profile = () => {
             </div>
             {user.city && user.country && user.organization && (
               <div className="h-fit w-full flex flex-col gap-y-[8px] mb-5">
-                <p className="text-[17px] font-semibold mb-1">Details</p>
+                <p className="text-[17px] font-semibold mb-1">
+                  Personal Details
+                </p>
                 <div className="w-fit flex items-center">
                   <MapPin
                     size={18}
@@ -459,51 +488,74 @@ const Profile = () => {
                 </div>
               </div>
             )}
-            {user.city && user.country && user.organization && (
-              <div className="h-fit w-full flex flex-col gap-y-[8px]">
-                <p className="text-[17px] font-semibold mb-1">Socials</p>
-                <div className="w-fit flex items-center">
-                  <IoIosLink 
-                    size={16}
-                    strokeWidth={2}
-                    className="text-textcolorless/60 mr-2"
-                  />
-                  <a className="text-[14.5px] mr-5 text-textcolorless">
-                    Blank Portfolio
-                  </a>
+            {user.portfolio_url &&
+              user.linkedin_url &&
+              user.github_url &&
+              user.x_url && (
+                <div className="h-fit w-full flex flex-col gap-y-[8px]">
+                  <p className="text-[17px] font-semibold mb-1">Socials</p>
+                  <div className="w-fit flex items-center">
+                    <IoIosLink
+                      size={16}
+                      strokeWidth={2}
+                      className="text-textcolorless/60 mr-2"
+                    />
+                    <a
+                      href={user.portfolio_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[14.5px] mr-5 text-textcolorless hover:text-textcolor/95"
+                    >
+                      {formatUrl(user.portfolio_url, "portfolio")}
+                    </a>
+                  </div>
+                  <div className="w-fit flex items-center">
+                    <FaLinkedinIn
+                      size={16}
+                      strokeWidth={2}
+                      className="text-textcolorless/60 mr-2"
+                    />
+                    <a
+                      href={user.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[14.5px] mr-5 text-textcolorless hover:text-textcolor/95"
+                    >
+                      {formatUrl(user.linkedin_url, "linkedin")}
+                    </a>
+                  </div>
+                  <div className="w-fit flex items-center">
+                    <IoLogoGithub
+                      size={16}
+                      strokeWidth={2}
+                      className="text-textcolorless/60 mr-2"
+                    />
+                    <a
+                      href={user.github_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[14.5px] mr-5 text-textcolorless hover:text-textcolor/95"
+                    >
+                      {formatUrl(user.github_url, "github")}
+                    </a>
+                  </div>
+                  <div className="w-fit flex items-center">
+                    <FaXTwitter
+                      size={16}
+                      strokeWidth={2}
+                      className="text-textcolorless/60 mr-2"
+                    />
+                    <a
+                      href={user.x_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[14.5px] mr-5 text-textcolorless hover:text-textcolor/95"
+                    >
+                      {formatUrl(user.x_url, "x")}
+                    </a>
+                  </div>
                 </div>
-                <div className="w-fit flex items-center">
-                  <FaLinkedinIn
-                    size={16}
-                    strokeWidth={2}
-                    className="text-textcolorless/60 mr-2"
-                  />
-                  <a className="text-[14.5px] mr-5 text-textcolorless">
-                    Blank LinkedIn
-                  </a>
-                </div>
-                <div className="w-fit flex items-center">
-                  <IoLogoGithub
-                    size={16}
-                    strokeWidth={2}
-                    className="text-textcolorless/60 mr-2"
-                  />
-                  <a className="text-[14.5px] mr-5 text-textcolorless">
-                    Blank Github
-                  </a>
-                </div>
-                <div className="w-fit flex items-center">
-                  <FaXTwitter
-                    size={15}
-                    strokeWidth={2}
-                    className="text-textcolorless/60 mr-2"
-                  />
-                  <a className="text-[14.5px] mr-5 text-textcolorless">
-                    Blank X
-                  </a>
-                </div>
-              </div>
-            )}
+              )}
           </div>
           {/*Right Div*/}
           <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl p-5 flex flex-col gap-y-3">
@@ -526,8 +578,9 @@ const Profile = () => {
                       activity: {
                         text: ({ date }) => {
                           const count =
-                            activityCalendarData.find((item) => item.date === date)
-                              ?.count ?? 0;
+                            activityCalendarData.find(
+                              (item) => item.date === date,
+                            )?.count ?? 0;
 
                           return `${count} activities on ${formatDate(
                             new Date(date).toLocaleDateString("en-US"),

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { pool } from "../config/db"; // Your PostgreSQL connection pool
+import { pool } from "../config/db";
 import { EditProfileData } from "../types/EditProfileData";
 
 export const updateProfile = async (
@@ -15,6 +15,10 @@ export const updateProfile = async (
       country,
       city,
       organization,
+      portfolio_url,
+      linkedin_url,
+      github_url,
+      x_url
     } = req.body;
 
     const query = `
@@ -25,20 +29,16 @@ export const updateProfile = async (
         bio = $4,
         country = $5,
         city = $6,
-        organization = $7
+        organization = $7,
+        portfolio_url = $8,
+        linkedin_url = $9,
+        github_url = $10,
+        x_url = $11
       WHERE id = $1
       RETURNING *;
     `;
 
-    const values = [
-      id,
-      name,
-      keyboard,
-      bio,
-      country,
-      city,
-      organization
-    ];
+    const values = [id, name, keyboard, bio, country, city, organization, portfolio_url, linkedin_url, github_url, x_url];
 
     const result = await pool.query(query, values);
 
