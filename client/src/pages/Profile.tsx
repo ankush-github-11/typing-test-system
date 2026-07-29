@@ -13,9 +13,9 @@ import {
   Building2,
   Pencil,
   Flag,
+  Link as LinkIcon,
 } from "lucide-react";
 import { FaLinkedinIn } from "react-icons/fa";
-import { IoIosLink } from "react-icons/io";
 import { IoLogoGithub } from "react-icons/io5";
 import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
@@ -469,7 +469,7 @@ const Profile = () => {
                     strokeWidth={2}
                     className="text-textcolorless/60 mr-2"
                   />
-                  <p className="text-[14.5px] mr-5 text-textcolorless">
+                  <p className="text-[14.5px] mr-5 text-textcolorless/80">
                     <span>{user.city}</span>
                     <span>, </span>
                     <span>{user.country}</span>
@@ -481,7 +481,7 @@ const Profile = () => {
                     strokeWidth={2}
                     className="text-textcolorless/60 mr-2"
                   />
-                  <p className="text-[14.5px] mr-5 text-textcolorless">
+                  <p className="text-[14.5px] mr-5 text-textcolorless/80">
                     {user.organization}
                   </p>
                 </div>
@@ -493,66 +493,66 @@ const Profile = () => {
               user.x_url && (
                 <div className="h-fit w-full flex flex-col gap-y-[8px]">
                   <p className="text-[17px] font-semibold mb-1">Socials</p>
-                  <div className="w-fit flex items-center">
-                    <IoIosLink
-                      size={16}
-                      strokeWidth={2}
-                      className="text-textcolorless/60 mr-2"
+                  <a
+                    href={user.portfolio_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group w-fit flex items-center"
+                  >
+                    <LinkIcon
+                      size={17}
+                      strokeWidth={3}
+                      className="text-textcolorless/60 mr-2 group-hover:text-textcolor"
                     />
-                    <a
-                      href={user.portfolio_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[14.5px] mr-5 text-textcolorless hover:text-textcolor/95"
-                    >
+                    <div className="text-[14.5px] mr-5 text-textcolorless/80 group-hover:text-textcolorless">
                       {formatUrl(user.portfolio_url, "portfolio")}
-                    </a>
-                  </div>
-                  <div className="w-fit flex items-center">
+                    </div>
+                  </a>
+                  <a
+                    href={user.linkedin_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group w-fit flex items-center"
+                  >
                     <FaLinkedinIn
                       size={16}
                       strokeWidth={2}
-                      className="text-textcolorless/60 mr-2"
+                      className="text-textcolorless/60 mr-2 group-hover:text-textcolor"
                     />
-                    <a
-                      href={user.linkedin_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[14.5px] mr-5 text-textcolorless hover:text-textcolor/95"
-                    >
+                    <div className="text-[14.5px] mr-5 text-textcolorless/80 group-hover:text-textcolorless">
                       {formatUrl(user.linkedin_url, "linkedin")}
-                    </a>
-                  </div>
-                  <div className="w-fit flex items-center">
+                    </div>
+                  </a>
+                  <a
+                    href={user.github_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group w-fit flex items-center"
+                  >
                     <IoLogoGithub
                       size={16}
                       strokeWidth={2}
-                      className="text-textcolorless/60 mr-2"
+                      className="text-textcolorless/60 mr-2 group-hover:text-textcolor"
                     />
-                    <a
-                      href={user.github_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[14.5px] mr-5 text-textcolorless hover:text-textcolor/95"
-                    >
+                    <div className="text-[14.5px] mr-5 text-textcolorless/80 group-hover:text-textcolorless">
                       {formatUrl(user.github_url, "github")}
-                    </a>
-                  </div>
-                  <div className="w-fit flex items-center">
+                    </div>
+                  </a>
+                  <a
+                    href={user.x_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group w-fit flex items-center"
+                  >
                     <FaXTwitter
                       size={16}
                       strokeWidth={2}
-                      className="text-textcolorless/60 mr-2"
+                      className="text-textcolorless/60 mr-2 group-hover:text-textcolor"
                     />
-                    <a
-                      href={user.x_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[14.5px] mr-5 text-textcolorless hover:text-textcolor/95"
-                    >
+                    <div className="text-[14.5px] mr-5 text-textcolorless/80 group-hover:text-textcolorless">
                       {formatUrl(user.x_url, "x")}
-                    </a>
-                  </div>
+                    </div>
+                  </a>
                 </div>
               )}
           </div>
