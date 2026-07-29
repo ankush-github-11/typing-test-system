@@ -280,6 +280,18 @@ const Profile = () => {
   };
   const activityCalendarData = tests ? getActivityCalendarData(tests) : [];
 
+  const stats = [
+    { label: "Highest WPM", value: 164 },
+    { label: "Average WPM", value: 65 },
+    { label: "Average WPM (Last 15 Tests)", value: 71 },
+    { label: "Highest Accuracy", value: "100%" },
+    { label: "Average Accuracy", value: "98%" },
+    { label: "Average Accuracy (Last 15 Tests)", value: "98.5%" },
+    { label: "Estimated Words Typed", value: 1500 },
+    { label: "Average Raw WPM", value: 95 },
+    { label: "Average Raw Accuracy", value: 99 },
+  ];
+
   if (!isLoading && !user) {
     navigate("/login");
     return null;
@@ -487,12 +499,13 @@ const Profile = () => {
                 </div>
               </div>
             )}
-            {user.portfolio_url &&
-              user.linkedin_url &&
-              user.github_url &&
-              user.x_url && (
-                <div className="h-fit w-full flex flex-col gap-y-[8px]">
-                  <p className="text-[17px] font-semibold mb-1">Socials</p>
+            {(user.portfolio_url ||
+              user.linkedin_url ||
+              user.github_url ||
+              user.x_url) && (
+              <div className="h-fit w-full flex flex-col gap-y-[8px] mb-5">
+                <p className="text-[17px] font-semibold mb-1">Socials</p>
+                {user.portfolio_url && (
                   <a
                     href={user.portfolio_url}
                     target="_blank"
@@ -508,6 +521,8 @@ const Profile = () => {
                       {formatUrl(user.portfolio_url, "portfolio")}
                     </div>
                   </a>
+                )}
+                {user.linkedin_url && (
                   <a
                     href={user.linkedin_url}
                     target="_blank"
@@ -523,6 +538,8 @@ const Profile = () => {
                       {formatUrl(user.linkedin_url, "linkedin")}
                     </div>
                   </a>
+                )}
+                {user.github_url && (
                   <a
                     href={user.github_url}
                     target="_blank"
@@ -538,6 +555,8 @@ const Profile = () => {
                       {formatUrl(user.github_url, "github")}
                     </div>
                   </a>
+                )}
+                {user.x_url && (
                   <a
                     href={user.x_url}
                     target="_blank"
@@ -553,14 +572,15 @@ const Profile = () => {
                       {formatUrl(user.x_url, "x")}
                     </div>
                   </a>
-                </div>
-              )}
+                )}
+              </div>
+            )}
           </div>
           {/*Right Div*/}
-          <div className="flex-[7.5] min-h-screen h-fit bg-bgcolorless rounded-xl p-5 flex flex-col gap-y-3">
-            <div className="h-fit w-full flex flex-col gap-y-1">
-              <h3 className="text-[17px] font-semibold">Activity Calendar</h3>
-              <div className="min-h-[25vh] h-fit w-full flex justify-center items-center rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+          <div className="flex-[7.5] min-h-screen h-fit rounded-xl p-5 flex flex-col gap-y-5 border-1 border-bordercolor">
+            <div className="h-fit w-full flex flex-col">
+              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">Activity Calendar</h3>
+              <div className="min-h-[25vh] h-fit w-full flex justify-center items-center rounded-2xl rounded-tl-[0px] shadow-[0_8px_24px_rgba(0,0,0,0.4)] bg-bgcolorless">
                 {activityCalendarData.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
                     No tests taken yet.
@@ -629,9 +649,9 @@ const Profile = () => {
                 )}
               </div>
             </div>
-            <div className="h-fit w-full flex flex-col gap-y-1">
-              <h3 className="text-[17px] font-semibold">WPM Distribution</h3>
-              <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
+            <div className="h-fit w-full flex flex-col">
+              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">WPM Distribution</h3>
+              <div className="h-fit w-full flex justify-center items-center">
                 {wpmDistributionArray.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
                     No tests taken yet.
@@ -641,11 +661,9 @@ const Profile = () => {
                 )}
               </div>
             </div>
-            <div className="h-fit w-full flex flex-col gap-y-1">
-              <h3 className="text-[17px] font-semibold">
-                Accuracy and Raw Accuracy Distribution
-              </h3>
-              <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
+            <div className="h-fit w-full flex flex-col">
+              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">Accuracy and Raw Accuracy Distribution</h3>
+              <div className="h-fit w-full flex justify-center items-center">
                 {accuracyAndRawAccuracyDistributionArray.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
                     No tests taken yet.
@@ -657,7 +675,7 @@ const Profile = () => {
                 )}
               </div>
             </div>
-            <div className="h-fit w-full flex flex-col gap-y-1">
+            <div className="h-fit w-full flex flex-col gap-y-2">
               <div className="flex flex-wrap gap-x-1 w-fit rounded-lg bg-bgcolor border-1 border-gray/50 p-1">
                 <button
                   onClick={() => setSelectedGraph("wpm")}
@@ -682,7 +700,7 @@ const Profile = () => {
                 </button>
               </div>
 
-              <div className="min-h-[40vh] h-fit w-full flex justify-center items-center">
+              <div className="h-fit w-full flex justify-center items-center">
                 {selectedGraph === "wpm" ? (
                   wpmScatterDataArray.length === 0 ? (
                     <p className="text-[16px] text-textcolorless/70">
@@ -699,6 +717,32 @@ const Profile = () => {
                   <AverageAccuracyScatterChart
                     data={accuracyScatterDataArray}
                   />
+                )}
+              </div>
+            </div>
+            <div className="h-fit w-full flex flex-col">
+              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">Analytics</h3>
+              <div className="h-fit w-full flex justify-center items-center bg-bgcolorless shadow-[0_8px_24px_rgba(0,0,0,0.4)] p-3 rounded-2xl rounded-tl-[0px]">
+                {wpmDistributionArray.length === 0 ? (
+                  <p className="text-[16px] text-textcolorless/70">
+                    No tests taken yet.
+                  </p>
+                ) : (
+                  <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {stats.map((stat) => (
+                      <div
+                        key={stat.label}
+                        className="bg-bgcolorless p-4 hover:border-color1/40"
+                      >
+                        <p className="text-sm text-textcolorless/70">
+                          {stat.label}
+                        </p>
+                        <p className="mt-2 text-2xl font-semibold text-textcolor">
+                          {stat.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
             </div>

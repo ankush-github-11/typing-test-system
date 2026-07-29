@@ -24,6 +24,7 @@ export default function WpmBarChart({ data }: WpmBarChartProps) {
   const maxValue = Math.max(...data.map((d) => d.count));
   return (
     <div
+      className="bg-bgcolorless"
       style={{
         width: "100%",
         height: 280,
@@ -31,6 +32,7 @@ export default function WpmBarChart({ data }: WpmBarChartProps) {
         display: "flex",
         alignItems: "center",
         borderRadius: 16,
+        borderTopLeftRadius: 0,
         boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
       }}
     >

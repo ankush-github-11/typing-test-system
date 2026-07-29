@@ -27,6 +27,7 @@ export default function AverageWpmScatterChart({
 
   return (
     <div
+      className="bg-bgcolorless"
       style={{
         width: "100%",
         height: 280,
@@ -98,7 +99,7 @@ export default function AverageWpmScatterChart({
                 <circle
                   cx={cx}
                   cy={cy}
-                  r={isMax ? 2.5 : 2}
+                  r={isMax ? 2 : 0}
                   fill={isMax ? "#8EE600" : "#C607F3"}
                 />
               );

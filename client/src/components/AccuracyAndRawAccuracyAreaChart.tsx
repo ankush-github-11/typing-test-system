@@ -29,7 +29,7 @@ export default function AccuracyAreaChart({
 
   return (
     <div
-      className="w-full h-[280px] rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.4)] p-3"
+      className="w-full h-[280px] rounded-2xl rounded-tl-[0px] shadow-[0_8px_24px_rgba(0,0,0,0.4)] p-3 bg-bgcolorless"
     >
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
