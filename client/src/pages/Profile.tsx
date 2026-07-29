@@ -73,12 +73,9 @@ const Profile = () => {
   const getAccuracyAndRawAccuracyDistribution = (tests: userTestsData[]) => {
     const buckets = [
       { min: 0, max: 9, label: "0-9" },
-      { min: 10, max: 19, label: "10-19" },
-      { min: 20, max: 29, label: "20-29" },
-      { min: 30, max: 39, label: "30-39" },
-      { min: 40, max: 49, label: "40-49" },
-      { min: 50, max: 59, label: "50-59" },
-      { min: 60, max: 69, label: "60-69" },
+      { min: 10, max: 29, label: "10-29" },
+      { min: 30, max: 49, label: "30-49" },
+      { min: 50, max: 69, label: "50-69" },
       { min: 70, max: 79, label: "70-79" },
       { min: 80, max: 84, label: "80-84" },
       { min: 85, max: 89, label: "85-89" },

@@ -22,6 +22,8 @@ export default function AverageWpmScatterChart({
   data,
 }: AverageWpmScatterChartProps) {
   const maxWpm = Math.max(...data.map((d) => d.y));
+  const minTime = Math.min(...data.map((d) => d.x));
+  const maxTime = Math.max(...data.map((d) => d.x));
 
   return (
     <div
@@ -50,6 +52,7 @@ export default function AverageWpmScatterChart({
             tick={false}
             axisLine={false}
             tickLine={false}
+            domain={[minTime, maxTime]}
             label={{
               value: "Timeline",
               position: "insideBottom",
@@ -61,7 +64,7 @@ export default function AverageWpmScatterChart({
           <YAxis
             dataKey="y"
             type="number"
-            width={35}
+            width={55}
             domain={[0, Math.ceil(maxWpm / 10) * 10]}
             tick={{ fill: "#6B7280", fontSize: 13 }}
             axisLine={false}
@@ -71,8 +74,8 @@ export default function AverageWpmScatterChart({
               angle: -90,
               position: "insideLeft",
               fill: "#6B7280",
-              dx: -10,
-              dy: 25,
+              dx: 3,
+              dy: 17,
             }}
           />
 
