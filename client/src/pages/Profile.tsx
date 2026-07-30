@@ -362,7 +362,7 @@ const Profile = () => {
       ) : (
         <div className="flex gap-x-5 min-h-screen h-fit px-30 pb-30">
           {/*Left Div*/}
-          <div className="flex-[2.5] min-h-screen h-fit pt-5">
+          <div className="flex-[2.5] min-h-screen h-fit">
             <div className="h-fit w-fit flex gap-x-3 items-center">
               <SquareUser size={120} strokeWidth={1} />
               <div className="flex flex-col gap-y-1 w-full h-fit">
@@ -470,33 +470,37 @@ const Profile = () => {
                 <p className="text-[16px]">{user.longest_streak}</p>
               </div>
             </div>
-            {user.city && user.country && user.organization && (
+            {(user.city || user.country || user.organization) && (
               <div className="h-fit w-full flex flex-col gap-y-[8px] mb-5">
                 <p className="text-[17px] font-semibold mb-1">
                   Personal Details
                 </p>
-                <div className="w-fit flex items-center">
-                  <MapPin
-                    size={18}
-                    strokeWidth={2}
-                    className="text-textcolorless/60 mr-2"
-                  />
-                  <p className="text-[14.5px] mr-5 text-textcolorless/80">
-                    <span>{user.city}</span>
-                    <span>, </span>
-                    <span>{user.country}</span>
-                  </p>
-                </div>
-                <div className="w-fit flex items-center">
-                  <Building2
-                    size={18}
-                    strokeWidth={2}
-                    className="text-textcolorless/60 mr-2"
-                  />
-                  <p className="text-[14.5px] mr-5 text-textcolorless/80">
-                    {user.organization}
-                  </p>
-                </div>
+                {(user.city || user.country) && (
+                  <div className="w-fit flex items-center">
+                    <MapPin
+                      size={18}
+                      strokeWidth={2}
+                      className="text-textcolorless/60 mr-2"
+                    />
+                    <p className="text-[14.5px] mr-5 text-textcolorless/80">
+                      <span>{user.city}</span>
+                      <span>, </span>
+                      <span>{user.country}</span>
+                    </p>
+                  </div>
+                )}
+                {user.organization && (
+                  <div className="w-fit flex items-center">
+                    <Building2
+                      size={18}
+                      strokeWidth={2}
+                      className="text-textcolorless/60 mr-2"
+                    />
+                    <p className="text-[14.5px] mr-5 text-textcolorless/80">
+                      {user.organization}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
             {(user.portfolio_url ||
@@ -579,7 +583,9 @@ const Profile = () => {
           {/*Right Div*/}
           <div className="flex-[7.5] min-h-screen h-fit rounded-xl p-5 flex flex-col gap-y-5 border-1 border-bordercolor">
             <div className="h-fit w-full flex flex-col">
-              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">Activity Calendar</h3>
+              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">
+                Activity Calendar
+              </h3>
               <div className="min-h-[25vh] h-fit w-full flex justify-center items-center rounded-2xl rounded-tl-[0px] shadow-[0_8px_24px_rgba(0,0,0,0.4)] bg-bgcolorless">
                 {activityCalendarData.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
@@ -650,7 +656,9 @@ const Profile = () => {
               </div>
             </div>
             <div className="h-fit w-full flex flex-col">
-              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">WPM Distribution</h3>
+              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">
+                WPM Distribution
+              </h3>
               <div className="h-fit w-full flex justify-center items-center">
                 {wpmDistributionArray.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
@@ -662,7 +670,9 @@ const Profile = () => {
               </div>
             </div>
             <div className="h-fit w-full flex flex-col">
-              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">Accuracy and Raw Accuracy Distribution</h3>
+              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">
+                Accuracy and Raw Accuracy Distribution
+              </h3>
               <div className="h-fit w-full flex justify-center items-center">
                 {accuracyAndRawAccuracyDistributionArray.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
@@ -721,7 +731,9 @@ const Profile = () => {
               </div>
             </div>
             <div className="h-fit w-full flex flex-col">
-              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">Analytics</h3>
+              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">
+                Analytics
+              </h3>
               <div className="h-fit w-full flex justify-center items-center bg-bgcolorless shadow-[0_8px_24px_rgba(0,0,0,0.4)] p-3 rounded-2xl rounded-tl-[0px]">
                 {wpmDistributionArray.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
