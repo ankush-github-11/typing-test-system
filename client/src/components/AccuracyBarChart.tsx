@@ -8,19 +8,19 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
-import { WpmCustomTooltip } from "./WpmCustomTooltip";
+import { AccuracyCustomTooltip } from "./AccuracyCustomTooltip";
 
 interface DataPoint {
   range: string;
-  wpmCount: number;
+  accuracyCount: number;
 }
 
-interface WpmBarChartProps {
+interface AccuracyBarChartProps {
   data: DataPoint[];
 }
 
-export default function WpmBarChart({ data }: WpmBarChartProps) {
-  const maxValue = Math.max(...data.map((d) => d.wpmCount), 4);
+export default function AccuracyBarChart({ data }: AccuracyBarChartProps) {
+  const maxValue = Math.max(...data.map((d) => d.accuracyCount), 4);
   const getYAxisConfig = (maxValue: number) => {
     const targetTicks = 5;
 
@@ -46,6 +46,7 @@ export default function WpmBarChart({ data }: WpmBarChartProps) {
     return { max, ticks };
   }
   const { max, ticks } = getYAxisConfig(maxValue);
+
   return (
     <div
       className="bg-bgcolorless"
@@ -60,7 +61,7 @@ export default function WpmBarChart({ data }: WpmBarChartProps) {
         boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
       }}
     >
-      <ResponsiveContainer width="100%" height="90%">
+      <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
           margin={{ top: 10, right: 20, left: 10, bottom: 5 }}
@@ -90,14 +91,18 @@ export default function WpmBarChart({ data }: WpmBarChartProps) {
 
           <Tooltip
             cursor={{ fill: "rgba(99,102,241,0.08)" }}
-            content={<WpmCustomTooltip />}
+            content={<AccuracyCustomTooltip />}
           />
 
-          <Bar dataKey="wpmCount" radius={[8, 8, 0, 0]} animationDuration={800}>
+          <Bar
+            dataKey="accuracyCount"
+            radius={[8, 8, 0, 0]}
+            animationDuration={800}
+          >
             {data.map((entry, index) => (
               <Cell
                 key={index}
-                fill={entry.wpmCount === maxValue ? "#8EE600" : "#c607f3"}
+                fill={entry.accuracyCount === maxValue ? "#8EE600" : "#c607f3"}
               />
             ))}
           </Bar>

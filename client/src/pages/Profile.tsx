@@ -25,7 +25,7 @@ import { useUserTests } from "../hooks/useUserTestsData";
 import type { userTestsData } from "../types/userTestsData";
 import Loader from "../components/Loader";
 import useMinimumLoader from "../hooks/useMinimumLoader";
-import AccuracyAndRawAccuracyAreaChart from "../components/AccuracyAndRawAccuracyAreaChart";
+import AccuracyBarChart from "../components/AccuracyBarChart";
 import AverageAccuracyScatterChart from "../components/AverageAccuracyScatterChart";
 import AverageWpmScatterChart from "../components/AverageWpmScatterChart";
 import { useState } from "react";
@@ -52,7 +52,8 @@ const Profile = () => {
   const showPageLoader = useMinimumLoader(isLoading);
   const navigate = useNavigate();
 
-  const [selectedGraph, setSelectedGraph] = useState<"wpm" | "accuracy">("wpm");
+  const [selectedGraph1, setSelectedGraph1] = useState<"wpm" | "accuracy">("wpm");
+  const [selectedGraph2, setSelectedGraph2] = useState<"wpm" | "accuracy">("wpm");
 
   const getWpmDistribution = (tests: userTestsData[]) => {
     if (!tests.length) return [];
@@ -63,14 +64,14 @@ const Profile = () => {
       const index = Math.floor(test.wpm / 10);
       ranges[index]++;
     });
-    return ranges.map((count, index) => ({
+    return ranges.map((wpmCount, index) => ({
       range: `${index * 10}-${index * 10 + 9}`,
-      count,
+      wpmCount,
     }));
   };
   const wpmDistributionArray = tests ? getWpmDistribution(tests) : [];
 
-  const getAccuracyAndRawAccuracyDistribution = (tests: userTestsData[]) => {
+  const getAccuracyDistribution = (tests: userTestsData[]) => {
     const buckets = [
       { min: 0, max: 9, label: "0-9" },
       { min: 10, max: 29, label: "10-29" },
@@ -114,8 +115,8 @@ const Profile = () => {
 
     return distribution;
   };
-  const accuracyAndRawAccuracyDistributionArray = tests
-    ? getAccuracyAndRawAccuracyDistribution(tests)
+  const accuracyDistributionArray = tests
+    ? getAccuracyDistribution(tests)
     : [];
 
   const getAverageWpmScatterData = (tests: userTestsData[]): ScatterPoint[] => {
@@ -655,42 +656,54 @@ const Profile = () => {
                 )}
               </div>
             </div>
-            <div className="h-fit w-full flex flex-col">
-              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">
-                WPM Distribution
-              </h3>
-              <div className="h-fit w-full flex justify-center items-center">
-                {wpmDistributionArray.length === 0 ? (
-                  <p className="text-[16px] text-textcolorless/70">
-                    No tests taken yet.
-                  </p>
-                ) : (
-                  <WpmBarChart data={wpmDistributionArray} />
-                )}
+            <div className="h-fit w-full flex flex-col gap-y-2">
+              <div className="flex flex-wrap gap-x-1 w-fit rounded-lg bg-bgcolor border-1 border-gray/50 p-1">
+                <button
+                  onClick={() => setSelectedGraph2("wpm")}
+                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                    selectedGraph2 === "wpm"
+                      ? "bg-color1 text-white shadow"
+                      : "text-textcolorless hover:bg-bgcolorless"
+                  }`}
+                >
+                  WPM Distribution
+                </button>
+
+                <button
+                  onClick={() => setSelectedGraph2("accuracy")}
+                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                    selectedGraph2 === "accuracy"
+                      ? "bg-color1 text-white shadow"
+                      : "text-textcolorless hover:bg-bgcolorless"
+                  }`}
+                >
+                  Accuracy Distribution
+                </button>
               </div>
-            </div>
-            <div className="h-fit w-full flex flex-col">
-              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">
-                Accuracy and Raw Accuracy Distribution
-              </h3>
               <div className="h-fit w-full flex justify-center items-center">
-                {accuracyAndRawAccuracyDistributionArray.length === 0 ? (
+                {selectedGraph2 === "wpm" ? (
+                  wpmDistributionArray.length === 0 ? (
+                    <p className="text-[16px] text-textcolorless/70">
+                      No tests taken yet.
+                    </p>
+                  ) : (
+                    <WpmBarChart data={wpmDistributionArray} />
+                  )
+                ) : accuracyDistributionArray.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
                     No tests taken yet.
                   </p>
                 ) : (
-                  <AccuracyAndRawAccuracyAreaChart
-                    data={accuracyAndRawAccuracyDistributionArray}
-                  />
+                  <AccuracyBarChart data={accuracyDistributionArray} />
                 )}
               </div>
             </div>
             <div className="h-fit w-full flex flex-col gap-y-2">
               <div className="flex flex-wrap gap-x-1 w-fit rounded-lg bg-bgcolor border-1 border-gray/50 p-1">
                 <button
-                  onClick={() => setSelectedGraph("wpm")}
+                  onClick={() => setSelectedGraph1("wpm")}
                   className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
-                    selectedGraph === "wpm"
+                    selectedGraph1 === "wpm"
                       ? "bg-color1 text-white shadow"
                       : "text-textcolorless hover:bg-bgcolorless"
                   }`}
@@ -699,9 +712,9 @@ const Profile = () => {
                 </button>
 
                 <button
-                  onClick={() => setSelectedGraph("accuracy")}
+                  onClick={() => setSelectedGraph1("accuracy")}
                   className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
-                    selectedGraph === "accuracy"
+                    selectedGraph1 === "accuracy"
                       ? "bg-color1 text-white shadow"
                       : "text-textcolorless hover:bg-bgcolorless"
                   }`}
@@ -711,7 +724,7 @@ const Profile = () => {
               </div>
 
               <div className="h-fit w-full flex justify-center items-center">
-                {selectedGraph === "wpm" ? (
+                {selectedGraph1 === "wpm" ? (
                   wpmScatterDataArray.length === 0 ? (
                     <p className="text-[16px] text-textcolorless/70">
                       No tests taken yet.
