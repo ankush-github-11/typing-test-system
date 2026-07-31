@@ -27,13 +27,12 @@ export default function AverageWpmScatterChart({
 
   return (
     <div
-      className="bg-bgcolorless"
+      className="bg-bgcolorless shadow-[0_8px_16px_-4px_rgba(0,0,0,0.2)] border-1 border-gray/50"
       style={{
         width: "100%",
         height: 280,
         padding: 10,
-        borderRadius: 16,
-        boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+        borderRadius: 8,
       }}
     >
       <ResponsiveContainer width="100%" height="100%">
@@ -82,7 +81,7 @@ export default function AverageWpmScatterChart({
 
           <Tooltip
             cursor={{ stroke: "#C607F3", strokeDasharray: "3 3" }}
-            content={<AverageWpmCustomTooltip />}
+            content={<AverageWpmCustomTooltip maxAverageWpmCount={maxWpm} />}
           />
 
           {/* Connecting line */}

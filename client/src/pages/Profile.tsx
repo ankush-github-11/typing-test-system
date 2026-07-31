@@ -28,7 +28,7 @@ import useMinimumLoader from "../hooks/useMinimumLoader";
 import AccuracyBarChart from "../components/AccuracyBarChart";
 import AverageAccuracyScatterChart from "../components/AverageAccuracyScatterChart";
 import AverageWpmScatterChart from "../components/AverageWpmScatterChart";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ActivityCalendar } from "react-activity-calendar";
 import "../styles/profileHeatMap.css";
 
@@ -49,6 +49,7 @@ const Profile = () => {
   useButtonNavigator({ targetKey: "Escape", targetPath: "/typingtest" });
   const { data: user, isLoading } = useMe();
   const { data: tests } = useUserTests(user?.id);
+  console.log(tests);
   const showPageLoader = useMinimumLoader(isLoading);
   const navigate = useNavigate();
 
@@ -281,22 +282,79 @@ const Profile = () => {
   };
   const activityCalendarData = tests ? getActivityCalendarData(tests) : [];
 
-  const stats = [
-    { label: "Highest WPM", value: 164 },
-    { label: "Average WPM", value: 65 },
-    { label: "Average WPM (Last 15 Tests)", value: 71 },
-    { label: "Highest Accuracy", value: "100%" },
-    { label: "Average Accuracy", value: "98%" },
-    { label: "Average Accuracy (Last 15 Tests)", value: "98.5%" },
-    { label: "Estimated Words Typed", value: 1500 },
-    { label: "Average Raw WPM", value: 95 },
-    { label: "Average Raw Accuracy", value: 99 },
-  ];
+  const analytics = useMemo(() => {
+    if (!tests || tests.length === 0) return [];
+    const sortedTests = [...tests].sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    );
+    const recentTests = sortedTests.slice(0, 15);
+    return [
+      {
+        label: "Highest WPM",
+        value: Math.max(...tests.map((t) => t.wpm)),
+      },
+      {
+        label: "Average WPM",
+        value: Math.round(
+          tests.reduce((sum, t) => sum + t.wpm, 0) / tests.length,
+        ),
+      },
+      {
+        label: "Average WPM (Last 15 Tests)",
+        value: Math.round(
+          recentTests.reduce((sum, t) => sum + t.wpm, 0) / recentTests.length,
+        ),
+      },
+      {
+        label: "Highest Accuracy",
+        value: `${Math.max(...tests.map((t) => t.accuracy))}%`,
+      },
+      {
+        label: "Average Accuracy",
+        value: `${(
+          tests.reduce((sum, t) => sum + t.accuracy, 0) / tests.length
+        ).toFixed(1)}%`,
+      },
+      {
+        label: "Average Accuracy (Last 15 Tests)",
+        value: `${(
+          recentTests.reduce((sum, t) => sum + t.accuracy, 0) /
+          recentTests.length
+        ).toFixed(1)}%`,
+      },
+      {
+        label: "Estimated Words Typed",
+        value: Math.round(
+          tests.reduce((sum, t) => sum + t.correct_chars, 0) / 5,
+        ),
+      },
+      {
+        label: "Average Raw WPM",
+        value: Math.round(
+          tests.reduce(
+            (sum, t) => sum + t.total_chars_typed / (5 * (t.test_time / 60)),
+            0,
+          ) / tests.length,
+        ),
+      },
+      {
+        label: "Average Raw Accuracy",
+        value: `${(
+          tests.reduce((sum, t) => sum + t.raw_accuracy, 0) / tests.length
+        ).toFixed(1)}%`,
+      },
+    ];
+  }, [tests]);
 
-  if (!isLoading && !user) {
-    navigate("/login");
-    return null;
-  }
+  useEffect(() => {
+    if (!isLoading && !user) {
+      navigate("/login");
+    }
+  }, [isLoading, user, navigate]);
+
+  if (!isLoading && !user) return null;
+
   const formatDate = (date: string) => {
     const d = new Date(date);
     const day = d.getDate();
@@ -409,7 +467,9 @@ const Profile = () => {
                 to="/edit"
                 className="rounded-md text-[16px] border-2 border-color1 h-10 w-full flex justify-center items-center gap-x-1"
               >
-                <span className="text-color1 text-[15px]">Edit Profile</span>
+                <span className="text-color1 font-medium text-[15px]">
+                  Edit Profile
+                </span>
                 <UserRoundPen className="text-color1" size={15} />
               </Link>
             </div>
@@ -584,10 +644,10 @@ const Profile = () => {
           {/*Right Div*/}
           <div className="flex-[7.5] min-h-screen h-fit rounded-xl p-5 flex flex-col gap-y-5 border-1 border-bordercolor">
             <div className="h-fit w-full flex flex-col">
-              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">
+              <h3 className="text-[15px] font-medium bg-bgcolorless w-fit py-2 px-6 rounded-lg rounded-bl-[0px] rounded-br-[0px] shadow-[0_8px_16px_-4px_rgba(0,0,0,0.2)] border-1 border-gray/50 border-b-0">
                 Activity Calendar
               </h3>
-              <div className="min-h-[25vh] h-fit w-full flex justify-center items-center rounded-2xl rounded-tl-[0px] shadow-[0_8px_24px_rgba(0,0,0,0.4)] bg-bgcolorless">
+              <div className="min-h-[25vh] h-fit w-full flex justify-center items-center rounded-lg rounded-tl-[0px] shadow-[0_8px_16px_-4px_rgba(0,0,0,0.2)] border-1 border-gray/50 bg-bgcolorless">
                 {activityCalendarData.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
                     No tests taken yet.
@@ -660,7 +720,7 @@ const Profile = () => {
               <div className="flex flex-wrap gap-x-1 w-fit rounded-lg bg-bgcolor border-1 border-gray/50 p-1">
                 <button
                   onClick={() => setSelectedGraph2("wpm")}
-                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                  className={`px-4 py-1.5 rounded-md text-sm font-medium focus:outline-none ${
                     selectedGraph2 === "wpm"
                       ? "bg-color1 text-white shadow"
                       : "text-textcolorless hover:bg-bgcolorless"
@@ -671,7 +731,7 @@ const Profile = () => {
 
                 <button
                   onClick={() => setSelectedGraph2("accuracy")}
-                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                  className={`px-4 py-1.5 rounded-md text-sm font-medium focus:outline-none ${
                     selectedGraph2 === "accuracy"
                       ? "bg-color1 text-white shadow"
                       : "text-textcolorless hover:bg-bgcolorless"
@@ -702,7 +762,7 @@ const Profile = () => {
               <div className="flex flex-wrap gap-x-1 w-fit rounded-lg bg-bgcolor border-1 border-gray/50 p-1">
                 <button
                   onClick={() => setSelectedGraph1("wpm")}
-                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                  className={`px-4 py-1.5 rounded-md text-sm font-medium focus:outline-none ${
                     selectedGraph1 === "wpm"
                       ? "bg-color1 text-white shadow"
                       : "text-textcolorless hover:bg-bgcolorless"
@@ -713,7 +773,7 @@ const Profile = () => {
 
                 <button
                   onClick={() => setSelectedGraph1("accuracy")}
-                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+                  className={`px-4 py-1.5 rounded-md text-sm font-medium focus:outline-none ${
                     selectedGraph1 === "accuracy"
                       ? "bg-color1 text-white shadow"
                       : "text-textcolorless hover:bg-bgcolorless"
@@ -744,20 +804,20 @@ const Profile = () => {
               </div>
             </div>
             <div className="h-fit w-full flex flex-col">
-              <h3 className="text-[17px] font-semibold bg-bgcolorless w-fit py-2 px-6 rounded-2xl rounded-bl-[0px] rounded-br-[0px]">
+              <h3 className="text-[15px] font-medium bg-bgcolorless w-fit py-2 px-6 rounded-lg rounded-bl-[0px] rounded-br-[0px] shadow-[0_8px_16px_-4px_rgba(0,0,0,0.2)] border-1 border-gray/50 border-b-0">
                 Analytics
               </h3>
-              <div className="h-fit w-full flex justify-center items-center bg-bgcolorless shadow-[0_8px_24px_rgba(0,0,0,0.4)] p-3 rounded-2xl rounded-tl-[0px]">
-                {wpmDistributionArray.length === 0 ? (
+              <div className="h-fit w-full flex justify-center items-center bg-bgcolorless shadow-[0_8px_16px_-4px_rgba(0,0,0,0.2)] border-1 border-gray/50 p-3 rounded-lg rounded-tl-[0px]">
+                {analytics.length === 0 ? (
                   <p className="text-[16px] text-textcolorless/70">
                     No tests taken yet.
                   </p>
                 ) : (
                   <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {stats.map((stat) => (
+                    {analytics.map((stat) => (
                       <div
                         key={stat.label}
-                        className="bg-bgcolorless p-4 hover:border-color1/40"
+                        className="bg-bgcolorless p-4 border-1 border-bgcolorless"
                       >
                         <p className="text-sm text-textcolorless/70">
                           {stat.label}

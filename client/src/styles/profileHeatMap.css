@@ -25,7 +25,7 @@
   max-width: calc(100vw - 20px);
   padding: 0.4em 0.7em;
   padding-bottom: 0.6em;
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: var(--color-bgcolor);
   color: var(--color-textcolor);
   font-size: 13px;

@@ -49,16 +49,15 @@ export default function AccuracyBarChart({ data }: AccuracyBarChartProps) {
 
   return (
     <div
-      className="bg-bgcolorless"
+      className="bg-bgcolorless border-1 border-gray/50"
       style={{
         width: "100%",
         height: 280,
         padding: 10,
         display: "flex",
         alignItems: "center",
-        borderRadius: 16,
-        borderTopLeftRadius: 0,
-        boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+        borderRadius: 8,
+        boxShadow: "0 8px 16px -4px rgba(0,0,0,0.2)",
       }}
     >
       <ResponsiveContainer width="100%" height="100%">
@@ -91,7 +90,7 @@ export default function AccuracyBarChart({ data }: AccuracyBarChartProps) {
 
           <Tooltip
             cursor={{ fill: "rgba(99,102,241,0.08)" }}
-            content={<AccuracyCustomTooltip />}
+            content={<AccuracyCustomTooltip maxAccuracyCount={maxValue} />}
           />
 
           <Bar

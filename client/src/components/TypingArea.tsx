@@ -83,6 +83,8 @@ const TypingArea = () => {
   const [visibleStartLine, setVisibleStartLine] = useState(0);
   const [charsPerLine, setCharsPerLine] = useState(60);
 
+  const [capsLockOn, setCapsLockOn] = useState(false);
+
   const focused = useTypingAreaFocusedStore((state) => state.focused);
   const setFocused = useTypingAreaFocusedStore((state) => state.setFocused);
 
@@ -112,6 +114,7 @@ const TypingArea = () => {
   const handleMouseEnter = () => {
     inputRef.current?.focus();
   };
+
   const resetTest = () => {
     setTypedText("");
     setIndex(0);
@@ -188,7 +191,11 @@ const TypingArea = () => {
     }
   }, [index, lines, visibleStartLine]);
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setCapsLockOn(e.getModifierState("CapsLock"));
+  };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setCapsLockOn(e.getModifierState("CapsLock"));
     if (e.key === "Backspace") {
       if (errorBehaviour === "nobackspace") return;
       // BACKSPACE HANDLING
@@ -301,10 +308,7 @@ const TypingArea = () => {
 
   useEffect(() => {
     const calculateCharsPerLine = () => {
-      // 85% viewport width
       const containerWidth = window.innerWidth * 0.85;
-      // text-4xl in Tailwind = 36px
-      // monospace average char width ≈ 0.6 of font size
       const fontSize = 36;
       const approxCharWidth = fontSize * 0.6;
       const chars = Math.floor(containerWidth / approxCharWidth);
@@ -334,6 +338,7 @@ const TypingArea = () => {
     return { wpm, rawAccuracy, typedText };
   };
   useEffect(() => {
+    // Last Effect before redirect
     if (testTimeLeft === 0 && started) {
       setStarted(false);
       if (user?.id) {
@@ -343,7 +348,7 @@ const TypingArea = () => {
           id: user.id,
           total_chars_typed: testTotalCharsTyped,
         });
-        const {wpm, rawAccuracy} = calculateFinalResults();
+        const { wpm, rawAccuracy } = calculateFinalResults();
         addTest({
           id: user.id,
           wpm: wpm,
@@ -360,8 +365,19 @@ const TypingArea = () => {
         });
       }
     }
-  },[ 
-    testTimeLeft, setStarted, started, testTotalCharsTyped, user?.id, completedTest, timeTyping, testTime, totalCharsTyped, wrongCharsTyped, difficulty, addTest
+  }, [
+    testTimeLeft,
+    setStarted,
+    started,
+    testTotalCharsTyped,
+    user?.id,
+    completedTest,
+    timeTyping,
+    testTime,
+    totalCharsTyped,
+    wrongCharsTyped,
+    difficulty,
+    addTest,
   ]);
 
   useEffect(() => {
@@ -397,6 +413,7 @@ const TypingArea = () => {
   }, [index, targetText, visibleStartLine]);
 
   useAutoRedirect({
+    // Redirect
     path: "/results",
     delay: 0,
     trigger: avgWpmPerSecondArr.length === testTime,
@@ -461,6 +478,7 @@ const TypingArea = () => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
       />
 
       {cursorPos && (
@@ -519,6 +537,11 @@ const TypingArea = () => {
             </div>
           );
         })}
+      {capsLockOn && (
+        <div className="text-textcolor text-lg w-full flex justify-center mt-1">
+          <div className="bg-yellow-400 dark:bg-yellow-500 w-fit py-1.5 px-3 rounded-lg">Caps Lock On</div>
+        </div>
+      )}
     </div>
   );
 };
