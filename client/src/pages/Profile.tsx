@@ -49,12 +49,25 @@ const Profile = () => {
   useButtonNavigator({ targetKey: "Escape", targetPath: "/typingtest" });
   const { data: user, isLoading } = useMe();
   const { data: tests } = useUserTests(user?.id);
+  const [maxValueOfWpm, setMaxValueOfWpm] = useState(0);
+  useEffect(() => {
+    if (!tests || tests.length === 0) {
+      setMaxValueOfWpm(0);
+      return;
+    }
+    const recentTests = tests.slice(0, 15);
+    setMaxValueOfWpm(Math.max(...recentTests.map((test) => test.wpm)));
+  }, [tests]);
   console.log(tests);
   const showPageLoader = useMinimumLoader(isLoading);
   const navigate = useNavigate();
 
-  const [selectedGraph1, setSelectedGraph1] = useState<"wpm" | "accuracy">("wpm");
-  const [selectedGraph2, setSelectedGraph2] = useState<"wpm" | "accuracy">("wpm");
+  const [selectedGraph1, setSelectedGraph1] = useState<"wpm" | "accuracy">(
+    "wpm",
+  );
+  const [selectedGraph2, setSelectedGraph2] = useState<"wpm" | "accuracy">(
+    "wpm",
+  );
 
   const getWpmDistribution = (tests: userTestsData[]) => {
     if (!tests.length) return [];
@@ -116,9 +129,7 @@ const Profile = () => {
 
     return distribution;
   };
-  const accuracyDistributionArray = tests
-    ? getAccuracyDistribution(tests)
-    : [];
+  const accuracyDistributionArray = tests ? getAccuracyDistribution(tests) : [];
 
   const getAverageWpmScatterData = (tests: userTestsData[]): ScatterPoint[] => {
     if (!tests.length) return [];
@@ -281,6 +292,11 @@ const Profile = () => {
     return activity;
   };
   const activityCalendarData = tests ? getActivityCalendarData(tests) : [];
+
+  const getRecent15Tests = (tests: userTestsData[]): userTestsData[] => {
+    return tests.slice(0, 15);
+  };
+  const recentTests = tests ? getRecent15Tests(tests) : [];
 
   const analytics = useMemo(() => {
     if (!tests || tests.length === 0) return [];
@@ -825,6 +841,94 @@ const Profile = () => {
                         <p className="mt-2 text-2xl font-semibold text-textcolor">
                           {stat.value}
                         </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="h-fit w-full flex flex-col">
+              <h3 className="text-[15px] font-medium bg-bgcolorless w-fit py-2 px-6 rounded-lg rounded-bl-[0px] rounded-br-[0px] shadow-[0_8px_16px_-4px_rgba(0,0,0,0.2)] border-1 border-gray/50 border-b-0">
+                Recent Tests
+              </h3>
+              <div className="h-fit w-full flex justify-center items-center bg-bgcolorless shadow-[0_8px_16px_-4px_rgba(0,0,0,0.2)] border-1 border-gray/50 p-3 rounded-lg rounded-tl-[0px]">
+                {recentTests.length === 0 ? (
+                  <p className="text-[16px] text-textcolorless/70">
+                    No tests taken yet.
+                  </p>
+                ) : (
+                  <div className="w-full flex flex-col gap-3">
+                    {recentTests.map((test) => (
+                      <div
+                        key={test.id}
+                        className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center rounded-lg border border-gray/40 bg-bgcolor p-4"
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-xs tracking-wide text-textcolorless/60">
+                            <span className="font-semibold uppercase">
+                              {test.difficulty}
+                            </span>{" "}
+                            • {test.test_time}s
+                          </span>
+
+                          <span className="mt-1 flex items-center gap-2">
+                            <span className="font-semibold text-textcolor">
+                              {new Date(test.created_at).toLocaleDateString(
+                                "en-US",
+                                {
+                                  timeZone: "America/New_York",
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                },
+                              )}
+                            </span>
+
+                            <span className="text-sm text-textcolorless/70">
+                              {new Date(test.created_at).toLocaleTimeString(
+                                "en-US",
+                                {
+                                  timeZone: "America/New_York",
+                                  hour: "numeric",
+                                  minute: "2-digit",
+                                  hour12: true,
+                                },
+                              )}
+                            </span>
+                          </span>
+                        </div>
+
+                        <div className="text-center">
+                          <p className="text-xs text-textcolorless/60">WPM</p>
+                          <p className={`text-xl ${test.wpm === maxValueOfWpm ? 'text-color2' : 'text-color1'} font-bold`}>
+                            {test.wpm}
+                          </p>
+                        </div>
+
+                        <div className="text-center">
+                          <p className="text-xs text-textcolorless/60">
+                            Accuracy
+                          </p>
+                          <p className="text-xl font-bold">{test.accuracy}%</p>
+                        </div>
+
+                        <div className="text-center">
+                          <p className="text-xs text-textcolorless/60">
+                            Raw Acc.
+                          </p>
+                          <p className="text-xl font-bold">
+                            {test.raw_accuracy}%
+                          </p>
+                        </div>
+
+                        <div className="text-center">
+                          <p className="text-xs text-textcolorless/60">
+                            Correct
+                          </p>
+                          <p className="text-xl font-bold">
+                            {test.correct_chars}/{test.total_chars_typed}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>
