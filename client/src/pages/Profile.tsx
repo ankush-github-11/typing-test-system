@@ -861,7 +861,7 @@ const Profile = () => {
                     {recentTests.map((test) => (
                       <div
                         key={test.id}
-                        className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center rounded-lg border border-gray/40 bg-bgcolor p-4"
+                        className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center rounded-lg border border-gray/40 bg-bgcolor/50 p-4"
                       >
                         <div className="flex flex-col">
                           <span className="text-xs tracking-wide text-textcolorless/60">

@@ -91,7 +91,7 @@
   }
 }
 @utility nav-items-style {
-  @apply text-textcolorless font-medium rounded-md hover:bg-lightgray p-1.5 px-2 hover:text-cyan-900 dark:hover:text-cyan-50;
+  @apply text-textcolorless font-medium rounded-md p-1.5 px-2 hover:text-color1;
 }
 .sliding-animation {
   animation: slide1 5s ease-in-out infinite;
