@@ -34,7 +34,7 @@ function getWeight(label: string): number {
   return 1;
 }
 
-const SCAN_DURATION = 6; // seconds for one full right -> left sweep
+const SCAN_DURATION = 7;
 
 export const BgKeyboard: React.FC = () => {
   useEffect(() => {
@@ -100,7 +100,7 @@ export const BgKeyboard: React.FC = () => {
                 className={`${base} ${size}`}
                 style={
                   {
-                    "--scan-delay": `${delay}s`,// gray-200 (light mode)
+                    "--scan-delay": `${delay}s`,
                   } as React.CSSProperties
                 }
               >

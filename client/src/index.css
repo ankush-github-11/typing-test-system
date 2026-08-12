@@ -18,7 +18,7 @@
   --color-textcolor: black;
   --color-textcolorless: oklch(45% 0.013 285.805);
 
-  --color-lightgray: oklch(96.7% 0.001 286.375);
+  --color-lightgray: #E1E1E5;
   --color-darkgray: oklch(37% 0.013 285.805);
 
   --color-bordercolor: oklch(92.8% 0.006 264.531);
