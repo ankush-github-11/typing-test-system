@@ -4,6 +4,7 @@ import { useTitle } from '../hooks/useTitle';
 import HomePageAnimation from "../components/HomePageAnimation";
 import { useTestStartedStore } from '../store/useTestStartedStore';
 import useButtonNavigator from '../hooks/useButtonNavigator';
+import Footer from '../components/Footer';
 const Home = () => {
   const { isDark } = useTheme();
   useTitle("EtherType");
@@ -14,6 +15,7 @@ const Home = () => {
       <div data-theme={isDark ? 'dark' : ''} className="font-poppins bg-bgcolor text-textcolor">
         <Navbar />
         <HomePageAnimation />
+        <Footer />
       </div>
   )
 }

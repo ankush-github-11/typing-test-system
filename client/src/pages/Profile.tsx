@@ -31,6 +31,7 @@ import AverageWpmScatterChart from "../components/AverageWpmScatterChart";
 import { useEffect, useMemo, useState } from "react";
 import { ActivityCalendar } from "react-activity-calendar";
 import "../styles/profileHeatMap.css";
+import Footer from "../components/Footer";
 
 interface ScatterPoint {
   x: number;
@@ -938,6 +939,7 @@ const Profile = () => {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useTheme } from "../context/useTheme";
 import useButtonNavigator from "../hooks/useButtonNavigator";
@@ -225,6 +226,7 @@ const Settings = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

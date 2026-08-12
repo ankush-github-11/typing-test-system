@@ -25,7 +25,7 @@ const Navbar = () => {
       <nav
         className="font-poppins bg-bgcolor flex ml-auto px-6 py-4 font-medium text-textcolorless justify-between"
       >
-        <div className="hidden absolute left-1/2 -translate-x-1/2 lg:flex px-20 py-1.5 items-center space-x-4 mt-1 select-none">
+        <div className="hidden absolute left-1/2 -translate-x-1/2 lg:flex px-20 py-1.5 items-center space-x-6 mt-1 select-none">
           {isDark ? (
             <Moon
               onClick={toggleTheme}
@@ -37,17 +37,20 @@ const Navbar = () => {
               className="text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-lightgray p-[8.5px] cursor-pointer h-8.5 w-8.5 rounded-md"
             />
           )}
-          <Link to={"/leaderboard"} className="nav-items-style">
+          <Link to={"/leaderboard"} className="nav-items-style group relative text-textcolorless/80 hover:text-color1 transition-colors">
             Leaderboard
+            <span className="absolute left-0 -bottom-0.5 h-px w-0 bg-color1 transition-all duration-200 group-hover:w-full" />
           </Link>
+          {/*
           <Link to={"/about"} className="nav-items-style">
             About
           </Link>
-          {/* <Link to={"/features"} className="nav-items-style">
+           <Link to={"/features"} className="nav-items-style">
             Features
           </Link> */}
-          <Link to={"/settings"} className="nav-items-style">
+          <Link to={"/settings"} className="nav-items-style group relative text-textcolorless/80 hover:text-color1 transition-colors">
             Settings
+            <span className="absolute left-0 -bottom-0.5 h-px w-0 bg-color1 transition-all duration-200 group-hover:w-full" />
           </Link>
         </div>
 

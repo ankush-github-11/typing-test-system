@@ -12,6 +12,7 @@ import {
 } from "../schemas/editProfileSchema";
 import { useMe } from "../hooks/useMe";
 import { useEditProfile } from "../hooks/useEditProfile";
+import Footer from "../components/Footer";
 
 const Edit = () => {
   const { isDark } = useTheme();
@@ -59,8 +60,7 @@ const Edit = () => {
       className="min-h-screen bg-bgcolor font-poppins text-textcolor"
     >
       <Navbar />
-
-      <div className="mx-auto max-w-5xl p-6 bg-bgcolorless rounded-xl">
+      <div className="mx-auto max-w-5xl p-6 bg-bgcolorless rounded-xl my-7 mb-20">
         <h1 className="mb-8 text-3xl font-bold">Edit Profile</h1>
 
         <div className="mb-8 flex flex-col items-center gap-4">
@@ -287,6 +287,7 @@ const Edit = () => {
           </div>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

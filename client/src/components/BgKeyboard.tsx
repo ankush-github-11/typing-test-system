@@ -34,7 +34,7 @@ function getWeight(label: string): number {
   return 1;
 }
 
-const SCAN_DURATION = 7;
+const SCAN_DURATION = 7; // seconds for one full right -> left sweep
 
 export const BgKeyboard: React.FC = () => {
   useEffect(() => {

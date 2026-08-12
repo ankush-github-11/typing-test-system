@@ -3,6 +3,7 @@ import { useTheme } from "../context/useTheme";
 import { useTitle } from "../hooks/useTitle";
 import LeaberboardTable from "../components/LeaberboardTable";
 import useButtonNavigator from "../hooks/useButtonNavigator";
+import Footer from "../components/Footer";
 
 const Leaderboard = () => {
   const { isDark } = useTheme();
@@ -16,6 +17,7 @@ const Leaderboard = () => {
     >
       <Navbar />
       <LeaberboardTable />
+      <Footer />
     </div>
   );
 };
