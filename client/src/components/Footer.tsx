@@ -41,7 +41,7 @@ const AutoFitText = ({ children }: { children: string }) => {
           transformOrigin: "center",
           fontWeight: 500,
         }}
-        className="text-[100px]"
+        className="text-[100px] h-fit pb-5"
       >
         {children}
       </span>
@@ -51,8 +51,8 @@ const AutoFitText = ({ children }: { children: string }) => {
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-bgcolorless text-textcolorless/90 px-6 md:px-10 py-10 pb-2">
-      <div className="max-w-6xl mx-auto">
+    <footer className="w-full bg-bgcolorless text-textcolorless/90 px-[7vw] pt-10">
+      <div className="">
         <div className="flex flex-col md:flex-row gap-10 md:gap-6">
           {/* Brand */}
           <div className="flex-[1.4]">
@@ -117,7 +117,7 @@ const Footer = () => {
           </p>
         </div>
         <div className="mt-4 text-textcolorless/50 w-full">
-          <AutoFitText>Beat your best</AutoFitText>
+          <AutoFitText>beat your best</AutoFitText>
         </div>
       </div>
     </footer>

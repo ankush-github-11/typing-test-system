@@ -45,7 +45,7 @@ const ProfileMenu = () => {
       {/* Profile Button */}
       <button
         onClick={() => setOpen(!open)}
-        className="cursor-pointer flex items-center space-x-2 p-2 lg:pr-3 mt-3 mr-4 bg-color1 dark:bg-color1 rounded-full hover:bg-color1 dark:hover:bg-color1 select-none"
+        className="cursor-pointer flex items-center justify-center bg-color1 dark:bg-color1 rounded-full hover:bg-color1 dark:hover:bg-color1 select-none h-10 w-10"
       >
         <div className="hidden lg:flex text-white">
           <UserRound className="text-white h-5" />
@@ -54,8 +54,7 @@ const ProfileMenu = () => {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute right-0 mt-2 w-52 rounded-2xl shadow-lg bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 overflow-hidden z-50">
-          
+        <div className="absolute right-0 mt-2 w-52 rounded-2xl shadow-lg bg-bgcolorless border border-gray-200 dark:border-zinc-700 overflow-hidden z-50 mr-2">
           <Link
             to="/profile"
             className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
@@ -63,7 +62,7 @@ const ProfileMenu = () => {
             <User size={18} />
             <span>Profile</span>
           </Link>
-
+          <div className="h-[1px] w-[85%] mx-auto bg-bordercolor"/>
           <Link
             to="/settings"
             className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
@@ -71,7 +70,7 @@ const ProfileMenu = () => {
             <Settings size={18} />
             <span>Settings</span>
           </Link>
-
+          <div className="h-[1px] w-[85%] mx-auto bg-bordercolor"/>
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 cursor-pointer px-4 py-3 hover:bg-red-100 dark:hover:bg-red-900/30 transition text-left text-red-500"

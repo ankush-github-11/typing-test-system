@@ -76,7 +76,7 @@ export const BgKeyboard: React.FC = () => {
   }, []);
 
   return (
-    <div className="hidden lg:block z-0 relative -top-[170px] h-fit w-[85vw] mx-auto bg-bgcolor rounded-lg overflow-hidden">
+    <div className="hidden lg:block z-0 relative -top-[170px] h-fit w-full px-[7vw] mx-auto bg-bgcolor rounded-lg overflow-hidden">
       {rows.map((row, ri) => (
         <div key={ri} className="flex w-full space-x-2 mb-2">
           {row.map((label, ki) => {

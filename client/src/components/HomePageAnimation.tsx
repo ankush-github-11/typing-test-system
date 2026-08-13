@@ -7,7 +7,7 @@ const HomePageAnimation = () => {
   return (
     <div
       data-theme={isDark ? "dark" : ""}
-      className="font-poppins min-h-screen h-fit text-textcolor bg-bgcolor flex items-center flex-col space-y-3 pt-35"
+      className="font-poppins min-h-screen h-fit text-textcolor bg-bgcolor flex items-center flex-col space-y-3 pt-40"
     >
       <div
         className="

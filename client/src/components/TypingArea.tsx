@@ -308,7 +308,7 @@ const TypingArea = () => {
 
   useEffect(() => {
     const calculateCharsPerLine = () => {
-      const containerWidth = window.innerWidth * 0.85;
+      const containerWidth = window.innerWidth * 0.86;
       const fontSize = 36;
       const approxCharWidth = fontSize * 0.6;
       const chars = Math.floor(containerWidth / approxCharWidth);
@@ -432,7 +432,7 @@ const TypingArea = () => {
   return (
     <div
       onMouseEnter={handleMouseEnter}
-      className={`select-none ml-5 mt-20 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-[88%] font-mono text-gray leading-[50px] overflow-hidden px-5 ${!cursorVisible ? "cursor-none" : "cursor-default"}`}
+      className={`select-none mt-20 text-4xl pt-[30px] pb-[30px] min-h-[35vh] h-fit w-full px-[7vw] font-mono text-gray leading-[50px] overflow-hidden ${!cursorVisible ? "cursor-none" : "cursor-default"}`}
     >
       <div className={`justify-between w-full flex items-center`}>
         <div className={`w-114 flex gap-8 text-xl text-textcolorless/80`}>
